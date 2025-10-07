@@ -24,7 +24,7 @@ Cloná el repositorio y ejecutá los siguientes pasos en la raíz del proyecto:
 
 ```bash
 # 1️⃣ Clonar el proyecto
-git clone https://github.com/<tu_usuario>/<tu_repo>.git
+git clone https://github.com/HackeandoBits/recova-rentals-web.git
 cd Recova-Rentals-Web
 
 # 2️⃣ Instalar dependencias de PHP
@@ -34,7 +34,8 @@ composer install
 npm install
 
 # 4️⃣ Copiar archivo de entorno
-cp .env.example .env
+cp .env.example .env  
+# APP_TIMEZONE=America/Argentina/Cordoba
 
 # 5️⃣ Generar clave de aplicación
 php artisan key:generate
