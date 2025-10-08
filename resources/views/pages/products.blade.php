@@ -1,5 +1,5 @@
 {{-- Products: TopBanner + Header + ProductsSection + Footer + CartModal --}}
-@extends('layouts.app')
+@extends('livewire.layout.app')
 
 @section('content')
   <main style="padding-top: 140px">

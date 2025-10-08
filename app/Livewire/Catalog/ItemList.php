@@ -12,6 +12,6 @@ class ItemList extends Component {
           ->where('active', true)
           ->paginate(12);
         return view('livewire.catalog.item-list', compact('items'))
-            ->layout('layouts.app', ['title' => 'Catálogo']);
+            ->layout('livewire.layout.app', ['title' => 'Catálogo']);
     }
 }
