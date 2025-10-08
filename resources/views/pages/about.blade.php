@@ -1,5 +1,5 @@
 {{-- About: TopBanner + Header + AboutSection + Footer --}}
-@extends('layouts.app')
+@extends('livewire.layout.app')
 
 @section('content')
   <main style="padding-top: 140px">

@@ -31,6 +31,6 @@ class BlockedSlotsPanel extends Component {
         $blocks = BlockedSlot::where('owner_user_id', auth()->id())
             ->orderByDesc('start_at')->limit(50)->get();
         return view('livewire.owner.blocks', compact('blocks'))
-            ->layout('layouts.app', ['title' => 'Bloqueos del dueño']);
+            ->layout('livewire.layout.app', ['title' => 'Bloqueos del dueño']);
     }
 }

@@ -17,8 +17,8 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
-                <a href="/" wire:navigate>
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <a href="{{ route('home') }}" class="hover:opacity-90 transition duration-200">
+                    <x-application-logo class="block h-9 w-auto text-white fill-current" />
                 </a>
             </div>
 
