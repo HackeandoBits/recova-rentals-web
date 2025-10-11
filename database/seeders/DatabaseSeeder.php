@@ -1,15 +1,25 @@
 <?php
 
 namespace Database\Seeders;
-use Illuminate\Database\Seeder;
-use App\Models\{User,Item,ItemImage,Category};
-use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder {
-    public function run(): void {
-        $owner = User::factory()->create([
-            'name' => 'Owner', 'email' => 'owner@example.com', 'password' => Hash::make('password')
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $this->command->info('>> Sembrando appointments...');
+        
+        $this->call([
+            CategorySeeder::class,
+            ItemSeeder::class,
+            ComboSeeder::class,
+            BookingSeeder::class,
+            
+            RolesSeeder::class,   // crea roles Spatie
+            UserSeeder::class,    // crea usuarios y asigna roles
+            BlockedSlotSeeder::class,
+            AppointmentSeeder::class,
         ]);
-        RoleSeeder::run();
     }
 }

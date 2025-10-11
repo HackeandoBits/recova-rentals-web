@@ -15,10 +15,6 @@
             <h3 class="font-semibold">{{ $it->name }}</h3>
             <p class="text-sm text-gray-500 line-clamp-2">{{ $it->description }}</p>
           </div>
-          <div class="text-right">
-            <div class="text-lg font-bold">${{ number_format($it->daily_price,2) }}</div>
-            <div class="text-xs text-gray-500">/día</div>
-          </div>
         </div>
       </div>
     @endforeach
