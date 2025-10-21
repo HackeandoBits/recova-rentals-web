@@ -90,7 +90,7 @@
       {{-- CTA Buttons --}}
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <a href="{{ route('catalog') }}">
-          <span class="inline-flex items-center justify-center bg-gradient-accent hover:scale-105 transition-all duration-300 glow-accent text-lg px-8 py-3 rounded-md">
+          <span class="inline-flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-3 transition-all duration-300 rounded-md">
             Ver Nuestros Equipos
           </span>
         </a>
@@ -103,10 +103,4 @@
     </div>
   </div>
 
-  {{-- Animated Elements --}}
-  <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-    <div class="w-6 h-10 border-2 border-primary rounded-full flex justify-center">
-      <div class="w-1 h-3 bg-primary rounded-full mt-2 animate-pulse"></div>
-    </div>
-  </div>
 </section>
