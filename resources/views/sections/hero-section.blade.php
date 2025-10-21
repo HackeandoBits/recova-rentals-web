@@ -1,7 +1,7 @@
 <section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
   {{-- Imagen de fondo --}}
   <div
-    class="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10"
+    class="filter blur-[9px] opacity-50 absolute inset-0 bg-cover bg-center bg-no-repeat -z-10"
     style="background-image: url('{{ asset('images/ui/hero-image.jpg') }}');"
   >
     {{-- Filtro oscuro/gradiente --}}
