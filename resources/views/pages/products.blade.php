@@ -9,6 +9,7 @@
       {{-- si querés, podés meter búsqueda/filtros arriba para replicar el UI exacto --}}
       <livewire:catalog.item-list />
     </section>
+    <h1></h1>
   </main>
 
   {{-- CartModal (como en Lovable) --}}

@@ -5,7 +5,7 @@
         class="w-[512px] transition-transform duration-300 drop-shadow-lg hover:scale-110"
     />
 </a>
-<a href="{{ route('home') }}" class="flex flex-col items-center justify-center drop-shadow-sm group">
+<a href="{{ route('catalog') }}" class="flex flex-col items-center justify-center drop-shadow-sm group">
     <img 
         src="{{ asset('images/branding/recova-text-logo-body.png') }}" 
         alt="Recova Rentals Wordmark"
