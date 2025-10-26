@@ -4,12 +4,13 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
     <div class="flex items-center justify-center h-full relative">
       <div class="flex space-x-8 text-sm font-medium">
-        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Inicio</x-nav-link>
-        <x-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Productos</x-nav-link>
-        <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Galería</x-nav-link>
-        <x-nav-link :href="route('location')" :active="request()->routeIs('location')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">¿Dónde estamos?</x-nav-link>
-        <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">¿Quiénes somos?</x-nav-link>
+        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Inicio</x-nav-link>
+        <x-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Productos</x-nav-link>
+        <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Galería</x-nav-link>
+        <x-nav-link :href="route('location')" :active="request()->routeIs('location')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">¿Dónde estamos?</x-nav-link>
+        <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">¿Quiénes somos?</x-nav-link>
       </div>
+
   </div>
 
   {{-- Menú responsive  --}}
