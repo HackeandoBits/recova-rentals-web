@@ -90,12 +90,20 @@
       {{-- CTA Buttons --}}
       <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
         <a href="{{ route('catalog') }}">
-          <span class="inline-flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-3 transition-all duration-300 rounded-md">
+          <span class="inline-flex items-center justify-center border border-primary text-primary text-lg px-8 py-3 rounded-md
+             transition-all duration-300
+             hover:scale-105
+             hover:[text-shadow:0_0_8px_hsl(310,75%,60%),0_0_16px_hsl(310,75%,50%)]
+             hover:shadow-[0_0_10px_hsl(310,75%,60%)]">
             Ver Nuestros Equipos
           </span>
         </a>
         <a href="{{ route('gallery') }}">
-          <span class="inline-flex items-center justify-center border border-primary text-primary hover:bg-primary hover:text-primary-foreground text-lg px-8 py-3 transition-all duration-300 rounded-md">
+          <span class="inline-flex items-center justify-center border border-primary text-primary text-lg px-8 py-3 rounded-md
+             transition-all duration-300
+             hover:scale-105
+             hover:[text-shadow:0_0_8px_hsl(310,75%,60%),0_0_16px_hsl(310,75%,50%)]
+             hover:shadow-[0_0_10px_hsl(310,75%,60%)]">
             Ver Galería de Eventos
           </span>
         </a>

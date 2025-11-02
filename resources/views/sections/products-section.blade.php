@@ -3,6 +3,6 @@
 <h2 class="text-2xl font-bold">Catálogo</h2>
 {{-- Barra de búsqueda/filtros si tenías --}}
 </div>
-{{-- Lista con Livewire para datos reales --}}
-<livewire:catalog.item-list />
+{{-- Lista con Livewire para datos reales <livewire:catalog.item-list /> --}}
+
 </section>
