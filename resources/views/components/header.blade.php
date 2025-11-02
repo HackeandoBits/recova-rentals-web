@@ -4,39 +4,13 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
     <div class="flex items-center justify-center h-full relative">
       <div class="flex space-x-8 text-sm font-medium">
-        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Inicio</x-nav-link>
-        <x-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Productos</x-nav-link>
-        <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">Galería</x-nav-link>
-        <x-nav-link :href="route('location')" :active="request()->routeIs('location')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">¿Dónde estamos?</x-nav-link>
-        <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate class="text-white hover:text-[hsl(310,75%,60%)]">¿Quiénes somos?</x-nav-link>
+        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Inicio</x-nav-link>
+        <x-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Productos</x-nav-link>
+        <x-nav-link :href="route('gallery')" :active="request()->routeIs('gallery')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">Galería</x-nav-link>
+        <x-nav-link :href="route('location')" :active="request()->routeIs('location')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">¿Dónde estamos?</x-nav-link>
+        <x-nav-link :href="route('about')" :active="request()->routeIs('about')" wire:navigate class="text-white hover:text-[#e64ccc] transition duration-200" style="--glow: hsl(310,75%,60%);" onmouseover="this.style.textShadow='0 0 8px var(--glow), 0 0 16px var(--glow)'" onmouseout="this.style.textShadow='none'">¿Quiénes somos?</x-nav-link>
       </div>
 
-      <div class="absolute right-4 flex items-center space-x-4">
-        @auth
-          <x-dropdown align="right" width="48">
-            <x-slot name="trigger">
-              <button class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-md text-white hover:text-[hsl(310,75%,60%)]">
-                {{ auth()->user()->name }}
-                <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
-              </button>
-            </x-slot>
-            <x-slot name="content">
-              <x-dropdown-link :href="route('profile.edit')">Perfil</x-dropdown-link>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="w-full text-start">
-                  <x-dropdown-link>Cerrar sesión</x-dropdown-link>
-                </button>
-              </form>
-            </x-slot>
-          </x-dropdown>
-        @endauth
-
-        @guest
-          <x-nav-link :href="route('login')" class="text-white hover:text-[hsl(310,75%,60%)]">Iniciar sesión</x-nav-link>
-        @endguest
-      </div>
-    </div>
   </div>
 
   {{-- Menú responsive  --}}
