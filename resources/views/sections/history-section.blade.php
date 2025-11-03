@@ -1,7 +1,7 @@
 {{-- Sección History --}}
 @props(['style' => 'card']) {{-- 'card' o 'footer' --}}
 
-<div class="@if($style === 'card') bg-[hsl(298,42%,15%)] text-white rounded-lg shadow-lg p-6 @else space-y-6 @endif">
+<div class="@if($style === 'card') bg-[hsl(298,42%,15%)] text-white rounded-lg shadow-lg p-6 w-full h-full flex flex-col justify-start items-start @else space-y-6 @endif">
     <h3 class="font-semibold tracking-tight text-2xl text-primary mb-4">Nuestra Historia</h3>
     
     <div class="text-sm text-muted-foreground space-y-4">

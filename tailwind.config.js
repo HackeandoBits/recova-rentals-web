@@ -14,6 +14,16 @@ export default {
       fontFamily: {
         sans: ['Figtree', ...defaultTheme.fontFamily.sans],
       },
+      keyframes: {
+        'pulse-glow': {
+          '20%': { boxShadow: '0 0 5px rgba(230,76,204,0.1)' },
+          '50%': { boxShadow: '0 0 25px rgba(230,76,204,0.7)' },
+          '100%': { boxShadow: '0 0 5px rgba(230,76,204,0.2)' },
+        },
+      },
+      animation: {
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+      },
     },
   },
 
