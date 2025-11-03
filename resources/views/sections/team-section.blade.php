@@ -16,6 +16,14 @@
     <x-glow-button>Diseñadores de Shows</x-glow-button>
     <x-glow-button>Soporte 24/7</x-glow-button>
 </div>
+<div class="w-full flex justify-center">
+ <a href="{{ route('gallery') }}"
+   class="px-4 py-3 bg-purple-900 text-white rounded-lg text-lg font-semibold
+          mt-8 transition-transform hover:text-purple-700 transform hover:scale-105 animate-pulse-glow">
+    Nuestros Productos
+</a>
+</div>
+
     </div>
 
 
