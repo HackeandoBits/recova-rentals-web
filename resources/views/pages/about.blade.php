@@ -12,7 +12,7 @@ $tarjetas = [
     ['col' => 'left', 'view' => 'sections.history-section', 'data' => ['style' => 'card']],
     ['col' => 'right', 'view' => 'sections.distinction-section', 'data' => ['style' => 'card']],
     ['col' => 'left', 'view' => 'sections.mission-section', 'data' => ['style' => 'card']],
-    ['col' => 'right', 'view' => 'sections.distinction-section', 'data' => ['style' => 'card']],
+    ['col' => 'right', 'view' => 'sections.vision-section', 'data' => ['style' => 'card']],
     // más tarjetas...
 ];
 @endphp
