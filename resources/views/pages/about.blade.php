@@ -27,7 +27,9 @@ $tarjetas = [
 <div class="mb-8">
     @include('sections.values-section')
 </div>
-
+<div class="mb-8">
+    @include('sections.team-section')
+</div> 
 
 </main>
 @endsection
