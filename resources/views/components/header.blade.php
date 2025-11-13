@@ -32,27 +32,6 @@
                 {{ __('¿Quiénes somos?') }}
             </x-responsive-nav-link>
 
-            @auth
-                <div class="border-t border-[hsl(310,75%,60%)/0.3] mt-4 pt-2">
-                    <div class="text-sm">{{ auth()->user()->name }}</div>
-                    <x-responsive-nav-link :href="route('profile.edit')" class="hover:text-[hsl(310,75%,60%)]">
-                        {{ __('Perfil') }}
-                    </x-responsive-nav-link>
-                    <button wire:click="logout" class="w-full text-start">
-                        <x-responsive-nav-link class="hover:text-[hsl(310,75%,60%)]">
-                            {{ __('Cerrar sesión') }}
-                        </x-responsive-nav-link>
-                    </button>
-                </div>
-            @endauth
-
-            @guest
-                <div class="border-t border-[hsl(310,75%,60%)/0.3] mt-4 pt-2">
-                    <x-responsive-nav-link :href="route('login')" class="hover:text-[hsl(310,75%,60%)]">
-                        {{ __('Iniciar sesión') }}
-                    </x-responsive-nav-link>
-                </div>
-            @endguest
         </div>
     </div>
 </nav>

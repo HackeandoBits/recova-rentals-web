@@ -104,11 +104,6 @@
                     WhatsApp +54 370 456-7890
                 </a>
             </div>
-
-            {{-- Link oculto admin --}}
-            <div class="mt-4">
-                <a href="{{ route('login') }}" class="text-xs opacity-20 hover:opacity-60 transition text-muted-foreground">•</a>
-            </div>
         </div>
     </div>
 </footer>

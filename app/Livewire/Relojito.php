@@ -7,6 +7,7 @@ use Livewire\Component;
 class Relojito extends Component
 {
     public $hora;
+
     public $size; // tamaño del reloj
 
     public function mount($size = 24) // tamaño por defecto 24

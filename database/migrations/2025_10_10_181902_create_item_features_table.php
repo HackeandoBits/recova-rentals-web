@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('item_id');
-            $table->unique(['item_id','sort_order']);
+            $table->unique(['item_id', 'sort_order']);
             $table->fullText('text');
         });
     }

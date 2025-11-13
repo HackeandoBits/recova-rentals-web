@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Catalog;
 
-use Livewire\Component;
 use App\Models\Item;
+use Livewire\Component;
 
 class ItemList extends Component
 {

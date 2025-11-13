@@ -13,19 +13,20 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->unique()->word();
+
         return [
-            'name'        => ucfirst($name),
-            'slug'        => Str::slug($name),
+            'name' => ucfirst($name),
+            'slug' => Str::slug($name),
             'description' => $this->faker->sentence(),
-            'parent_id'   => null,
+            'parent_id' => null,
         ];
     }
 
     public function childOf(Category $parent)
     {
-        return $this->state(fn()=>[
+        return $this->state(fn () => [
             'parent_id' => $parent->id,
-            'slug'      => Str::slug($parent->name.' '.$this->faker->unique()->word())
+            'slug' => Str::slug($parent->name.' '.$this->faker->unique()->word()),
         ]);
     }
 }

@@ -1,7 +1,6 @@
 <div class="max-w-5xl mx-auto p-4 space-y-4">
     <div class="flex gap-2">
         <input wire:model.debounce.300ms="q" class="border rounded-xl p-2 w-full" placeholder="Buscar...">
-        <a href="{{ route('bookings.create') }}" class="px-4 py-2 rounded-xl bg-black text-white">Nueva reserva</a>
     </div>
     <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         @foreach ($items as $it)
