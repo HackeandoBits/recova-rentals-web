@@ -49,7 +49,7 @@ class ItemSeeder extends Seeder
                 ['Láser Verde 1W animación', 2,
                     ['Color' => 'Verde', 'Potencia' => '1W', 'Modos' => 'DMX/Auto/Sound'],
                     ['Efectos geométricos', 'Incluye soporte', 'DMX 512'],
-                    'items/lasers.jpg'
+                    'items/laser-show-event.png'
                 ],
             ],
             'laseres-rgb' => [

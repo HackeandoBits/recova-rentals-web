@@ -19,53 +19,63 @@ class ItemList extends Component
                 'id' => 'pantallas-led',
                 'title' => 'Pantallas LED',
                 'description' => 'Sistemas de pantallas LED de alta definición.',
-                'images' => [
+                'images' => [ // Ahora 'images' es un array de 2 slides
                     [
                         'id' => 'led-screens-setup',
                         'title' => 'Pantallas LED Premium en Acción',
-                        'image_url' => asset('storage/img/led-screens-event.png'),
+                        'image_url' => asset('storage/img/led-screens-event.png'), // Tu imagen original
                         'hotspots' => [
-                            // Slug de tu seeder: 'Pantalla LED P2.9 Indoor 3x2m'
                             ['slug' => 'pantalla-led-p29-indoor-3x2m', 'x' => 45, 'y' => 20],
-                            // Slug de tu seeder: 'Moving Head 200W Spot'
                             ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
                         ]
                     ],
+                    [ // 👇 SLIDE 2 (NUEVO)
+                        'id' => 'led-ceiling-setup',
+                        'title' => 'Instalación de Techo LED',
+                        'image_url' => asset('storage/img/led-ceiling-setup.jpg'), // Tu nueva imagen
+                        'hotspots' => [
+                            ['slug' => 'pantalla-led-p39-indoor-4x2m', 'x' => 50, 'y' => 30],
+                            ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
+                        ]
+                    ]
                 ]
             ],
             [
                 'id' => 'iluminacion',
                 'title' => 'Iluminación y Láseres',
                 'description' => 'Sistemas de iluminación profesional y láseres de alta potencia.',
-                'images' => [
+                'images' => [ // Ahora 'images' es un array de 2 slides
                     [
                         'id' => 'laser-show',
                         'title' => 'Show de Láser Profesional',
-                        'image_url' => asset('storage/img/laser-show-event.png'),
+                        'image_url' => asset('storage/img/laser-show-event.png'), // Tu imagen original
                         'hotspots' => [
-                            // Slug de tu seeder: 'Láser RGB 2W profesional'
                             ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
-                            // Slug de tu seeder: 'PAR LED RGB 18x10W'
                             ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
                         ]
                     ],
+                    [ // 👇 SLIDE 2 (NUEVO)
+                        'id' => 'lasers-green',
+                        'title' => 'Láseres Verdes de Concierto',
+                        'image_url' => asset('storage/img/lasers.jpg'), // Tu nueva imagen
+                        'hotspots' => [
+                            ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
+                        ]
+                    ]
                 ]
             ],
             [
                 'id' => 'escenarios',
                 'title' => 'Escenarios y Sonido',
                 'description' => 'Estructuras modulares y sonido de alta calidad.',
-                'images' => [
+                'images' => [ // Este solo tiene 1 slide (no tendrá carrusel)
                     [
                         'id' => 'stage-production',
                         'title' => 'Producción Completa de Escenario',
                         'image_url' => asset('storage/img/stage-production-event.png'),
                         'hotspots' => [
-                            // Slug de tu seeder: 'Estructura 6x4m'
                             ['slug' => 'estructura-6x4m', 'x' => 65, 'y' => 70],
-                            // Slug de tu seeder: 'Parlante Activo 12" 1000W'
                             ['slug' => 'parlante-activo-12-1000w', 'x' => 80, 'y' => 55],
-                            // Slug de tu seeder: 'Subwoofer 18" 1200W'
                             ['slug' => 'subwoofer-18-1200w', 'x' => 20, 'y' => 60],
                         ]
                     ]
