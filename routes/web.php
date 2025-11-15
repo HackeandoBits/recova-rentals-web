@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::view('/', 'pages.home')->name('home');
-Route::get('/products', ItemList::class)->name('catalog');
+Route::view('/products', 'pages.products')->name('catalog');
 Route::view('/gallery', 'pages.gallery')->name('gallery');
 Route::view('/location', 'pages.location')->name('location');
 Route::view('/about', 'pages.about')->name('about');

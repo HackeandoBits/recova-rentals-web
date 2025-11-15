@@ -27,7 +27,7 @@
   <x-header /> {{-- fixed; top = var(--tb-h); height = var(--nav-h) --}}
 
   {{-- 3) Contenido: deja espacio para ambos (banner + nav) --}}
-  <main class="relative z-0 pt-[calc(var(--tb-h)+var(--nav-h))]">
+  <main class="relative pt-[calc(var(--tb-h)+var(--nav-h))]">
     @yield('content')
   </main>
 
