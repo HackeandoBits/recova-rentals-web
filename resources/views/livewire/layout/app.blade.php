@@ -32,6 +32,11 @@
   </main>
 
   <x-footer />
-</body>
 
+  {{-- 👉 Modal global del carrito, vive al final del body --}}
+  @livewire('cart.cart-modal')
+
+  {{-- Scripts de Livewire --}}
+  @livewireScripts
+</body>
 </html>

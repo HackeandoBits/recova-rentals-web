@@ -14,12 +14,6 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ItemSeeder::class,
             ComboSeeder::class,
-            BookingSeeder::class,
-
-            RolesSeeder::class,   // crea roles Spatie
-            UserSeeder::class,    // crea usuarios y asigna roles
-            BlockedSlotSeeder::class,
-            AppointmentSeeder::class,
         ]);
     }
 }
