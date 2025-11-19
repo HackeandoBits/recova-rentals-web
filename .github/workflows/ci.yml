@@ -30,6 +30,11 @@ jobs:
       - name: Copy .env
         run: cp .env.example .env
 
+              - name: Set APP_ENV to testing
+        run: |
+          php -r "file_put_contents('.env', preg_replace('/APP_ENV=.*/', 'APP_ENV=testing', file_get_contents('.env')));"
+
+
       - name: Configure .env for sqlite (CI)
         run: |
           php -r "file_put_contents('.env', preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=sqlite', file_get_contents('.env')));"
