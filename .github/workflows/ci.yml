@@ -106,9 +106,14 @@ jobs:
 
       - name: Prepare release artifact
         run: |
-          tar --exclude='./vendor' \
-              --exclude='./node_modules' \
-              -czf app-release.tar.gz .
+          mkdir -p release
+
+          # Copiamos solo lo necesario para desplegar la app
+          cp -r app bootstrap config database public resources routes vendor artisan release/
+          cp composer.json composer.lock package.json vite.config.* .env.example release/ || true
+
+          # Empaquetamos el contenido de la carpeta release
+          tar -czf app-release.tar.gz -C release .
 
       - name: Upload app artifact
         uses: actions/upload-artifact@v4
