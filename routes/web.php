@@ -1,7 +1,6 @@
 <?php
 
 // Solo importamos lo que realmente usa este proyecto
-use App\Livewire\Catalog\ItemList;
 use Illuminate\Support\Facades\Route;
 
 /*

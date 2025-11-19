@@ -31,7 +31,7 @@ class CartManager extends Component
         $this->loadCart(); // Recarga el estado
     }
 
-     public function openCart(): void
+    public function openCart(): void
     {
         $this->dispatch('open-cart-modal');
     }

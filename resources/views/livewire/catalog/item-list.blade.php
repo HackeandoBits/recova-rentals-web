@@ -251,8 +251,6 @@
                     @endif
                 </div>
                 {{-- 👆 FIN: CONTENEDOR DEL CARRUSEL --}}
-
-                {{-- 👆 FIN: CONTENEDOR DEL CARRUSEL --}}
             </div>
         @endforeach
     </div>

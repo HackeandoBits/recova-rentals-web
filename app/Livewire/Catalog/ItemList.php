@@ -27,7 +27,7 @@ class ItemList extends Component
                         'hotspots' => [
                             ['slug' => 'pantalla-led-p29-indoor-3x2m', 'x' => 45, 'y' => 20],
                             ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
-                        ]
+                        ],
                     ],
                     [ // 👇 SLIDE 2 (NUEVO)
                         'id' => 'led-ceiling-setup',
@@ -36,9 +36,9 @@ class ItemList extends Component
                         'hotspots' => [
                             ['slug' => 'pantalla-led-p39-indoor-4x2m', 'x' => 50, 'y' => 30],
                             ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             [
                 'id' => 'iluminacion',
@@ -52,7 +52,7 @@ class ItemList extends Component
                         'hotspots' => [
                             ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
                             ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
-                        ]
+                        ],
                     ],
                     [ // 👇 SLIDE 2 (NUEVO)
                         'id' => 'lasers-green',
@@ -60,9 +60,9 @@ class ItemList extends Component
                         'image_url' => asset('storage/img/lasers.jpg'), // Tu nueva imagen
                         'hotspots' => [
                             ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             [
                 'id' => 'escenarios',
@@ -77,19 +77,21 @@ class ItemList extends Component
                             ['slug' => 'estructura-6x4m', 'x' => 65, 'y' => 70],
                             ['slug' => 'parlante-activo-12-1000w', 'x' => 80, 'y' => 55],
                             ['slug' => 'subwoofer-18-1200w', 'x' => 20, 'y' => 60],
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
-    
 
     // --- PROPIEDADES PÚBLICAS ---
-    
+
     public array $imageCategories = [];
+
     public ?Item $selectedItem = null;
+
     public bool $showDetailPanel = false;
+
     public bool $showSpecs = false;
 
     public function mount()
@@ -130,7 +132,7 @@ class ItemList extends Component
                     // Buscamos el item que encontramos en la BBDD
                     if ($itemsFromDb->has($hotspot['slug'])) {
                         $item = $itemsFromDb->get($hotspot['slug']);
-                        
+
                         // Agregamos el hotspot solo si el item existe
                         $finalImage['hotspots'][] = [
                             'item_id' => $item->id, // Usamos el ID real de la BBDD
@@ -157,8 +159,8 @@ class ItemList extends Component
         // Cargamos el Item CON sus relaciones
         $this->selectedItem = Item::with('category', 'features', 'specs')
             ->find($itemId);
-            
-        $this->showSpecs = false;    
+
+        $this->showSpecs = false;
         $this->showDetailPanel = true;
     }
 
@@ -183,7 +185,7 @@ class ItemList extends Component
     /**
      * Esta nueva función será llamada por el botón "Ver detalles"
      */
-    public function toggleSpecs() 
+    public function toggleSpecs()
     {
         $this->showSpecs = true;
     }
