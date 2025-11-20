@@ -4,12 +4,24 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class HomePageTest extends TestCase
+class PublicPagesTest extends TestCase
 {
-    public function test_homepage_is_accessible()
+    public function test_public_pages_are_accessible_and_use_correct_views(): void
     {
-        $response = $this->get('/');
+        $pages = [
+            // route name     => view name
+            'home' => 'pages.home',
+            'catalog' => 'pages.products',
+            'gallery' => 'pages.gallery',
+            'location' => 'pages.location',
+            'about' => 'pages.about',
+        ];
 
-        $response->assertStatus(200);
+        foreach ($pages as $routeName => $viewName) {
+            $response = $this->get(route($routeName));
+
+            $response->assertStatus(200);
+            $response->assertViewIs($viewName);
+        }
     }
 }
