@@ -2,14 +2,19 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PublicPagesTest extends TestCase
 {
-    public function test_public_pages_are_accessible_and_use_correct_views(): void
+    use RefreshDatabase;
+
+    /** @test */
+    public function public_pages_are_accessible_and_use_correct_views(): void
     {
+        $this->seed();
+
         $pages = [
-            // route name     => view name
             'home' => 'pages.home',
             'catalog' => 'pages.products',
             'gallery' => 'pages.gallery',
