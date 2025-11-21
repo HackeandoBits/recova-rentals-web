@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Cart;
 
+use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -90,14 +91,19 @@ class CartModal extends Component
         ];
 
         // 2. LLAMAR A LA API DEL ADMIN (¡Este es el próximo paso!)
-        // Http::withToken(env('ADMIN_API_TOKEN'))
-        //    ->post(env('ADMIN_API_URL') . '/api/v1/bookings', $data);
+        $response = Http::withToken(env('ADMIN_API_TOKEN'))
+            ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
 
         // 3. Simulación de éxito por ahora
-        session()->flash('message', '¡Solicitud enviada con éxito!');
-        $this->dispatch('clear-cart');
-        $this->closeModal();
-        $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
+        if ($response->successful()) {
+            session()->flash('message', '¡Solicitud enviada con éxito!');
+            $this->dispatch('clear-cart');
+            $this->closeModal();
+            $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
+        } else {
+            // Manejo básico de error
+            session()->flash('error', 'Hubo un error al enviar la solicitud. Intente nuevamente.');
+        }
     }
 
     public function render()

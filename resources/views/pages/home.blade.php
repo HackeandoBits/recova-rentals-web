@@ -2,7 +2,5 @@
 @extends('livewire.layout.app')
 
 @section('content')
-  
-  @include('sections.hero-section')
-
+    @include('sections.hero-section')
 @endsection
