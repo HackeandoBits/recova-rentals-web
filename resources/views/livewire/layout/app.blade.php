@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,23 +21,24 @@
 
 <body class="font-sans antialiased bg-background text-foreground">
 
-  {{-- 1) TopBanner (bordó) fijo arriba --}}
-  <x-top-banner />  {{-- fixed; height = var(--tb-h) --}}
+    {{-- 1) TopBanner (bordó) fijo arriba --}}
+    <x-top-banner /> {{-- fixed; height = var(--tb-h) --}}
 
-  {{-- 2) Header (negro) fijo debajo del banner --}}
-  <x-header /> {{-- fixed; top = var(--tb-h); height = var(--nav-h) --}}
+    {{-- 2) Header (negro) fijo debajo del banner --}}
+    <x-header /> {{-- fixed; top = var(--tb-h); height = var(--nav-h) --}}
 
-  {{-- 3) Contenido: deja espacio para ambos (banner + nav) --}}
-  <main class="relative pt-[calc(var(--tb-h)+var(--nav-h))]">
-    @yield('content')
-  </main>
+    {{-- 3) Contenido: deja espacio para ambos (banner + nav) --}}
+    <main class="relative pt-[calc(var(--tb-h)+var(--nav-h))]">
+        @yield('content')
+    </main>
 
-  <x-footer />
+    <x-footer />
 
-  {{-- 👉 Modal global del carrito, vive al final del body --}}
-  @livewire('cart.cart-modal')
+    {{-- 👉 Modal global del carrito, vive al final del body --}}
+    @livewire('cart.cart-modal')
 
-  {{-- Scripts de Livewire --}}
-  @livewireScripts
+    {{-- Scripts de Livewire --}}
+    @livewireScripts
 </body>
+
 </html>

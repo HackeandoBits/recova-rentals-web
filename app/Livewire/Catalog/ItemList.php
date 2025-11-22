@@ -14,25 +14,25 @@ class ItemList extends Component
      */
     private function getSceneData(): array
     {
-        return [
+        $baseData = [
             [
                 'id' => 'pantallas-led',
                 'title' => 'Pantallas LED',
                 'description' => 'Sistemas de pantallas LED de alta definición.',
-                'images' => [ // Ahora 'images' es un array de 2 slides
+                'images' => [
                     [
                         'id' => 'led-screens-setup',
                         'title' => 'Pantallas LED Premium en Acción',
-                        'image_url' => asset('storage/img/led-screens-event.png'), // Tu imagen original
+                        'image_url' => asset('storage/img/led-screens-event.png'),
                         'hotspots' => [
                             ['slug' => 'pantalla-led-p29-indoor-3x2m', 'x' => 45, 'y' => 20],
                             ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
                         ],
                     ],
-                    [ // 👇 SLIDE 2 (NUEVO)
+                    [
                         'id' => 'led-ceiling-setup',
                         'title' => 'Instalación de Techo LED',
-                        'image_url' => asset('storage/img/led-ceiling-setup.jpg'), // Tu nueva imagen
+                        'image_url' => asset('storage/img/led-ceiling-setup.jpg'),
                         'hotspots' => [
                             ['slug' => 'pantalla-led-p39-indoor-4x2m', 'x' => 50, 'y' => 30],
                             ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
@@ -44,20 +44,20 @@ class ItemList extends Component
                 'id' => 'iluminacion',
                 'title' => 'Iluminación y Láseres',
                 'description' => 'Sistemas de iluminación profesional y láseres de alta potencia.',
-                'images' => [ // Ahora 'images' es un array de 2 slides
+                'images' => [
                     [
                         'id' => 'laser-show',
                         'title' => 'Show de Láser Profesional',
-                        'image_url' => asset('storage/img/laser-show-event.png'), // Tu imagen original
+                        'image_url' => asset('storage/img/laser-show-event.png'),
                         'hotspots' => [
                             ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
                             ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
                         ],
                     ],
-                    [ // 👇 SLIDE 2 (NUEVO)
-                        'id' => 'lasers-green',
+                    [
+                        'id' => 'laseres-green',
                         'title' => 'Láseres Verdes de Concierto',
-                        'image_url' => asset('storage/img/lasers.jpg'), // Tu nueva imagen
+                        'image_url' => asset('storage/img/lasers.jpg'),
                         'hotspots' => [
                             ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
                         ],
@@ -68,7 +68,7 @@ class ItemList extends Component
                 'id' => 'escenarios',
                 'title' => 'Escenarios y Sonido',
                 'description' => 'Estructuras modulares y sonido de alta calidad.',
-                'images' => [ // Este solo tiene 1 slide (no tendrá carrusel)
+                'images' => [
                     [
                         'id' => 'stage-production',
                         'title' => 'Producción Completa de Escenario',
@@ -82,6 +82,24 @@ class ItemList extends Component
                 ],
             ],
         ];
+
+        // DUPLICACIÓN DE IMÁGENES PARA EL CARRUSEL
+        // Queremos que cada categoría tenga al menos 6 imágenes para que el carrusel de 3 se vea bien y loopee.
+        foreach ($baseData as &$category) {
+            $originalImages = $category['images'];
+            // Repetimos las imágenes hasta tener al menos 6
+            while (count($category['images']) < 6) {
+                foreach ($originalImages as $img) {
+                    // Es importante generar un ID único para el key de React/Alpine si fuera necesario,
+                    // aunque aquí usamos índices mayormente.
+                    $newImg = $img;
+                    $newImg['id'] = $img['id'].'_'.uniqid();
+                    $category['images'][] = $newImg;
+                }
+            }
+        }
+
+        return $baseData;
     }
 
     // --- PROPIEDADES PÚBLICAS ---
