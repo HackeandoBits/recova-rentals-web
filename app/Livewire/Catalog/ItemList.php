@@ -220,19 +220,38 @@ class ItemList extends Component
                 }
             }
         }
-        // Re-hacemos la query de combos para obtener la suma de cantidades
-        $combosWithQuantities = \App\Models\Combo::whereIn('slug', $comboSlugs)->with('items')->get()->keyBy('slug');
+        // Re-hacemos la query de combos para obtener los items con sus datos necesarios
+        $combosWithItems = \App\Models\Combo::whereIn('slug', $comboSlugs)
+            ->with(['items' => function ($query) {
+                $query->with('category')->select('items.id', 'items.name', 'items.category_id', 'items.image_url');
+            }])
+            ->get()
+            ->keyBy('slug');
 
         foreach ($finalCategories as &$category) {
             foreach ($category['images'] as &$image) {
                 $image['combo_count'] = 0; // Default
-                if (isset($image['combo_slug']) && $combosWithQuantities->has($image['combo_slug'])) {
-                    $combo = $combosWithQuantities->get($image['combo_slug']);
+                $image['combo_items'] = []; // Default for client-side cart
+
+                if (isset($image['combo_slug']) && $combosWithItems->has($image['combo_slug'])) {
+                    $combo = $combosWithItems->get($image['combo_slug']);
                     $totalQty = 0;
+                    $comboItemsData = [];
+
                     foreach ($combo->items as $cItem) {
-                        $totalQty += $cItem->pivot->quantity ?? 1;
+                        $qty = $cItem->pivot->quantity ?? 1;
+                        $totalQty += $qty;
+
+                        $comboItemsData[] = [
+                            'id' => $cItem->id,
+                            'name' => $cItem->name,
+                            'category' => $cItem->category->name ?? 'General',
+                            'image_url' => $cItem->image_url ? asset($cItem->image_url) : null, // Ensure asset() helper is used if needed, or just path
+                            'quantity' => $qty,
+                        ];
                     }
                     $image['combo_count'] = $totalQty;
+                    $image['combo_items'] = $comboItemsData;
                 }
             }
         }

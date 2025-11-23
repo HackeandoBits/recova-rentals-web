@@ -1,5 +1,5 @@
 <div class="container mx-auto px-4 pb-16" x-data="{
-    items: @entangle('itemsJson'),
+    items: @js($itemsJson),
     selectedItem: null,
     showModal: false,
     showSpecs: false,
@@ -14,12 +14,6 @@
         this.showModal = false;
         // Delay clearing selectedItem slightly to avoid UI flicker during transition
         setTimeout(() => { this.selectedItem = null; }, 300);
-    },
-    addToCart() {
-        if (this.selectedItem) {
-            $wire.addToCart(this.selectedItem.id);
-            this.closeModal();
-        }
     }
 }" @keydown.escape.window="closeModal()">
     {{-- Intro moderna con menos espaciado --}}
@@ -122,9 +116,9 @@
                         {{-- 2. Track --}}
                         <div class="flex"
                             :style="`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `"
                             @transitionend="handleTransitionEnd()">
                             {{-- 3. Slides reales --}}
                             @foreach ($category['images'] as $image)
@@ -143,8 +137,7 @@
 
                                             {{-- Botón Agregar Combo (Movido dentro de la imagen) --}}
                                             <div class="absolute top-4 right-4 z-20">
-                                                <button
-                                                    @click="Livewire.dispatch('add-combo', { comboSlug: '{{ $image['combo_slug'] }}' })"
+                                                <button @click="$store.cart.addCombo(@js($image['combo_items']))"
                                                     class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2"
                                                     title="Agregar todos los items de este combo">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -206,8 +199,7 @@
 
                                                 {{-- Botón Agregar Combo (Clones) --}}
                                                 <div class="absolute top-4 right-4 z-20">
-                                                    <button
-                                                        @click="Livewire.dispatch('add-combo', { comboSlug: '{{ $cloneImage['combo_slug'] }}' }); $dispatch('add-to-cart-count', { amount: {{ $cloneImage['combo_count'] }} })"
+                                                    <button @click="$store.cart.addCombo(@js($cloneImage['combo_items']))"
                                                         class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2"
                                                         title="Agregar todos los items de este combo">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -364,9 +356,16 @@
                                 </template>
                             </ul>
                         </div>
-
-                        <button type="button" @click="addToCart()"
-                            class="w-full bg-purple-600 hover:bg-purple-700 text-white text-lg py-3 rounded-lg font-semibold transition duration-300">
+                    </div>
+                    <div class="p-6 border-t border-white/10 flex justify-end">
+                        <button type="button"
+                            class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
+                            @click="$store.cart.add({
+                                id: selectedItem.id,
+                                name: selectedItem.name,
+                                image_url: selectedItem.image_url,
+                                category: selectedItem.category_name
+                            }); showModal = false">
                             Agregar a Mi Evento
                         </button>
                     </div>
