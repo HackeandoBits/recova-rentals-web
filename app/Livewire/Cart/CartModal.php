@@ -3,15 +3,10 @@
 namespace App\Livewire\Cart;
 
 use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CartModal extends Component
 {
-    public bool $isOpen = false;
-
-    public array $items = [];
-
     // --- Datos del Formulario ---
     public string $name = '';
 
@@ -25,44 +20,27 @@ class CartModal extends Component
 
     public string $notes = '';
 
-    /**
-     * Listener: Escucha el evento disparado
-     * desde el ícono del carrito (CartManager)
-     */
-    #[On('open-cart-modal')]
-    public function openModal(): void
-    {
-        $this->loadCart();
-        $this->isOpen = true;
-    }
+    // --- Estado del Envío ---
+    public bool $success = false;
+
+    public ?string $errorMessage = null;
 
     /**
-     * Listener: Escucha a CartManager por si
-     * un item se borra MIENTRAS el modal está abierto.
+     * Resetea el estado del formulario (errores, éxito)
+     * Se llama desde el frontend al abrir el modal.
      */
-    #[On('cart-updated')]
-    public function loadCart(): void
+    public function resetState(): void
     {
-        $this->items = session('cart', []);
-    }
-
-    public function closeModal(): void
-    {
-        $this->isOpen = false;
-    }
-
-    // Llama al CartManager para borrar un item
-    public function removeItem($itemId): void
-    {
-        $this->dispatch('remove-from-cart', itemId: $itemId);
-        // El listener 'cart-updated' se encargará de refrescar
+        $this->reset(['success', 'errorMessage', 'name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
     }
 
     /**
      * El paso final: enviar todo a la API del Admin
+     * Acepta los items directamente desde el frontend (Alpine.js)
      */
-    public function handleSubmit(): void
+    public function handleSubmit(array $items): void
     {
+        \Illuminate\Support\Facades\Log::info('CartModal: handleSubmit called', ['items_count' => count($items), 'items' => $items]);
         $this->validate([
             'name' => 'required|string|min:3',
             'email' => 'required|email',
@@ -72,10 +50,13 @@ class CartModal extends Component
             'notes' => 'nullable|string|max:500',
         ]);
 
-        if (count($this->items) === 0) {
-            // Opcional: mostrar error "carrito vacío"
+        if (empty($items)) {
+            $this->errorMessage = 'El carrito está vacío.';
+
             return;
         }
+
+        $this->errorMessage = null;
 
         // 1. Preparar los datos
         $data = [
@@ -84,30 +65,46 @@ class CartModal extends Component
                 'email' => $this->email,
                 'phone' => $this->phone,
             ],
-            'items' => array_values($this->items), // Envía los items del carrito
-            'request_type' => $this->requestType,
+            'items' => $items, // Items recibidos desde el frontend
+            'request_type' => $this->requestType, // Debe ser 'whatsapp' o 'reunion' (no 'meeting')
             'meeting_date' => $this->meetingDate,
             'notes' => $this->notes,
         ];
 
-        // 2. LLAMAR A LA API DEL ADMIN (¡Este es el próximo paso!)
-        $response = Http::withToken(env('ADMIN_API_TOKEN'))
-            ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
+        try {
+            // 2. LLAMAR A LA API DEL ADMIN
+            \Illuminate\Support\Facades\Log::info('CartModal: Sending request to Admin API', ['url' => env('ADMIN_API_URL').'/api/v1/bookings', 'data' => $data]);
+            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+                ->acceptJson() // Forzar respuesta JSON
+                ->timeout(30) // Timeout de 30s (aumentado porque el servidor puede tardar)
+                ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
 
-        // 3. Simulación de éxito por ahora
-        if ($response->successful()) {
-            session()->flash('message', '¡Solicitud enviada con éxito!');
-            $this->dispatch('clear-cart');
-            $this->closeModal();
-            $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
-        } else {
-            // Manejo básico de error
-            session()->flash('error', 'Hubo un error al enviar la solicitud. Intente nuevamente.');
+            \Illuminate\Support\Facades\Log::info('CartModal: API Response', ['status' => $response->status(), 'body' => $response->body()]);
+
+            // 3. Verificar respuesta
+            if ($response->successful()) {
+                $this->success = true;
+                $this->dispatch('budget-sent');
+                $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
+
+                // Opcional: cerrar modal después de unos segundos o dejarlo abierto con el mensaje
+                // $this->closeModal();
+            } else {
+                $this->errorMessage = 'Error del servidor: '.$response->status();
+                \Illuminate\Support\Facades\Log::error('Booking Error', ['response' => $response->body()]);
+            }
+        } catch (\Exception $e) {
+            $this->errorMessage = 'No se pudo conectar con el servidor. Intente más tarde.';
+            \Illuminate\Support\Facades\Log::error('Booking Exception', ['message' => $e->getMessage()]);
         }
     }
 
     public function render()
     {
-        return view('livewire.cart.cart-modal');
+        \Illuminate\Support\Facades\Log::info('CartModal: render called');
+
+        return view('livewire.cart.cart-modal', [
+            'requestType' => $this->requestType,
+        ]);
     }
 }

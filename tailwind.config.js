@@ -20,9 +20,14 @@ export default {
           '50%': { boxShadow: '0 0 25px rgba(230,76,204,0.7)' },
           '100%': { boxShadow: '0 0 5px rgba(230,76,204,0.2)' },
         },
+        'shimmer': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'shimmer': 'shimmer 5s linear infinite alternate',
       },
     },
   },
