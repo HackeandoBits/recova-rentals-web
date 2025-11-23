@@ -25,6 +25,16 @@ class CartModal extends Component
 
     public string $notes = '';
 
+    // --- Estado del Envío ---
+    public bool $success = false;
+
+    public ?string $errorMessage = null;
+
+    public function mount()
+    {
+        $this->items = session('cart') ?? [];
+    }
+
     /**
      * Listener: Escucha el evento disparado
      * desde el ícono del carrito (CartManager)
@@ -34,6 +44,7 @@ class CartModal extends Component
     {
         $this->loadCart();
         $this->isOpen = true;
+        $this->reset(['success', 'errorMessage']); // Resetear estado al abrir
     }
 
     /**
@@ -43,7 +54,8 @@ class CartModal extends Component
     #[On('cart-updated')]
     public function loadCart(): void
     {
-        $this->items = session('cart', []);
+        \Illuminate\Support\Facades\Log::info('CartModal: loadCart triggered');
+        $this->items = session('cart') ?? [];
     }
 
     public function closeModal(): void
@@ -54,8 +66,48 @@ class CartModal extends Component
     // Llama al CartManager para borrar un item
     public function removeItem($itemId): void
     {
-        $this->dispatch('remove-from-cart', itemId: $itemId);
-        // El listener 'cart-updated' se encargará de refrescar
+        // 1. Eliminar localmente
+        if (isset($this->items[$itemId])) {
+            unset($this->items[$itemId]);
+        }
+
+        // 2. Actualizar la sesión DIRECTAMENTE (Evita race conditions y roundtrips)
+        session(['cart' => $this->items]);
+
+        // 3. Avisar al resto de la app (ej: ícono del carrito) que se actualizó
+        $this->dispatch('cart-updated');
+    }
+
+    // Hook de Livewire: Se ejecuta cuando cualquier propiedad 'items' cambia
+    public function updatedItems(): void
+    {
+        // 1. Actualizar la sesión
+        session(['cart' => $this->items]);
+
+        // 2. Avisar al resto de la app (ej: ícono del carrito)
+        $this->dispatch('cart-updated');
+    }
+
+    // Mantenemos increment/decrement por si se llaman desde otro lado,
+    // pero la UI principal usará binding directo.
+    public function increment($itemId): void
+    {
+        if (isset($this->items[$itemId])) {
+            $this->items[$itemId]['quantity']++;
+            $this->updatedItems();
+        }
+    }
+
+    public function decrement($itemId): void
+    {
+        if (isset($this->items[$itemId])) {
+            if ($this->items[$itemId]['quantity'] > 1) {
+                $this->items[$itemId]['quantity']--;
+                $this->updatedItems();
+            } else {
+                $this->removeItem($itemId);
+            }
+        }
     }
 
     /**
@@ -73,9 +125,12 @@ class CartModal extends Component
         ]);
 
         if (count($this->items) === 0) {
-            // Opcional: mostrar error "carrito vacío"
+            $this->errorMessage = 'El carrito está vacío.';
+
             return;
         }
+
+        $this->errorMessage = null;
 
         // 1. Preparar los datos
         $data = [
@@ -90,19 +145,27 @@ class CartModal extends Component
             'notes' => $this->notes,
         ];
 
-        // 2. LLAMAR A LA API DEL ADMIN (¡Este es el próximo paso!)
-        $response = Http::withToken(env('ADMIN_API_TOKEN'))
-            ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
+        try {
+            // 2. LLAMAR A LA API DEL ADMIN
+            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+                ->timeout(10) // Timeout de 10s
+                ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
 
-        // 3. Simulación de éxito por ahora
-        if ($response->successful()) {
-            session()->flash('message', '¡Solicitud enviada con éxito!');
-            $this->dispatch('clear-cart');
-            $this->closeModal();
-            $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
-        } else {
-            // Manejo básico de error
-            session()->flash('error', 'Hubo un error al enviar la solicitud. Intente nuevamente.');
+            // 3. Verificar respuesta
+            if ($response->successful()) {
+                $this->success = true;
+                $this->dispatch('clear-cart');
+                $this->reset(['name', 'email', 'phone', 'requestType', 'meetingDate', 'notes']);
+
+                // Opcional: cerrar modal después de unos segundos o dejarlo abierto con el mensaje
+                // $this->closeModal();
+            } else {
+                $this->errorMessage = 'Error del servidor: '.$response->status();
+                \Illuminate\Support\Facades\Log::error('Booking Error', ['response' => $response->body()]);
+            }
+        } catch (\Exception $e) {
+            $this->errorMessage = 'No se pudo conectar con el servidor. Intente más tarde.';
+            \Illuminate\Support\Facades\Log::error('Booking Exception', ['message' => $e->getMessage()]);
         }
     }
 

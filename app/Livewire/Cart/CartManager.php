@@ -18,10 +18,11 @@ class CartManager extends Component
     }
 
     // Carga el carrito desde la sesión
+    #[On('cart-updated')]
     public function loadCart(): void
     {
         $this->cartItems = session('cart', []);
-        $this->cartCount = count($this->cartItems);
+        $this->cartCount = array_sum(array_column($this->cartItems, 'quantity'));
     }
 
     // Guarda el carrito en la sesión
@@ -31,10 +32,10 @@ class CartManager extends Component
         $this->loadCart(); // Recarga el estado
     }
 
-    public function openCart(): void
-    {
-        $this->dispatch('open-cart-modal');
-    }
+    // public function openCart(): void
+    // {
+    //     $this->dispatch('open-cart-modal');
+    // }
 
     /**
      * Listener: Escucha el evento 'add-to-cart'
@@ -48,8 +49,10 @@ class CartManager extends Component
             return;
         }
 
-        // Si el item no está en el carrito, lo agregamos (sin precio)
-        if (! isset($this->cartItems[$itemId])) {
+        // Si el item ya está, sumamos 1. Si no, lo creamos con cantidad 1.
+        if (isset($this->cartItems[$itemId])) {
+            $this->cartItems[$itemId]['quantity']++;
+        } else {
             $this->cartItems[$itemId] = [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -57,7 +60,6 @@ class CartManager extends Component
                 // 'image' => $item->image_url, // (Opcional, si tenés una)
             ];
         }
-        // (No necesitamos 'else' porque no sumamos cantidad, solo es para seleccionar)
 
         $this->saveCart();
 
@@ -66,6 +68,44 @@ class CartManager extends Component
 
         // Opcional: Mostrar una notificación "¡Agregado!"
         // $this->dispatch('show-toast', 'Producto agregado');
+        // $this->dispatch('show-toast', 'Producto agregado');
+    }
+
+    /**
+     * Listener: Escucha el evento 'add-combo'
+     * disparado desde el ItemList.
+     */
+    #[On('add-combo')]
+    public function addCombo($comboSlug): void
+    {
+        \Illuminate\Support\Facades\Log::info('addCombo called', ['slug' => $comboSlug]);
+        // Buscar el combo por slug
+        $combo = \App\Models\Combo::with('items')->where('slug', $comboSlug)->first();
+
+        if (! $combo) {
+            \Illuminate\Support\Facades\Log::warning('Combo not found', ['slug' => $comboSlug]);
+
+            return;
+        }
+
+        // Iterar sobre los items del combo y agregarlos
+        foreach ($combo->items as $item) {
+            $qtyToAdd = $item->pivot->quantity ?? 1; // Cantidad definida en el combo
+
+            if (isset($this->cartItems[$item->id])) {
+                $this->cartItems[$item->id]['quantity'] += $qtyToAdd;
+            } else {
+                $this->cartItems[$item->id] = [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                    'quantity' => $qtyToAdd,
+                ];
+            }
+        }
+
+        $this->saveCart();
+        $this->dispatch('cart-updated');
+        // $this->dispatch('open-cart-modal'); // YA NO ABRIMOS EL MODAL AUTOMÁTICAMENTE
     }
 
     /**
@@ -75,10 +115,15 @@ class CartManager extends Component
     #[On('remove-from-cart')]
     public function removeFromCart($itemId): void
     {
+        $itemId = (int) $itemId; // Forzar casting a entero
+        \Illuminate\Support\Facades\Log::info('removeFromCart called', ['itemId' => $itemId, 'cart_keys' => array_keys($this->cartItems)]);
+
         if (isset($this->cartItems[$itemId])) {
             unset($this->cartItems[$itemId]);
             $this->saveCart();
             $this->dispatch('cart-updated'); // Avisa al modal que refresque
+        } else {
+            \Illuminate\Support\Facades\Log::warning('Item to remove not found in cart', ['itemId' => $itemId]);
         }
     }
 

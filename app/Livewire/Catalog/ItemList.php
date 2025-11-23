@@ -22,20 +22,24 @@ class ItemList extends Component
                 'images' => [
                     [
                         'id' => 'led-screens-setup',
+                        'combo_slug' => 'combo-pantallas-premium', // Nuevo slug
                         'title' => 'Pantallas LED Premium en Acción',
                         'image_url' => asset('storage/img/led-screens-event.png'),
                         'hotspots' => [
-                            ['slug' => 'pantalla-led-p29-indoor-3x2m', 'x' => 45, 'y' => 20],
+                            ['slug' => 'pantalla-led-p2-9-indoor-3x2m', 'x' => 45, 'y' => 20],
                             ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
+                            ['slug' => 'consola-16ch-con-fx', 'x' => 20, 'y' => 80], // Nuevo
                         ],
                     ],
                     [
                         'id' => 'led-ceiling-setup',
+                        'combo_slug' => 'combo-techo-led', // Nuevo slug
                         'title' => 'Instalación de Techo LED',
                         'image_url' => asset('storage/img/led-ceiling-setup.jpg'),
                         'hotspots' => [
-                            ['slug' => 'pantalla-led-p39-indoor-4x2m', 'x' => 50, 'y' => 30],
+                            ['slug' => 'pantalla-led-p3-9-indoor-4x2m', 'x' => 50, 'y' => 30],
                             ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
+                            ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 20], // Nuevo
                         ],
                     ],
                 ],
@@ -47,19 +51,24 @@ class ItemList extends Component
                 'images' => [
                     [
                         'id' => 'laser-show',
+                        'combo_slug' => 'combo-laser-show', // Nuevo slug
                         'title' => 'Show de Láser Profesional',
                         'image_url' => asset('storage/img/laser-show-event.png'),
                         'hotspots' => [
                             ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
                             ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
+                            ['slug' => 'consola-16ch-con-fx', 'x' => 80, 'y' => 80], // Nuevo
                         ],
                     ],
                     [
                         'id' => 'laseres-green',
+                        'combo_slug' => 'combo-laseres-verdes', // Nuevo slug
                         'title' => 'Láseres Verdes de Concierto',
                         'image_url' => asset('storage/img/lasers.jpg'),
                         'hotspots' => [
                             ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
+                            ['slug' => 'parlante-activo-12-1000w', 'x' => 20, 'y' => 60], // Nuevo
+                            ['slug' => 'microfono-inalambrico-uhf', 'x' => 80, 'y' => 70], // Nuevo
                         ],
                     ],
                 ],
@@ -71,6 +80,7 @@ class ItemList extends Component
                 'images' => [
                     [
                         'id' => 'stage-production',
+                        'combo_slug' => 'combo-escenario-completo', // Nuevo slug
                         'title' => 'Producción Completa de Escenario',
                         'image_url' => asset('storage/img/stage-production-event.png'),
                         'hotspots' => [
@@ -106,11 +116,8 @@ class ItemList extends Component
 
     public array $imageCategories = [];
 
-    public ?Item $selectedItem = null;
-
-    public bool $showDetailPanel = false;
-
-    public bool $showSpecs = false;
+    // Datos pre-cargados para el modal en el cliente (AlpineJS)
+    public array $itemsJson = [];
 
     public function mount()
     {
@@ -128,15 +135,17 @@ class ItemList extends Component
         }
 
         // 3. Busca en la BBDD todos los items de una sola vez
-        //    y los mapea por su slug para fácil acceso.
-        $itemsFromDb = Item::whereIn('slug', $allSlugs)
+        //    Cargamos relaciones necesarias para el modal
+        $itemsFromDb = Item::with(['category', 'features', 'specs'])
+            ->whereIn('slug', $allSlugs)
             ->where('active', true)
             ->get()
             ->keyBy('slug');
 
-        // 4. Construye el array final, reemplazando 'slug' con el 'item_id' real.
-        //    Si un item no se encuentra en la BBDD, el hotspot no se mostrará.
+        // 4. Construye el array final y el JSON para el cliente
         $finalCategories = [];
+        $itemsForClient = [];
+
         foreach ($sceneData as $category) {
             $finalCategory = $category;
             $finalCategory['images'] = [];
@@ -146,66 +155,103 @@ class ItemList extends Component
                 $finalImage['hotspots'] = [];
 
                 foreach ($image['hotspots'] as $hotspot) {
-                    // ¡AQUÍ ESTÁ LA MAGIA!
-                    // Buscamos el item que encontramos en la BBDD
                     if ($itemsFromDb->has($hotspot['slug'])) {
                         $item = $itemsFromDb->get($hotspot['slug']);
 
-                        // Agregamos el hotspot solo si el item existe
+                        // Agregamos el hotspot
                         $finalImage['hotspots'][] = [
-                            'item_id' => $item->id, // Usamos el ID real de la BBDD
-                            'name' => $item->name,    // Pasamos el nombre para el 'tooltip'
+                            'item_id' => $item->id,
+                            'name' => $item->name,
                             'x' => $hotspot['x'],
                             'y' => $hotspot['y'],
                         ];
+
+                        // Preparamos los datos para el modal (si no están ya)
+                        if (! isset($itemsForClient[$item->id])) {
+                            $itemsForClient[$item->id] = [
+                                'id' => $item->id,
+                                'name' => $item->name,
+                                'description' => $item->description,
+                                'image_url' => \Illuminate\Support\Str::startsWith($item->image_url, ['http', 'https'])
+                                    ? $item->image_url
+                                    : asset($item->image_url),
+                                'category_name' => $item->category->name ?? 'Producto',
+                                'features' => $item->features->sortBy('sort_order')->values()->toArray(),
+                                'specs' => $item->specs->sortBy('sort_order')->values()->toArray(),
+                            ];
+                        }
                     }
-                    // Si no existe, simplemente no se agrega al array y no se muestra.
                 }
                 $finalCategory['images'][] = $finalImage;
             }
             $finalCategories[] = $finalCategory;
         }
 
-        $this->imageCategories = $finalCategories;
-    }
-
-    /**
-     * Esta función se llama cuando hacés clic en un hotspot
-     */
-    public function selectItem($itemId)
-    {
-        // Cargamos el Item CON sus relaciones
-        $this->selectedItem = Item::with('category', 'features', 'specs')
-            ->find($itemId);
-
-        $this->showSpecs = false;
-        $this->showDetailPanel = true;
-    }
-
-    public function closePanel()
-    {
-        $this->showDetailPanel = false;
-        $this->selectedItem = null;
-        $this->showSpecs = false;
-    }
-
-    /**
-     * Despacha el evento al CartManager (que ya está escuchando)
-     */
-    public function addToCartAndClose()
-    {
-        if ($this->selectedItem) {
-            $this->dispatch('add-to-cart', itemId: $this->selectedItem->id);
-            $this->closePanel();
+        // 5. Obtener los conteos de items por combo para la actualización optimista
+        $comboSlugs = [];
+        foreach ($sceneData as $category) {
+            foreach ($category['images'] as $image) {
+                if (isset($image['combo_slug'])) {
+                    $comboSlugs[] = $image['combo_slug'];
+                }
+            }
         }
+
+        $combos = \App\Models\Combo::whereIn('slug', $comboSlugs)->withCount('items')->get()->keyBy('slug');
+
+        foreach ($finalCategories as &$category) {
+            foreach ($category['images'] as &$image) {
+                if (isset($image['combo_slug']) && $combos->has($image['combo_slug'])) {
+                    // Sumamos la cantidad total de items (considerando la cantidad pivot si fuera necesario,
+                    // pero withCount('items') da el número de filas. Si la cantidad importa, deberíamos sumar 'quantity'.
+                    // Por simplicidad y rendimiento, asumimos 1 item = 1 cantidad o usamos una query más compleja si es crítico.
+                    // Para ser más precisos, cargamos los items y sumamos quantities.
+                    $combo = $combos->get($image['combo_slug']);
+                    // Si necesitamos la suma de cantidades (pivot), withCount no basta.
+                    // Pero para el contador de "ítems únicos" o "bultos", withCount sirve.
+                    // Si el carrito suma cantidades totales, necesitamos eso.
+                    // Vamos a asumir que el contador del carrito muestra la suma de cantidades.
+                    // Haremos una carga ligera para esto o lo dejamos en withCount si es suficiente.
+                    // Revisando CartManager, usa array_sum(column(quantity)).
+                    // Entonces necesitamos la suma de cantidades.
+
+                    // Ajuste: Cargar combos con items para sumar cantidades correctamente.
+                    // Esto se hace mejor fuera del loop.
+                }
+            }
+        }
+        // Re-hacemos la query de combos para obtener la suma de cantidades
+        $combosWithQuantities = \App\Models\Combo::whereIn('slug', $comboSlugs)->with('items')->get()->keyBy('slug');
+
+        foreach ($finalCategories as &$category) {
+            foreach ($category['images'] as &$image) {
+                $image['combo_count'] = 0; // Default
+                if (isset($image['combo_slug']) && $combosWithQuantities->has($image['combo_slug'])) {
+                    $combo = $combosWithQuantities->get($image['combo_slug']);
+                    $totalQty = 0;
+                    foreach ($combo->items as $cItem) {
+                        $totalQty += $cItem->pivot->quantity ?? 1;
+                    }
+                    $image['combo_count'] = $totalQty;
+                }
+            }
+        }
+
+        $this->imageCategories = $finalCategories;
+        $this->itemsJson = $itemsForClient;
     }
 
     /**
-     * Esta nueva función será llamada por el botón "Ver detalles"
+     * Método llamado desde el cliente para agregar al carrito
      */
-    public function toggleSpecs()
+    public function addToCart($itemId)
     {
-        $this->showSpecs = true;
+        $this->dispatch('add-to-cart', itemId: $itemId);
+    }
+
+    public function addCombo($comboSlug)
+    {
+        $this->dispatch('add-combo', comboSlug: $comboSlug);
     }
 
     public function render()
