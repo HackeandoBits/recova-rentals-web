@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug', 160)->unique();
             $table->text('description')->nullable();
+            $table->string('image_url')->nullable();
             $table->unsignedInteger('stock')->nullable();
             $table->boolean('active')->default(true);
             $table->softDeletes();

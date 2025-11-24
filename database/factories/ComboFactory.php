@@ -13,9 +13,10 @@ class ComboFactory extends Factory
     public function definition(): array
     {
         $name = 'Kit '.$this->faker->unique()->words(2, true);
+
         return [
-            'name'   => ucfirst($name),
-            'slug'   => Str::slug($name),
+            'name' => ucfirst($name),
+            'slug' => Str::slug($name),
             'active' => true,
         ];
     }

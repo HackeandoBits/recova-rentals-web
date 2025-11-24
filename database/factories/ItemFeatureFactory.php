@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\ItemFeature;
 use App\Models\Item;
+use App\Models\ItemFeature;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ItemFeatureFactory extends Factory
@@ -15,12 +15,13 @@ class ItemFeatureFactory extends Factory
         static $order = 10;
         $text = $this->faker->randomElement([
             'Incluye soporte', 'Control remoto', 'Instalación profesional',
-            'Soporte técnico 24/7', 'IP65', 'Bluetooth opcional'
+            'Soporte técnico 24/7', 'IP65', 'Bluetooth opcional',
         ]);
         $order += 10;
+
         return [
-            'item_id'    => Item::factory(),
-            'text'       => $text,
+            'item_id' => Item::factory(),
+            'text' => $text,
             'sort_order' => $order,
         ];
     }

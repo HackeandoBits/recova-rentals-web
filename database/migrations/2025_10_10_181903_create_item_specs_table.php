@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -20,9 +21,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('item_id');
-            $table->unique(['item_id','spec_key']);
-            $table->index(['spec_key','spec_value']);
-            $table->fullText('spec_value');
+            $table->unique(['item_id', 'spec_key']);
+            $table->index(['spec_key', 'spec_value']);
+            if (DB::getDriverName() === 'mysql') {
+                $table->fullText('spec_value');
+            }
         });
     }
 
