@@ -21,7 +21,9 @@
                 items: [], // Inicializamos vacío, luego el plugin persist lo llenará
 
                 add(item) {
-                    const existing = this.items.find(i => i.id === item.id);
+                    if (!Array.isArray(this.items)) this.items = [];
+                    // Use loose equality (==) to handle string/int ID mismatches
+                    const existing = this.items.find(i => i.id == item.id);
                     if (existing) {
                         existing.quantity++;
                     } else {
@@ -33,8 +35,9 @@
                 },
 
                 addCombo(itemsArray) {
+                    if (!Array.isArray(this.items)) this.items = [];
                     itemsArray.forEach(newItem => {
-                        const existing = this.items.find(i => i.id === newItem.id);
+                        const existing = this.items.find(i => i.id == newItem.id);
                         if (existing) {
                             existing.quantity += (newItem.quantity || 1);
                         } else {
@@ -47,11 +50,13 @@
                 },
 
                 remove(id) {
-                    this.items = this.items.filter(i => i.id !== id);
+                    if (!Array.isArray(this.items)) this.items = [];
+                    this.items = this.items.filter(i => i.id != id);
                 },
 
                 updateQuantity(id, quantity) {
-                    const item = this.items.find(i => i.id === id);
+                    if (!Array.isArray(this.items)) this.items = [];
+                    const item = this.items.find(i => i.id == id);
                     if (item) {
                         if (quantity <= 0) {
                             this.remove(id);
@@ -66,6 +71,8 @@
                 },
 
                 get count() {
+                    // Safety check: ensure items is an array
+                    if (!Array.isArray(this.items)) return 0;
                     return this.items.reduce((acc, item) => acc + item.quantity, 0);
                 }
             });
