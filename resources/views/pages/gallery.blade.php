@@ -1,7 +1,7 @@
 @extends('livewire.layout.app')
 
 @section('content')
-    <main style="padding-top: 65px">
+    <main style="padding-top: 20px">
         <div class="container mx-auto px-4 mb-8 text-center animate-fade-in-down">
             <h1
                 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
