@@ -10,7 +10,7 @@
             .catch(error => console.error('Livewire error:', error));
     }
 }" @open-cart-modal.window="open = true; $wire.resetState()"
-    @budget-sent.window="setTimeout(() => open = false, 3000)" x-init="$watch('open', value => console.log('Cart Modal Open State:', value))" x-cloak>
+    @budget-sent.window="setTimeout(() => open = false, 6000)" x-init="$watch('open', value => console.log('Cart Modal Open State:', value))" x-cloak>
     <div x-show="open" x-transition.opacity
         class="fixed inset-0 z-50 flex items-center justify-center bg-[hsl(298,42%,15%)/0.85] backdrop-blur-md"
         @keydown.escape.window="open = false" @click.self="open = false">
@@ -67,7 +67,7 @@
 
                 <div class="grid gap-8 md:grid-cols-2">
                     <!-- COLUMNA IZQUIERDA: ITEMS -->
-                    <div class="space-y-4">
+                    <div class="space-y-4" wire:ignore>
                         <div class="flex items-center justify-between">
                             <h3 class="text-base font-semibold text-white">Equipos seleccionados</h3>
                             <button type="button" @click="$store.cart.clear()" x-show="$store.cart.items.length > 0"
@@ -82,7 +82,8 @@
                             </button>
                         </div>
                         <div class="space-y-3 max-h-96 overflow-y-auto pr-1">
-                            <template x-for="item in $store.cart.items" :key="item.id">
+                            <template x-for="(item, index) in $store.cart.items"
+                                :key="item.id ? item.id : 'item-' + index">
                                 <div
                                     class="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5">
                                     <div class="flex-1">
