@@ -134,7 +134,7 @@ class ItemSeeder extends Seeder
                         'category_id' => $category->id,
                         'name' => $name,
                         'description' => $name.' — equipo en excelente estado para eventos.',
-                        'image_url' => asset('storage/'.$imageUrl),
+                        'image_url' => 'storage/'.$imageUrl,
                         'stock' => $stock,
                         'active' => true,
                     ]
