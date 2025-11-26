@@ -1,51 +1,72 @@
 import './bootstrap';
 import persist from '@alpinejs/persist';
 
-// Solo registramos el plugin y conectamos la persistencia
 document.addEventListener('alpine:init', () => {
-    // Check if the plugin is already registered to avoid "Cannot redefine property" error
+    // Register the persist plugin
     if (!Alpine.$persist) {
         Alpine.plugin(persist);
     }
 
-    // Pre-check localStorage to ensure valid data format
-    try {
-        const stored = localStorage.getItem('budget_cart');
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            if (!Array.isArray(parsed)) {
-                console.warn('Resetting invalid cart storage');
-                localStorage.removeItem('budget_cart');
+    // Define the cart store with persistence and methods
+    Alpine.store('cart', {
+        items: Alpine.$persist([]).as('recova_cart_v3'),
+
+        add(item) {
+            if (!Array.isArray(this.items)) this.items = [];
+            // Use loose equality (==) to handle string/int ID mismatches
+            const existing = this.items.find(i => i.id == item.id);
+            if (existing) {
+                existing.quantity++;
             } else {
-                // Filter out invalid items and deduplicate
-                const uniqueItems = [];
-                const seenIds = new Set();
+                this.items.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+        },
 
-                for (const item of parsed) {
-                    // Ensure item is an object and has a valid ID
-                    if (item && typeof item === 'object' && item.hasOwnProperty('id') && item.id != null) {
-                        if (!seenIds.has(item.id)) {
-                            seenIds.add(item.id);
-                            uniqueItems.push(item);
-                        }
-                    }
+        addCombo(itemsArray) {
+            if (!Array.isArray(this.items)) this.items = [];
+            itemsArray.forEach(newItem => {
+                const existing = this.items.find(i => i.id == newItem.id);
+                if (existing) {
+                    existing.quantity += (newItem.quantity || 1);
+                } else {
+                    this.items.push({
+                        ...newItem,
+                        quantity: (newItem.quantity || 1)
+                    });
                 }
+            });
+        },
 
-                // If we filtered anything out, update storage
-                if (uniqueItems.length !== parsed.length) {
-                    console.warn('Cleaned up invalid/duplicate items from cart');
-                    localStorage.setItem('budget_cart', JSON.stringify(uniqueItems));
+        remove(id) {
+            if (!Array.isArray(this.items)) this.items = [];
+            this.items = this.items.filter(i => i.id != id);
+        },
+
+        updateQuantity(id, quantity) {
+            if (!Array.isArray(this.items)) this.items = [];
+            const item = this.items.find(i => i.id == id);
+            if (item) {
+                if (quantity <= 0) {
+                    this.remove(id);
+                } else {
+                    item.quantity = quantity;
                 }
             }
-        }
-    } catch (e) {
-        console.warn('Error parsing cart storage, resetting');
-        localStorage.removeItem('budget_cart');
-    }
+        },
 
-    // Conectamos el array 'items' del store que creamos en el HTML con LocalStorage
-    // Esto sobreescribe la propiedad 'items' vacía con la versión persistente
-    Alpine.store('cart').items = Alpine.$persist([]).as('budget_cart');
+        clear() {
+            this.items = [];
+        },
+
+        get count() {
+            // Safety check: ensure items is an array
+            if (!Array.isArray(this.items)) return 0;
+            return this.items.reduce((acc, item) => acc + item.quantity, 0);
+        }
+    });
 });
 
 // Listener global
