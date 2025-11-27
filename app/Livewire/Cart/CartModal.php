@@ -3,15 +3,18 @@
 namespace App\Livewire\Cart;
 
 use Illuminate\Support\Facades\Http;
-use Livewire\Component;
 use Illuminate\Support\Facades\Log;
+use Livewire\Component;
 
 class CartModal extends Component
 {
     // Propiedades públicas
     public array $blockedSlots = [];
+
     public array $fullyBlockedDates = []; // Fechas totalmente bloqueadas (Y-m-d)
+
     public bool $loadingSlots = false;
+
     // --- Datos del Formulario ---
     public string $name = '';
 
@@ -22,6 +25,7 @@ class CartModal extends Component
     public string $requestType = ''; // 'whatsapp' o 'reunion'
 
     public ?string $meetingDateOnly = null;  // Solo la fecha (YYYY-MM-DD)
+
     public ?string $meetingTime = null;      // Solo la hora (HH:MM)
 
     public string $notes = '';
@@ -31,7 +35,7 @@ class CartModal extends Component
 
     public ?string $errorMessage = null;
 
-    //--Formatea los horarios de reunión que ve el usuario
+    // --Formatea los horarios de reunión que ve el usuario
 
     public function getAvailableTimeSlots(): array
     {
@@ -51,6 +55,7 @@ class CartModal extends Component
             ],
         ];
     }
+
     /**
      * Consulta fechas totalmente bloqueadas
      */
@@ -60,7 +65,7 @@ class CartModal extends Component
             $response = Http::withToken(env('ADMIN_API_TOKEN'))
                 ->acceptJson()
                 ->timeout(5)
-                ->get(env('ADMIN_API_URL') . '/api/v1/bookings/blocked-dates');
+                ->get(env('ADMIN_API_URL').'/api/v1/bookings/blocked-dates');
 
             if ($response->successful()) {
                 $this->fullyBlockedDates = $response->json('blocked_dates', []);
@@ -76,22 +81,23 @@ class CartModal extends Component
     public function fetchBlockedSlotsForDate(?string $date = null): void
     {
         Log::info('🔍 fetchBlockedSlotsForDate llamado', ['date' => $date]);
-        if (!$date) {
+        if (! $date) {
             $this->blockedSlots = [];
+
             return;
         }
         $this->loadingSlots = true;
-        
+
         try {
             $response = Http::withToken(env('ADMIN_API_TOKEN'))
                 ->acceptJson()
                 ->timeout(10)
-                ->get(env('ADMIN_API_URL') . '/api/v1/bookings/occupied-time-slots', [
+                ->get(env('ADMIN_API_URL').'/api/v1/bookings/occupied-time-slots', [
                     'date' => $date,
                 ]);
             if ($response->successful()) {
                 $this->blockedSlots = $response->json('blocked_slots', []);
-                Log::info('✅ Slots bloqueados recibidos', ['blocked_slots' => $this->blockedSlots]); 
+                Log::info('✅ Slots bloqueados recibidos', ['blocked_slots' => $this->blockedSlots]);
             } else {
                 $this->blockedSlots = [];
             }
@@ -102,6 +108,7 @@ class CartModal extends Component
             $this->loadingSlots = false;
         }
     }
+
     /**
      * Obtiene horarios disponibles filtrando los bloqueados
      */
@@ -111,7 +118,7 @@ class CartModal extends Component
     public function getAvailableTimeSlotsForDate(): array
     {
         $allSlots = $this->getAvailableTimeSlots();
-        
+
         // Si no hay bloqueos, devolvemos estructura compatible
         if (empty($this->blockedSlots)) {
             $formatted = [];
@@ -120,6 +127,7 @@ class CartModal extends Component
                     $formatted[$group][] = ['time' => $time, 'blocked' => false];
                 }
             }
+
             return $formatted;
         }
 
@@ -131,8 +139,10 @@ class CartModal extends Component
                 $formatted[$group][] = ['time' => $time, 'blocked' => $isBlocked];
             }
         }
+
         return $formatted;
     }
+
     /**
      * Se ejecuta automáticamente cuando cambia la fecha
      */
@@ -140,7 +150,7 @@ class CartModal extends Component
     {
         Log::info('📅 updatedMeetingDateOnly ejecutado', ['value' => $value]);
         $this->meetingTime = null; // Resetear hora
-        
+
         if ($value) {
             $this->fetchBlockedSlotsForDate($value);
         } else {
@@ -152,21 +162,40 @@ class CartModal extends Component
      * Resetea el estado del formulario (errores, éxito)
      * Se llama desde el frontend al abrir el modal.
      */
+    /**
+     * Resetea el estado del formulario (errores, éxito)
+     * Se llama desde el frontend al abrir el modal.
+     */
     public function resetState(): void
     {
         $this->reset([
-        'success', 
-        'errorMessage', 
-        'name', 
-        'email', 
-        'phone', 
-        'requestType', 
-        'meetingDateOnly', 
-        'meetingTime',     
-        'notes'
-    ]);
+            'success',
+            'errorMessage',
+            'name',
+            'email',
+            'phone',
+            'requestType',
+            'meetingDateOnly',
+            'meetingTime',
+            'notes',
+        ]);
         // Cargar fechas bloqueadas al abrir
         $this->fetchBlockedDates();
+    }
+
+    /**
+     * Prepara el modal al abrirse sin borrar los datos del formulario.
+     * Solo resetea mensajes de éxito/error y actualiza fechas bloqueadas.
+     */
+    public function prepareForOpen(): void
+    {
+        $this->reset(['success', 'errorMessage']);
+        $this->fetchBlockedDates();
+
+        // Si ya había una fecha seleccionada, refrescar los slots por si cambiaron
+        if ($this->meetingDateOnly) {
+            $this->fetchBlockedSlotsForDate($this->meetingDateOnly);
+        }
     }
 
     /**
@@ -197,7 +226,7 @@ class CartModal extends Component
         // 1. Preparar los datos
         $meetingDateTime = null;
         if ($this->meetingDateOnly && $this->meetingTime) {
-            $meetingDateTime = $this->meetingDateOnly . 'T' . $this->meetingTime;
+            $meetingDateTime = $this->meetingDateOnly.'T'.$this->meetingTime;
         }
         $data = [
             'customer' => [

@@ -9,8 +9,8 @@
             .then(() => console.log('Livewire request sent'))
             .catch(error => console.error('Livewire error:', error));
     }
-}" @open-cart-modal.window="open = true; $wire.resetState()"
-    @budget-sent.window="setTimeout(() => open = false, 6000)" x-init="$watch('open', value => console.log('Cart Modal Open State:', value))" x-cloak>
+}" @open-cart-modal.window="open = true; $wire.prepareForOpen()"
+    @budget-sent.window="requestType = ''; setTimeout(() => open = false, 6000)" x-init="$watch('open', value => console.log('Cart Modal Open State:', value))" x-cloak>
     <div x-show="open" x-transition.opacity
         class="fixed inset-0 z-50 flex items-center justify-center bg-[hsl(298,42%,15%)/0.85] backdrop-blur-md"
         @keydown.escape.window="open = false" @click.self="open = false">
