@@ -10,6 +10,7 @@ class CartModal extends Component
 {
     // Propiedades públicas
     public array $blockedSlots = [];
+    public array $fullyBlockedDates = []; // Fechas totalmente bloqueadas (Y-m-d)
     public bool $loadingSlots = false;
     // --- Datos del Formulario ---
     public string $name = '';
@@ -34,31 +35,41 @@ class CartModal extends Component
 
     public function getAvailableTimeSlots(): array
     {
-    return [
-        'Mañana (9:00 - 13:00)' => [
-            '09:00' => '09:00',
-            '09:30' => '09:30',
-            '10:00' => '10:00',
-            '10:30' => '10:30',
-            '11:00' => '11:00',
-            '11:30' => '11:30',
-            '12:00' => '12:00',
-            '12:30' => '12:30',
-            '13:00' => '13:00',
-        ],
-        'Tarde (14:00 - 18:00)' => [
-            '14:00' => '14:00',
-            '14:30' => '14:30',
-            '15:00' => '15:00',
-            '15:30' => '15:30',
-            '16:00' => '16:00',
-            '16:30' => '16:30',
-            '17:00' => '17:00',
-            '17:30' => '17:30',
-            '18:00' => '18:00',
-        ],
-    ];
+        return [
+            'Tarde (16:00 - 21:00)' => [
+                '16:00' => '16:00',
+                '16:30' => '16:30',
+                '17:00' => '17:00',
+                '17:30' => '17:30',
+                '18:00' => '18:00',
+                '18:30' => '18:30',
+                '19:00' => '19:00',
+                '19:30' => '19:30',
+                '20:00' => '20:00',
+                '20:30' => '20:30',
+                '21:00' => '21:00',
+            ],
+        ];
     }
+    /**
+     * Consulta fechas totalmente bloqueadas
+     */
+    public function fetchBlockedDates(): void
+    {
+        try {
+            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+                ->acceptJson()
+                ->timeout(5)
+                ->get(env('ADMIN_API_URL') . '/api/v1/bookings/blocked-dates');
+
+            if ($response->successful()) {
+                $this->fullyBlockedDates = $response->json('blocked_dates', []);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error fetching blocked dates', ['message' => $e->getMessage()]);
+        }
+    }
+
     /**
      * Consulta horarios bloqueados para una fecha
      */
@@ -94,20 +105,33 @@ class CartModal extends Component
     /**
      * Obtiene horarios disponibles filtrando los bloqueados
      */
+    /**
+     * Obtiene horarios disponibles marcando los bloqueados
+     */
     public function getAvailableTimeSlotsForDate(): array
     {
         $allSlots = $this->getAvailableTimeSlots();
         
+        // Si no hay bloqueos, devolvemos estructura compatible
         if (empty($this->blockedSlots)) {
-            return $allSlots;
+            $formatted = [];
+            foreach ($allSlots as $group => $times) {
+                foreach ($times as $time) {
+                    $formatted[$group][] = ['time' => $time, 'blocked' => false];
+                }
+            }
+            return $formatted;
         }
-        // Filtrar bloqueados
+
+        // Marcar bloqueados
+        $formatted = [];
         foreach ($allSlots as $group => $times) {
-            $allSlots[$group] = array_filter($times, function($time, $key) {
-                return !in_array($key, $this->blockedSlots);
-            }, ARRAY_FILTER_USE_BOTH);
+            foreach ($times as $time) {
+                $isBlocked = in_array($time, $this->blockedSlots);
+                $formatted[$group][] = ['time' => $time, 'blocked' => $isBlocked];
+            }
         }
-        return $allSlots;
+        return $formatted;
     }
     /**
      * Se ejecuta automáticamente cuando cambia la fecha
@@ -141,6 +165,8 @@ class CartModal extends Component
         'meetingTime',     
         'notes'
     ]);
+        // Cargar fechas bloqueadas al abrir
+        $this->fetchBlockedDates();
     }
 
     /**
@@ -156,7 +182,7 @@ class CartModal extends Component
             'phone' => 'required|string|min:8',
             'requestType' => 'required|in:whatsapp,reunion',
             'meetingDateOnly' => 'nullable|required_if:requestType,reunion|date|after:today',
-            'meetingTime' => 'nullable|required_if:requestType,reunion|in:09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30,18:00',
+            'meetingTime' => 'nullable|required_if:requestType,reunion|in:16:00,16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00',
             'notes' => 'nullable|string|max:500',
         ]);
 
