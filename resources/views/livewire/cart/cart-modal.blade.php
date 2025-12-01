@@ -165,16 +165,85 @@
                                 <span class="text-xs text-red-400">{{ $message }}</span>
                             @enderror
                         </div>
-                        <!-- Fecha de reunión (condicional) -->
-                        <div x-show="requestType === 'reunion'" x-transition class="animate-fade-in">
-                            <label for="meetingDate"
-                                class="block text-xs font-medium text-white/70 uppercase tracking-wide">Fecha y
-                                hora deseada *</label>
-                            <input wire:model="meetingDate" id="meetingDate" type="datetime-local"
-                                class="mt-1 block w-full rounded-lg border border-white/15 bg-black/20 text-white focus:border-[hsl(310,75%,60%)] focus:ring-1 focus:ring-[hsl(310,75%,60%)] focus:outline-none text-sm px-3 py-2.5">
-                            @error('meetingDate')
-                                <span class="text-xs text-red-400">{{ $message }}</span>
-                            @enderror
+                        <!-- Fecha y hora de reunión (condicional) -->
+                        <div x-show="requestType === 'reunion'" x-transition class="animate-fade-in space-y-3">
+                            <!-- Campo de Fecha -->
+                            <div>
+                                <label for="meetingDateOnly" class="block text-xs font-medium text-white/70 uppercase tracking-wide">
+                                    Fecha deseada *
+                                </label>
+                                <input 
+                                    wire:model.live="meetingDateOnly" 
+                                    id="meetingDateOnly" 
+                                    type="date"
+                                    min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                                    max="{{ date('Y-m-d', strtotime('+30 days')) }}"
+                                    class="mt-1 block w-full rounded-lg border border-white/15 bg-black/20 text-white focus:border-[hsl(310,75%,60%)] focus:ring-1 focus:ring-[hsl(310,75%,60%)] focus:outline-none text-sm px-3 py-2.5"
+                                >
+                                @error('meetingDateOnly')
+                                    <span class="text-xs text-red-400">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <!-- Campo de Hora -->
+                            <div>
+                                <label for="meetingTime" class="block text-xs font-medium text-white/70 uppercase tracking-wide">
+                                    Horario deseado *
+                                </label>
+                                
+                                <select 
+                                    wire:model="meetingTime" 
+                                    id="meetingTime"
+                                    wire:key="time-select-{{ $meetingDateOnly }}"
+                                    class="mt-1 block w-full rounded-lg border border-white/15 bg-black/20 text-white focus:border-[hsl(310,75%,60%)] focus:ring-1 focus:ring-[hsl(310,75%,60%)] focus:outline-none text-sm px-3 py-2.5"
+                                    @if($loadingSlots || !$meetingDateOnly) disabled @endif
+                                >
+                                    <option value="">
+                                        @if(!$meetingDateOnly)
+                                            Primero selecciona una fecha
+                                        @elseif($loadingSlots)
+                                            Consultando disponibilidad...
+                                        @else
+                                            Seleccionar horario...
+                                        @endif
+                                    </option>
+                                    
+                                    @if($meetingDateOnly && !$loadingSlots)
+                                        @foreach($this->getAvailableTimeSlotsForDate() as $slotGroup => $times)
+                                            @if(count($times) > 0)
+                                                <optgroup label="{{ $slotGroup }}" class="bg-[hsl(298,42%,15%)] text-white font-semibold">
+                                                    @foreach($times as $value => $label)
+                                                        <option value="{{ $value }}" class="bg-[hsl(298,42%,10%)] text-white">
+                                                            {{ $label }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </select>
+                                <!-- Indicador de carga -->
+                                @if($loadingSlots)
+                                    <p class="text-xs text-white/60 mt-1 flex items-center gap-1">
+                                        <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Consultando disponibilidad...
+                                    </p>
+                                @endif
+                                <!-- Mensaje si no hay horarios -->
+                                @if($meetingDateOnly && !$loadingSlots && count($this->getAvailableTimeSlotsForDate()) === 0)
+                                    <p class="text-xs text-yellow-400 mt-1 flex items-center gap-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        No hay horarios disponibles para esta fecha. Por favor, elige otra.
+                                    </p>
+                                @endif
+                                @error('meetingTime')
+                                    <span class="text-xs text-red-400">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <!-- Notas Adicionales -->
                         <div>
