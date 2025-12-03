@@ -7,8 +7,10 @@
   --foreground: 0 0% 98%;
   --primary: 298 42% 15%;
   --accent: 310 75% 60%;
-  --tb-h: 56px;   /* altura del top banner */
-  --nav-h: 64px;  /* h-16 de Tailwind ≈ 64px */
+  --tb-h: 56px;
+  /* altura del top banner */
+  --nav-h: 64px;
+  /* h-16 de Tailwind ≈ 64px */
 }
 
 body {
@@ -16,5 +18,16 @@ body {
 }
 
 [x-cloak] {
-    display: none !important;
+  display: none !important;
+}
+
+/* Flatpickr Disabled Dates Styling */
+.flatpickr-day.admin-blocked,
+.flatpickr-day.admin-blocked:hover {
+  background-color: #ef4444 !important;
+  /* Tailwind red-500 */
+  color: white !important;
+  border-color: #ef4444 !important;
+  opacity: 0.9;
+  cursor: not-allowed;
 }
