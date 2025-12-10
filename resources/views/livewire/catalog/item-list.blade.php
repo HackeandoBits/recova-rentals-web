@@ -3,6 +3,9 @@
     selectedItem: null,
     showModal: false,
     showSpecs: false,
+    showSpecs: false,
+    showPreview: false,
+    previewImage: null,
     openModal(id) {
         if (this.items[id]) {
             this.selectedItem = this.items[id];
@@ -12,10 +15,17 @@
     },
     closeModal() {
         this.showModal = false;
-        // Delay clearing selectedItem slightly to avoid UI flicker during transition
         setTimeout(() => { this.selectedItem = null; }, 300);
+    },
+    openPreview(image) {
+        this.previewImage = image;
+        this.showPreview = true;
+    },
+    closePreview() {
+        this.showPreview = false;
+        setTimeout(() => { this.previewImage = null; }, 300);
     }
-}" @keydown.escape.window="closeModal()">
+}" @keydown.escape.window="closeModal(); closePreview()">
     {{-- Intro moderna con menos espaciado --}}
     <div class="text-center mb-8 mt-4 animate-fade-in-down">
         <h2
@@ -116,9 +126,9 @@
                         {{-- 2. Track --}}
                         <div class="flex"
                             :style="`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `"
                             @transitionend="handleTransitionEnd()">
                             {{-- 3. Slides reales --}}
                             @foreach ($category['images'] as $image)
@@ -129,10 +139,10 @@
                                             {{ $image['title'] }}
                                         </h4>
 
-                                        <div
-                                            class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700">
+                                        <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image"
+                                            @click="openPreview(@js($image))">
                                             <img src="{{ $image['image_url'] }}" alt="{{ $image['title'] }}"
-                                                class="w-full h-full object-cover" />
+                                                class="w-full h-full object-cover transition duration-500 group-hover/image:scale-105" />
                                             <div class="absolute inset-0 bg-black/30"></div>
 
                                             {{-- Botón Agregar Combo (Movido dentro de la imagen) --}}
@@ -151,7 +161,7 @@
 
                                             @foreach ($image['hotspots'] as $hotspot)
                                                 <button type="button" @click="openModal({{ $hotspot['item_id'] }})"
-                                                    class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot"
+                                                    class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                                                     style="left: {{ $hotspot['x'] }}%; top: {{ $hotspot['y'] }}%;">
                                                     <div
                                                         class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
@@ -190,11 +200,11 @@
                                                 {{ $cloneImage['title'] }}
                                             </h4>
 
-                                            <div
-                                                class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700">
+                                            <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image"
+                                                @click="openPreview(@js($cloneImage))">
                                                 <img src="{{ $cloneImage['image_url'] }}"
                                                     alt="{{ $cloneImage['title'] }}"
-                                                    class="w-full h-full object-cover" />
+                                                    class="w-full h-full object-cover transition duration-500 group-hover/image:scale-105" />
                                                 <div class="absolute inset-0 bg-black/30"></div>
 
                                                 {{-- Botón Agregar Combo (Clones) --}}
@@ -214,7 +224,7 @@
                                                 @foreach ($cloneImage['hotspots'] as $hotspot)
                                                     <button type="button"
                                                         @click="openModal({{ $hotspot['item_id'] }})"
-                                                        class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot"
+                                                        class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                                                         style="left: {{ $hotspot['x'] }}%; top: {{ $hotspot['y'] }}%;">
                                                         <div
                                                             class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
@@ -277,7 +287,7 @@
     ================================================================
     --}}
     <div x-show="showModal" style="display: none;"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[70]"
         x-transition.opacity @click="closeModal()">
 
         <div class="bg-white dark:bg-gray-800 border border-gray-700 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
@@ -369,6 +379,62 @@
                             Agregar a Mi Evento
                         </button>
                     </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+
+    {{-- 
+    ================================================================
+    MODAL DE VISTA PREVIA DE IMAGEN (Full Size + Hotspots)
+    ================================================================
+    --}}
+    <div x-show="showPreview" style="display: none;"
+        class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60]" x-transition.opacity
+        @click="closePreview()">
+
+        <div class="relative w-full h-full flex items-center justify-center p-4" @click.stop>
+            {{-- Botón Cerrar --}}
+            <button type="button" @click="closePreview()"
+                class="absolute top-4 right-4 z-50 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 transition">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+
+            <template x-if="previewImage">
+                <div class="relative inline-block max-w-full max-h-screen">
+                    <img :src="previewImage.image_url" :alt="previewImage.title"
+                        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+
+                    {{-- Hotspots en Preview --}}
+                    <template x-for="hotspot in previewImage.hotspots" :key="hotspot.item_id">
+                        <button type="button" @click="openModal(hotspot.item_id)"
+                            class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot"
+                            :style="`left: ${hotspot.x}%; top: ${hotspot.y}%;`">
+                            <div class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
+                            </div>
+                            <div
+                                class="relative w-10 h-10 md:w-14 md:h-14 bg-purple-600/90 backdrop-blur-sm rounded-full border-2 border-white/30
+                                        flex items-center justify-center text-white shadow-lg
+                                        hover:scale-110 transition-all duration-300">
+                                <svg class="w-5 h-5 md:w-8 md:h-8" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 
+                                        bg-black/80 backdrop-blur-sm text-white text-sm 
+                                        rounded-lg opacity-0 group-hover/hotspot:opacity-100 
+                                        transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                <span x-text="hotspot.name"></span>
+                            </div>
+                        </button>
+                    </template>
                 </div>
             </template>
         </div>

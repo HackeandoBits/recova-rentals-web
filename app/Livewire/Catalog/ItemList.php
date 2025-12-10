@@ -14,102 +14,104 @@ class ItemList extends Component
      */
     private function getSceneData(): array
     {
-        $baseData = [
+        // Mapa de Hotspots por Combo
+        $hotspotsMap = [
+            // Batch 1
+            'combo-001' => [['slug' => 'laser-show', 'x' => 50, 'y' => 30], ['slug' => 'estructura-truss', 'x' => 50, 'y' => 80]],
+            'combo-002' => [['slug' => 'tarima', 'x' => 50, 'y' => 90], ['slug' => 'beam-light', 'x' => 20, 'y' => 40]],
+            'combo-003' => [['slug' => 'beam-light', 'x' => 50, 'y' => 20], ['slug' => 'estructura-truss', 'x' => 80, 'y' => 50]],
+            'combo-004' => [['slug' => 'laser-show', 'x' => 50, 'y' => 50], ['slug' => 'maquina-humo', 'x' => 80, 'y' => 80]],
+            'combo-005' => [['slug' => 'pista-led', 'x' => 50, 'y' => 90], ['slug' => 'estructura-truss', 'x' => 50, 'y' => 20]],
+            // Batch 2
+            'combo-006' => [['slug' => 'tarima', 'x' => 50, 'y' => 80], ['slug' => 'wash-light', 'x' => 20, 'y' => 30]],
+            'combo-007' => [['slug' => 'pantalla-led', 'x' => 50, 'y' => 40], ['slug' => 'beam-light', 'x' => 80, 'y' => 60]],
+            'combo-008' => [['slug' => 'pista-led', 'x' => 50, 'y' => 90], ['slug' => 'laser-show', 'x' => 30, 'y' => 30]],
+            'combo-009' => [['slug' => 'beam-light', 'x' => 50, 'y' => 40], ['slug' => 'maquina-humo', 'x' => 80, 'y' => 80]],
+            'combo-010' => [['slug' => 'bola-espejo', 'x' => 50, 'y' => 20], ['slug' => 'beam-light', 'x' => 70, 'y' => 50]],
+            // Batch 3
+            'combo-011' => [['slug' => 'bola-espejo', 'x' => 30, 'y' => 20], ['slug' => 'wash-light', 'x' => 70, 'y' => 80]],
+            'combo-012' => [['slug' => 'pantalla-led', 'x' => 50, 'y' => 50], ['slug' => 'wash-light', 'x' => 20, 'y' => 30]],
+            'combo-013' => [['slug' => 'bola-espejo', 'x' => 50, 'y' => 30], ['slug' => 'wash-light', 'x' => 80, 'y' => 60]],
+            'combo-014' => [['slug' => 'bola-espejo', 'x' => 50, 'y' => 20], ['slug' => 'efecto-led', 'x' => 50, 'y' => 50]],
+            'combo-015' => [['slug' => 'co2', 'x' => 30, 'y' => 60], ['slug' => 'confetti', 'x' => 70, 'y' => 60]],
+            // Batch 4
+            'combo-016' => [['slug' => 'beam-light', 'x' => 20, 'y' => 30], ['slug' => 'pantalla-led', 'x' => 60, 'y' => 50]],
+            'combo-017' => [['slug' => 'bola-espejo', 'x' => 50, 'y' => 20], ['slug' => 'wash-light', 'x' => 50, 'y' => 70]],
+            'combo-018' => [['slug' => 'bola-espejo', 'x' => 33, 'y' => 30], ['slug' => 'bola-espejo', 'x' => 66, 'y' => 30]],
+            'combo-019' => [['slug' => 'beam-light', 'x' => 20, 'y' => 40], ['slug' => 'bola-espejo', 'x' => 60, 'y' => 30]],
+            'combo-020' => [['slug' => 'pista-led', 'x' => 50, 'y' => 85], ['slug' => 'beam-light', 'x' => 20, 'y' => 30]],
+            // Batch 5
+            'combo-021' => [['slug' => 'pantalla-led', 'x' => 50, 'y' => 40], ['slug' => 'beam-light', 'x' => 80, 'y' => 30]],
+            'combo-022' => [['slug' => 'estructura-truss', 'x' => 50, 'y' => 50], ['slug' => 'wash-light', 'x' => 20, 'y' => 80]],
+            'combo-023' => [['slug' => 'bola-espejo', 'x' => 40, 'y' => 25], ['slug' => 'wash-light', 'x' => 70, 'y' => 60]],
+            'combo-024' => [['slug' => 'pantalla-led', 'x' => 30, 'y' => 50], ['slug' => 'pista-led', 'x' => 70, 'y' => 90]],
+            'combo-025' => [['slug' => 'laser-show', 'x' => 50, 'y' => 40], ['slug' => 'beam-light', 'x' => 20, 'y' => 60]],
+            // Batch 6
+            'combo-026' => [['slug' => 'pantalla-led-curva', 'x' => 50, 'y' => 50]],
+            'combo-027' => [['slug' => 'bola-espejo', 'x' => 30, 'y' => 20], ['slug' => 'beam-light', 'x' => 70, 'y' => 40]],
+            'combo-028' => [['slug' => 'pantalla-led', 'x' => 30, 'y' => 40], ['slug' => 'laser-show', 'x' => 70, 'y' => 40]],
+            'combo-029' => [['slug' => 'estructura-truss', 'x' => 50, 'y' => 30], ['slug' => 'pantalla-led', 'x' => 50, 'y' => 60]],
+            'combo-030' => [['slug' => 'letras-led', 'x' => 50, 'y' => 70]],
+            // Batch 7
+            'combo-031' => [['slug' => 'pantalla-led', 'x' => 50, 'y' => 50], ['slug' => 'tarima', 'x' => 50, 'y' => 80]],
+            'combo-032' => [['slug' => 'bola-espejo', 'x' => 50, 'y' => 30]],
+            'combo-033' => [['slug' => 'bola-espejo', 'x' => 40, 'y' => 30], ['slug' => 'beam-light', 'x' => 70, 'y' => 50]],
+            'combo-034' => [['slug' => 'laser-show', 'x' => 50, 'y' => 50], ['slug' => 'maquina-humo', 'x' => 50, 'y' => 80]],
+        ];
+
+        // Configuración de las 3 Categorías
+        // Distribuimos las fotos 001-034 en 3 grupos balanceados.
+
+        $categories = [
             [
-                'id' => 'pantallas-led',
-                'title' => 'Pantallas LED',
-                'description' => 'Sistemas de pantallas LED de alta definición.',
-                'images' => [
-                    [
-                        'id' => 'led-screens-setup',
-                        'combo_slug' => 'combo-pantallas-premium', // Nuevo slug
-                        'title' => 'Pantallas LED Premium en Acción',
-                        'image_url' => asset('storage/img/led-screens-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'pantalla-led-p2-9-indoor-3x2m', 'x' => 45, 'y' => 20],
-                            ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
-                            ['slug' => 'consola-16ch-con-fx', 'x' => 20, 'y' => 80], // Nuevo
-                        ],
-                    ],
-                    [
-                        'id' => 'led-ceiling-setup',
-                        'combo_slug' => 'combo-techo-led', // Nuevo slug
-                        'title' => 'Instalación de Techo LED',
-                        'image_url' => asset('storage/img/led-ceiling-setup.jpg'),
-                        'hotspots' => [
-                            ['slug' => 'pantalla-led-p3-9-indoor-4x2m', 'x' => 50, 'y' => 30],
-                            ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
-                            ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 20], // Nuevo
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-1',
+                'title' => 'Nuevos Ingresos', // Título editable
+                'description' => 'Descubre lo último en equipamiento para eventos.',
+                'range' => [1, 12], // De la 001 a la 012
             ],
             [
-                'id' => 'iluminacion',
-                'title' => 'Iluminación y Láseres',
-                'description' => 'Sistemas de iluminación profesional y láseres de alta potencia.',
-                'images' => [
-                    [
-                        'id' => 'laser-show',
-                        'combo_slug' => 'combo-laser-show', // Nuevo slug
-                        'title' => 'Show de Láser Profesional',
-                        'image_url' => asset('storage/img/laser-show-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
-                            ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
-                            ['slug' => 'consola-16ch-con-fx', 'x' => 80, 'y' => 80], // Nuevo
-                        ],
-                    ],
-                    [
-                        'id' => 'laseres-green',
-                        'combo_slug' => 'combo-laseres-verdes', // Nuevo slug
-                        'title' => 'Láseres Verdes de Concierto',
-                        'image_url' => asset('storage/img/lasers.jpg'),
-                        'hotspots' => [
-                            ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
-                            ['slug' => 'parlante-activo-12-1000w', 'x' => 20, 'y' => 60], // Nuevo
-                            ['slug' => 'microfono-inalambrico-uhf', 'x' => 80, 'y' => 70], // Nuevo
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-2',
+                'title' => 'Tendencias', // Título editable
+                'description' => 'Los combos más populares de la temporada.',
+                'range' => [13, 24], // De la 013 a la 024
             ],
             [
-                'id' => 'escenarios',
-                'title' => 'Escenarios y Sonido',
-                'description' => 'Estructuras modulares y sonido de alta calidad.',
-                'images' => [
-                    [
-                        'id' => 'stage-production',
-                        'combo_slug' => 'combo-escenario-completo', // Nuevo slug
-                        'title' => 'Producción Completa de Escenario',
-                        'image_url' => asset('storage/img/stage-production-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'estructura-6x4m', 'x' => 65, 'y' => 70],
-                            ['slug' => 'parlante-activo-12-1000w', 'x' => 80, 'y' => 55],
-                            ['slug' => 'subwoofer-18-1200w', 'x' => 20, 'y' => 60],
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-3',
+                'title' => 'Escenarios & Estructuras', // Título editable
+                'description' => 'Montajes profesionales para grandes impactos.',
+                'range' => [25, 34], // De la 025 a la 034
             ],
         ];
 
-        // DUPLICACIÓN DE IMÁGENES PARA EL CARRUSEL
-        // Queremos que cada categoría tenga al menos 6 imágenes para que el carrusel de 3 se vea bien y loopee.
-        foreach ($baseData as &$category) {
-            $originalImages = $category['images'];
-            // Repetimos las imágenes hasta tener al menos 6
-            while (count($category['images']) < 6) {
-                foreach ($originalImages as $img) {
-                    // Es importante generar un ID único para el key de React/Alpine si fuera necesario,
-                    // aunque aquí usamos índices mayormente.
-                    $newImg = $img;
-                    $newImg['id'] = $img['id'].'_'.uniqid();
-                    $category['images'][] = $newImg;
-                }
+        $finalData = [];
+
+        foreach ($categories as $cat) {
+            $catImages = [];
+            // Generamos las imágenes basándonos en el rango
+            for ($i = $cat['range'][0]; $i <= $cat['range'][1]; $i++) {
+                // Formato de número a 3 dígitos (ej: 001, 005, 012)
+                $num = str_pad($i, 3, '0', STR_PAD_LEFT);
+                $comboSlug = "combo-{$num}";
+
+                $catImages[] = [
+                    'id' => $comboSlug,
+                    'combo_slug' => $comboSlug, // Slug para BD
+                    'title' => "Combo {$num}",       // Título temporal del producto
+                    'image_url' => asset("storage/img/{$num}.jpg"),
+                    // Asignamos los hotspots del mapa
+                    'hotspots' => $hotspotsMap[$comboSlug] ?? [],
+                ];
             }
+
+            $finalData[] = [
+                'id' => $cat['id'],
+                'title' => $cat['title'],
+                'description' => $cat['description'],
+                'images' => $catImages,
+            ];
         }
 
-        return $baseData;
+        return $finalData;
     }
 
     // --- PROPIEDADES PÚBLICAS ---
@@ -235,6 +237,9 @@ class ItemList extends Component
 
                 if (isset($image['combo_slug']) && $combosWithItems->has($image['combo_slug'])) {
                     $combo = $combosWithItems->get($image['combo_slug']);
+                    // Asignar el nombre real de la BD al título local de la imagen
+                    $image['title'] = $combo->name;
+
                     $totalQty = 0;
                     $comboItemsData = [];
 
