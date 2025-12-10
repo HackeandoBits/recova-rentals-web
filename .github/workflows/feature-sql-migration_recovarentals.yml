@@ -32,9 +32,6 @@ jobs:
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
-
-      - name: Zip the application files
-        run: zip -r release.zip ./*
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -65,9 +62,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: php-app
-      
-      - name: unzip the artifact
-        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v2
