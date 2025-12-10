@@ -126,9 +126,9 @@
                         {{-- 2. Track --}}
                         <div class="flex"
                             :style="`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `"
                             @transitionend="handleTransitionEnd()">
                             {{-- 3. Slides reales --}}
                             @foreach ($category['images'] as $image)
@@ -139,15 +139,17 @@
                                             {{ $image['title'] }}
                                         </h4>
 
-                                        <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image"
+                                        <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image overflow-hidden"
                                             @click="openPreview(@js($image))">
                                             <img src="{{ $image['image_url'] }}" alt="{{ $image['title'] }}"
-                                                class="w-full h-full object-cover transition duration-500 group-hover/image:scale-105" />
-                                            <div class="absolute inset-0 bg-black/30"></div>
+                                                class="w-full h-full object-cover transition duration-500 group-hover/image:scale-110" />
+                                            <div
+                                                class="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover/image:bg-black/0">
+                                            </div>
 
                                             {{-- Botón Agregar Combo (Movido dentro de la imagen) --}}
                                             <div class="absolute top-4 right-4 z-20">
-                                                <button @click="$store.cart.addCombo(@js($image['combo_items']))"
+                                                <button @click.stop="$store.cart.addCombo(@js($image['combo_items']))"
                                                     class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2"
                                                     title="Agregar todos los items de este combo">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -160,14 +162,15 @@
                                             </div>
 
                                             @foreach ($image['hotspots'] as $hotspot)
-                                                <button type="button" @click="openModal({{ $hotspot['item_id'] }})"
+                                                <button type="button"
+                                                    @click.stop="openModal({{ $hotspot['item_id'] }})"
                                                     class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                                                     style="left: {{ $hotspot['x'] }}%; top: {{ $hotspot['y'] }}%;">
                                                     <div
                                                         class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
                                                     </div>
                                                     <div
-                                                        class="relative w-12 h-12 bg-purple-600/90 backdrop-blur-sm rounded-full border-2 border-white/30
+                                                        class="relative w-12 h-12 bg-purple-600/30 backdrop-blur-sm rounded-full border-2 border-white/30
                                                                 flex items-center justify-center text-white shadow-lg
                                                                 group-hover/hotspot:scale-110 transition-all duration-300">
                                                         <svg class="w-6 h-6" fill="none" stroke="currentColor"
@@ -200,16 +203,19 @@
                                                 {{ $cloneImage['title'] }}
                                             </h4>
 
-                                            <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image"
+                                            <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image overflow-hidden"
                                                 @click="openPreview(@js($cloneImage))">
                                                 <img src="{{ $cloneImage['image_url'] }}"
                                                     alt="{{ $cloneImage['title'] }}"
                                                     class="w-full h-full object-cover transition duration-500 group-hover/image:scale-105" />
-                                                <div class="absolute inset-0 bg-black/30"></div>
+                                                <div
+                                                    class="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover/image:bg-black/0">
+                                                </div>
 
                                                 {{-- Botón Agregar Combo (Clones) --}}
                                                 <div class="absolute top-4 right-4 z-20">
-                                                    <button @click="$store.cart.addCombo(@js($cloneImage['combo_items']))"
+                                                    <button
+                                                        @click.stop="$store.cart.addCombo(@js($cloneImage['combo_items']))"
                                                         class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2"
                                                         title="Agregar todos los items de este combo">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -223,14 +229,14 @@
 
                                                 @foreach ($cloneImage['hotspots'] as $hotspot)
                                                     <button type="button"
-                                                        @click="openModal({{ $hotspot['item_id'] }})"
+                                                        @click.stop="openModal({{ $hotspot['item_id'] }})"
                                                         class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
                                                         style="left: {{ $hotspot['x'] }}%; top: {{ $hotspot['y'] }}%;">
                                                         <div
                                                             class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
                                                         </div>
                                                         <div
-                                                            class="relative w-12 h-12 bg-purple-600/90 backdrop-blur-sm rounded-full border-2 border-white/30
+                                                            class="relative w-12 h-12 bg-purple-600/30 backdrop-blur-sm rounded-full border-2 border-white/30
                                                                     flex items-center justify-center text-white shadow-lg
                                                                     group-hover/hotspot:scale-110 transition-all duration-300">
                                                             <svg class="w-6 h-6" fill="none" stroke="currentColor"
@@ -394,7 +400,7 @@
         class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60]" x-transition.opacity
         @click="closePreview()">
 
-        <div class="relative w-full h-full flex items-center justify-center p-4" @click.stop>
+        <div class="relative w-full h-full flex items-center justify-center p-4">
             {{-- Botón Cerrar --}}
             <button type="button" @click="closePreview()"
                 class="absolute top-4 right-4 z-50 p-2 bg-black/50 text-white rounded-full hover:bg-white/20 transition">
@@ -405,7 +411,7 @@
             </button>
 
             <template x-if="previewImage">
-                <div class="relative inline-block max-w-full max-h-screen">
+                <div class="relative inline-block max-w-full max-h-screen" @click.stop>
                     <img :src="previewImage.image_url" :alt="previewImage.title"
                         class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
 
@@ -417,7 +423,7 @@
                             <div class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
                             </div>
                             <div
-                                class="relative w-10 h-10 md:w-14 md:h-14 bg-purple-600/90 backdrop-blur-sm rounded-full border-2 border-white/30
+                                class="relative w-10 h-10 md:w-14 md:h-14 bg-purple-600/30 backdrop-blur-sm rounded-full border-2 border-white/30
                                         flex items-center justify-center text-white shadow-lg
                                         hover:scale-110 transition-all duration-300">
                                 <svg class="w-5 h-5 md:w-8 md:h-8" fill="none" stroke="currentColor"
