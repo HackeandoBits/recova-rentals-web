@@ -1,20 +1,14 @@
 #!/bin/bash
 
-# Copiar configuración de Nginx
-cp /home/site/wwwroot/nginx.conf /etc/nginx/sites-enabled/default
-
-# Reiniciar Nginx
+# 1. Copiar configuración de Nginx (Sobreescribimos la default)
+cp /home/site/wwwroot/nginx.conf /etc/nginx/sites-available/default
 service nginx reload
 
-# Ejecutar migraciones
-php /home/site/wwwroot/artisan migrate --force
-
-# Limpiar y cachear
+# 2. Caché de Laravel (Vital para producción)
 php /home/site/wwwroot/artisan config:cache
 php /home/site/wwwroot/artisan route:cache
 php /home/site/wwwroot/artisan view:cache
 
-cd /home/site/wwwroot && npm ci
-npm run build
-
+# 3. Enlace simbólico para imágenes (Hotspots)
 php /home/site/wwwroot/artisan storage:link
+
