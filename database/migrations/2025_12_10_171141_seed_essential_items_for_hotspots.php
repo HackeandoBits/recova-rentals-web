@@ -50,10 +50,22 @@ return new class extends Migration
         }
 
         foreach ($categories as $id => $name) {
-            DB::table('categories')->updateOrInsert(
-                ['id' => $id],
-                ['name' => $name, 'slug' => \Illuminate\Support\Str::slug($name)]
-            );
+            $exists = DB::table('categories')->where('id', $id)->exists();
+
+            if ($exists) {
+                DB::table('categories')
+                    ->where('id', $id)
+                    ->update([
+                        'name' => $name,
+                        'slug' => \Illuminate\Support\Str::slug($name),
+                    ]);
+            } else {
+                DB::table('categories')->insert([
+                    'id' => $id,
+                    'name' => $name,
+                    'slug' => \Illuminate\Support\Str::slug($name),
+                ]);
+            }
         }
 
         // Disable IDENTITY_INSERT for SQL Server
