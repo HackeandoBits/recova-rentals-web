@@ -249,14 +249,23 @@ class ItemList extends Component
                                 ? $cItem->image_url
                                 : asset($cItem->image_url),
                             'category' => $cItem->category->name ?? 'Combo',
-                            'quantity' => $cItem->pivot->quantity ?? 1,
+                            'quantity' => (int) ($cItem->pivot->quantity ?? 1),
                         ];
                     }
 
                     $image['combo_items'] = $cartItems;
+
+                    // Debug: Log combo items para verificar en Azure
+                    \Log::info('Combo items cargados', [
+                        'combo_slug' => $image['combo_slug'],
+                        'combo_name' => $combo->name,
+                        'items_count' => count($cartItems),
+                        'items' => $cartItems,
+                    ]);
                 } else {
                     // Fallback si no hay combo en BD
                     $image['combo_items'] = [];
+                    \Log::warning('Combo no encontrado en BD', ['combo_slug' => $image['combo_slug'] ?? 'N/A']);
                 }
             }
         }
