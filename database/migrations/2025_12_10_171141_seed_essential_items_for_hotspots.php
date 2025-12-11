@@ -47,30 +47,33 @@ return new class extends Migration
         $driver = DB::connection()->getDriverName();
         if ($driver === 'sqlsrv') {
             DB::statement('SET IDENTITY_INSERT categories ON');
-        }
 
-        foreach ($categories as $id => $name) {
-            $exists = DB::table('categories')->where('id', $id)->exists();
+            foreach ($categories as $id => $name) {
+                $slug = \Illuminate\Support\Str::slug($name);
+                $exists = DB::scalar('SELECT COUNT(*) FROM categories WHERE id = ?', [$id]);
 
-            if ($exists) {
-                DB::table('categories')
-                    ->where('id', $id)
-                    ->update([
-                        'name' => $name,
-                        'slug' => \Illuminate\Support\Str::slug($name),
-                    ]);
-            } else {
-                DB::table('categories')->insert([
-                    'id' => $id,
-                    'name' => $name,
-                    'slug' => \Illuminate\Support\Str::slug($name),
-                ]);
+                if ($exists) {
+                    DB::statement(
+                        'UPDATE categories SET name = ?, slug = ? WHERE id = ?',
+                        [$name, $slug, $id]
+                    );
+                } else {
+                    DB::statement(
+                        'INSERT INTO categories (id, name, slug) VALUES (?, ?, ?)',
+                        [$id, $name, $slug]
+                    );
+                }
             }
-        }
 
-        // Disable IDENTITY_INSERT for SQL Server
-        if ($driver === 'sqlsrv') {
             DB::statement('SET IDENTITY_INSERT categories OFF');
+        } else {
+            // MySQL/other databases - use normal Query Builder
+            foreach ($categories as $id => $name) {
+                DB::table('categories')->updateOrInsert(
+                    ['id' => $id],
+                    ['name' => $name, 'slug' => \Illuminate\Support\Str::slug($name)]
+                );
+            }
         }
 
         foreach ($items as $item) {
