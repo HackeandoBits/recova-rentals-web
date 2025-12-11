@@ -7,11 +7,38 @@ use Livewire\Component;
 
 class ItemList extends Component
 {
-    /**
-     * Esta es la "plantilla" de tu página de hotspots.
-     * Define las imágenes de fondo y las coordenadas [x, y] de cada hotspot.
-     * El 'slug' DEBE coincidir con un slug de tu ItemSeeder.php
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | 📖 GUÍA DE EDICIÓN DEL CATÁLOGO (Hotspots y Combos)
+    |--------------------------------------------------------------------------
+    |
+    | 1. ¿DÓNDE ESTÁN LAS FOTOS?
+    |    Las fotos de los combos (001.jpg, 002.jpg...) están en: storage/app/public/img/
+    |    Si quieres cambiar una foto de fondo, simplemente reemplaza el archivo .jpg allí.
+    |
+    | 2. ¿CÓMO CAMBIO LOS PUNTOS INTERACTIVOS (HOTSPOTS)?
+    |    Modifica el array $hotspotsMap aquí abajo.
+    |
+    |    Formato:
+    |    'combo-XXX' => [
+    |        ['slug' => 'item-slug', 'x' => 50, 'y' => 50],
+    |        ...
+    |    ]
+    |
+    |    - 'combo-XXX': Es el ID de la foto (ej: combo-001 corresponde a 001.jpg).
+    |    - 'slug': Es el identificador del producto individual (ej: 'pantalla-led', 'beam-light').
+    |              Estos slugs están definidos en la base de datos (tabla 'items').
+    |    - 'x' / 'y': Son las coordenadas en PORCENTAJE (%).
+    |              x=0 es izquierda, x=100 es derecha.
+    |              y=0 es arriba, y=100 es abajo.
+    |              Ej: x=50, y=50 es exactamente el centro.
+    |
+    | 3. ¿CÓMO AGREGO NUEVOS PRODUCTOS?
+    |    Si necesitas un nuevo producto para etiquetar (ej: 'Nuevas Luces'), debes agregarlo
+    |    primero en el archivo de migración: database/migrations/..._seed_essential_items_for_hotspots.php
+    |    y luego ejecutar 'php artisan migrate:refresh'.
+    |
+    */
     private function getSceneData(): array
     {
         // Mapa de Hotspots por Combo
@@ -189,7 +216,7 @@ class ItemList extends Component
             $finalCategories[] = $finalCategory;
         }
 
-        // 5. Obtener los conteos de items por combo para la actualización optimista
+        // 5. Obtener los combos con sus items para el botón "Agregar Combo"
         $comboSlugs = [];
         foreach ($sceneData as $category) {
             foreach ($category['images'] as $image) {
@@ -199,64 +226,37 @@ class ItemList extends Component
             }
         }
 
-        $combos = \App\Models\Combo::whereIn('slug', $comboSlugs)->withCount('items')->get()->keyBy('slug');
-
-        foreach ($finalCategories as &$category) {
-            foreach ($category['images'] as &$image) {
-                if (isset($image['combo_slug']) && $combos->has($image['combo_slug'])) {
-                    // Sumamos la cantidad total de items (considerando la cantidad pivot si fuera necesario,
-                    // pero withCount('items') da el número de filas. Si la cantidad importa, deberíamos sumar 'quantity'.
-                    // Por simplicidad y rendimiento, asumimos 1 item = 1 cantidad o usamos una query más compleja si es crítico.
-                    // Para ser más precisos, cargamos los items y sumamos quantities.
-                    $combo = $combos->get($image['combo_slug']);
-                    // Si necesitamos la suma de cantidades (pivot), withCount no basta.
-                    // Pero para el contador de "ítems únicos" o "bultos", withCount sirve.
-                    // Si el carrito suma cantidades totales, necesitamos eso.
-                    // Vamos a asumir que el contador del carrito muestra la suma de cantidades.
-                    // Haremos una carga ligera para esto o lo dejamos en withCount si es suficiente.
-                    // Revisando CartManager, usa array_sum(column(quantity)).
-                    // Entonces necesitamos la suma de cantidades.
-
-                    // Ajuste: Cargar combos con items para sumar cantidades correctamente.
-                    // Esto se hace mejor fuera del loop.
-                }
-            }
-        }
-        // Re-hacemos la query de combos para obtener los items con sus datos necesarios
-        $combosWithItems = \App\Models\Combo::whereIn('slug', $comboSlugs)
-            ->with(['items' => function ($query) {
-                $query->with('category')->select('items.id', 'items.name', 'items.category_id', 'items.image_url');
-            }])
+        $combos = \App\Models\Combo::whereIn('slug', $comboSlugs)
+            ->with(['items']) // Cargar items para obtener datos reales
             ->get()
             ->keyBy('slug');
 
         foreach ($finalCategories as &$category) {
             foreach ($category['images'] as &$image) {
-                $image['combo_count'] = 0; // Default
-                $image['combo_items'] = []; // Default for client-side cart
+                if (isset($image['combo_slug']) && $combos->has($image['combo_slug'])) {
+                    $combo = $combos->get($image['combo_slug']);
 
-                if (isset($image['combo_slug']) && $combosWithItems->has($image['combo_slug'])) {
-                    $combo = $combosWithItems->get($image['combo_slug']);
-                    // Asignar el nombre real de la BD al título local de la imagen
+                    // Sobrescribimos el título con el nombre real de la BD
                     $image['title'] = $combo->name;
 
-                    $totalQty = 0;
-                    $comboItemsData = [];
-
+                    // Construimos la lista de items para el carrito
+                    $cartItems = [];
                     foreach ($combo->items as $cItem) {
-                        $qty = $cItem->pivot->quantity ?? 1;
-                        $totalQty += $qty;
-
-                        $comboItemsData[] = [
+                        $cartItems[] = [
                             'id' => $cItem->id,
                             'name' => $cItem->name,
-                            'category' => $cItem->category->name ?? 'General',
-                            'image_url' => $cItem->image_url ? asset($cItem->image_url) : null, // Ensure asset() helper is used if needed, or just path
-                            'quantity' => $qty,
+                            'image_url' => \Illuminate\Support\Str::startsWith($cItem->image_url, ['http', 'https'])
+                                ? $cItem->image_url
+                                : asset($cItem->image_url),
+                            'category' => $cItem->category->name ?? 'Combo',
+                            'quantity' => $cItem->pivot->quantity ?? 1,
                         ];
                     }
-                    $image['combo_count'] = $totalQty;
-                    $image['combo_items'] = $comboItemsData;
+
+                    $image['combo_items'] = $cartItems;
+                } else {
+                    // Fallback si no hay combo en BD
+                    $image['combo_items'] = [];
                 }
             }
         }
