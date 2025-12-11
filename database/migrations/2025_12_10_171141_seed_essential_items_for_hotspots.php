@@ -43,11 +43,22 @@ return new class extends Migration
             4 => 'Estructuras y Pistas',
         ];
 
+        // Enable IDENTITY_INSERT for SQL Server
+        $driver = DB::connection()->getDriverName();
+        if ($driver === 'sqlsrv') {
+            DB::statement('SET IDENTITY_INSERT categories ON');
+        }
+
         foreach ($categories as $id => $name) {
             DB::table('categories')->updateOrInsert(
                 ['id' => $id],
                 ['name' => $name, 'slug' => \Illuminate\Support\Str::slug($name)]
             );
+        }
+
+        // Disable IDENTITY_INSERT for SQL Server
+        if ($driver === 'sqlsrv') {
+            DB::statement('SET IDENTITY_INSERT categories OFF');
         }
 
         foreach ($items as $item) {
