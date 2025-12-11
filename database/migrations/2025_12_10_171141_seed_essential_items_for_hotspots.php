@@ -34,54 +34,51 @@ return new class extends Migration
             ['slug' => 'letras-led', 'name' => 'Letras Gigantes LED', 'category_id' => 4],
         ];
 
-        // Asegurar que existan categorías básicas (si no existen las crea)
-        // Asumimos IDs 1=Pantallas, 2=Luces, 3=Efectos, 4=Estructuras
-        $categories = [
-            1 => 'Pantallas LED',
-            2 => 'Iluminación',
-            3 => 'Efectos Especiales',
-            4 => 'Estructuras y Pistas',
+        // Asegurar que existan categorías básicas
+        // En lugar de IDs fijos, usamos slugs y obtenemos/creamos las categorías
+        $categoryData = [
+            'pantallas-led' => 'Pantallas LED',
+            'iluminacion' => 'Iluminación',
+            'efectos-especiales' => 'Efectos Especiales',
+            'estructuras-y-pistas' => 'Estructuras y Pistas',
         ];
 
-        // Enable IDENTITY_INSERT for SQL Server
-        $driver = DB::connection()->getDriverName();
-        if ($driver === 'sqlsrv') {
-            DB::statement('SET IDENTITY_INSERT categories ON');
+        $categoryIds = [];
+        foreach ($categoryData as $slug => $name) {
+            $category = DB::table('categories')->where('slug', $slug)->first();
 
-            foreach ($categories as $id => $name) {
-                $slug = \Illuminate\Support\Str::slug($name);
-                $exists = DB::scalar('SELECT COUNT(*) FROM categories WHERE id = ?', [$id]);
-
-                if ($exists) {
-                    DB::statement(
-                        'UPDATE categories SET name = ?, slug = ? WHERE id = ?',
-                        [$name, $slug, $id]
-                    );
-                } else {
-                    DB::statement(
-                        'INSERT INTO categories (id, name, slug) VALUES (?, ?, ?)',
-                        [$id, $name, $slug]
-                    );
-                }
-            }
-
-            DB::statement('SET IDENTITY_INSERT categories OFF');
-        } else {
-            // MySQL/other databases - use normal Query Builder
-            foreach ($categories as $id => $name) {
-                DB::table('categories')->updateOrInsert(
-                    ['id' => $id],
-                    ['name' => $name, 'slug' => \Illuminate\Support\Str::slug($name)]
-                );
+            if (! $category) {
+                $id = DB::table('categories')->insertGetId([
+                    'name' => $name,
+                    'slug' => $slug,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $categoryIds[$slug] = $id;
+            } else {
+                $categoryIds[$slug] = $category->id;
             }
         }
 
+        // Mapeo de category_id antiguo a slug
+        $categoryMapping = [
+            1 => 'pantallas-led',
+            2 => 'iluminacion',
+            3 => 'efectos-especiales',
+            4 => 'estructuras-y-pistas',
+        ];
+
         foreach ($items as $item) {
+            // Obtener el slug de la categoría a partir del ID antiguo
+            $categorySlug = $categoryMapping[$item['category_id']] ?? null;
+            // Obtener el nuevo ID de la categoría usando el slug
+            $newCategoryId = $categoryIds[$categorySlug] ?? null;
+
             DB::table('items')->updateOrInsert(
                 ['slug' => $item['slug']],
                 [
                     'name' => $item['name'],
-                    'category_id' => $item['category_id'],
+                    'category_id' => $newCategoryId,
                     'active' => true,
                     // Generic placeholders for other required fields if any (check migration but mostly nullable/defaults)
                     /*
