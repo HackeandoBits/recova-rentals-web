@@ -50,45 +50,6 @@ class ItemList extends Component
                 ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 50],
                 ['slug' => 'pantalla-led-p3-indoor', 'x' => 80, 'y' => 50],
             ],
-            'combo-002' => [['slug' => 'tarima-modular', 'x' => 50, 'y' => 90], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 40]],
-            'combo-003' => [['slug' => 'cabezal-movil-beam-230', 'x' => 50, 'y' => 20], ['slug' => 'estructura-truss-30x30', 'x' => 80, 'y' => 50]],
-            'combo-004' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 50], ['slug' => 'maquina-de-humo-baja', 'x' => 80, 'y' => 80]],
-            'combo-005' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 90], ['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 20]],
-            // Batch 2
-            'combo-006' => [['slug' => 'tarima-modular', 'x' => 50, 'y' => 80], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 30]],
-            'combo-007' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 80, 'y' => 60]],
-            'combo-008' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 90], ['slug' => 'laser-show-rgb-3w', 'x' => 30, 'y' => 30]],
-            'combo-009' => [['slug' => 'cabezal-movil-beam-230', 'x' => 50, 'y' => 40], ['slug' => 'maquina-de-humo-baja', 'x' => 80, 'y' => 80]],
-            'combo-010' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 50]],
-            // Batch 3
-            'combo-011' => [['slug' => 'bola-de-espejos-50cm', 'x' => 30, 'y' => 20], ['slug' => 'cabezal-movil-wash-led', 'x' => 70, 'y' => 80]],
-            'combo-012' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 50], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 30]],
-            'combo-013' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 30], ['slug' => 'cabezal-movil-wash-led', 'x' => 80, 'y' => 60]],
-            'combo-014' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'efecto-led', 'x' => 50, 'y' => 50]],
-            'combo-015' => [['slug' => 'pistola-co2', 'x' => 30, 'y' => 60], ['slug' => 'canon-de-confetti', 'x' => 70, 'y' => 60]],
-            // Batch 4
-            'combo-016' => [['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 30], ['slug' => 'pantalla-led-p3', 'x' => 60, 'y' => 50]],
-            'combo-017' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'cabezal-movil-wash-led', 'x' => 50, 'y' => 70]],
-            'combo-018' => [['slug' => 'bola-de-espejos-50cm', 'x' => 33, 'y' => 30], ['slug' => 'bola-de-espejos-50cm', 'x' => 66, 'y' => 30]],
-            'combo-019' => [['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 40], ['slug' => 'bola-de-espejos-50cm', 'x' => 60, 'y' => 30]],
-            'combo-020' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 85], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 30]],
-            // Batch 5
-            'combo-021' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 80, 'y' => 30]],
-            'combo-022' => [['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 50], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 80]],
-            'combo-023' => [['slug' => 'bola-de-espejos-50cm', 'x' => 40, 'y' => 25], ['slug' => 'cabezal-movil-wash-led', 'x' => 70, 'y' => 60]],
-            'combo-024' => [['slug' => 'pantalla-led-p3', 'x' => 30, 'y' => 50], ['slug' => 'pista-led-infinity', 'x' => 70, 'y' => 90]],
-            'combo-025' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 60]],
-            // Batch 6
-            'combo-026' => [['slug' => 'pantalla-led-curva', 'x' => 50, 'y' => 50]],
-            'combo-027' => [['slug' => 'bola-de-espejos-50cm', 'x' => 30, 'y' => 20], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 40]],
-            'combo-028' => [['slug' => 'pantalla-led-p3', 'x' => 30, 'y' => 40], ['slug' => 'laser-show-rgb-3w', 'x' => 70, 'y' => 40]],
-            'combo-029' => [['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 30], ['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 60]],
-            'combo-030' => [['slug' => 'letras-gigantes-led', 'x' => 50, 'y' => 70]],
-            // Batch 7
-            'combo-031' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 50], ['slug' => 'tarima-modular', 'x' => 50, 'y' => 80]],
-            'combo-032' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 30]],
-            'combo-033' => [['slug' => 'bola-de-espejos-50cm', 'x' => 40, 'y' => 30], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 50]],
-            'combo-034' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 50], ['slug' => 'maquina-de-humo-baja', 'x' => 50, 'y' => 80]],
         ];
 
         // Configuración de las 3 Categorías

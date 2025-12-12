@@ -11,12 +11,10 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $tree = [
-            'Pantallas' => ['LED Indoor', 'LED Outdoor', 'Proyectores'],
-            'Láseres' => ['Verde', 'RGB', 'Animación'],
-            'Sonido' => ['Parlantes', 'Consolas', 'Micrófonos', 'Accesorios'],
-            'Escenario' => ['Estructuras', 'Tarimas', 'Truss', 'Pistas', 'Decoración'],
-            'Luces' => ['Moving Head', 'PAR LED', 'Strobes', 'Wash Spot'],
-            'Efectos' => ['Atmosféricos', 'Lanzadores', 'Clásicos'],
+            'Pantallas' => ['LED Indoor'],
+            'Láseres' => ['Verde'],
+            'Escenario' => ['Decoración'],
+            'Luces' => ['Moving Head'],
         ];
 
         foreach ($tree as $parentName => $children) {
