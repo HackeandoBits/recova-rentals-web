@@ -6,7 +6,57 @@
     showSpecs: false,
     showPreview: false,
     previewImage: null,
+    // Debug Mode Logic
+    debugMode: false,
+    dragId: null,
+
+    toggleDebug() {
+        this.debugMode = !this.debugMode;
+        if (this.debugMode) alert('MODO DEBUG ACTIVADO: Arrastra los hotspots y copia el código.');
+    },
+
+    handleDrag(e) {
+        if (!this.debugMode || !this.dragId || !this.previewImage) return;
+
+        const container = document.getElementById('preview-container');
+        if (!container) return;
+
+        const rect = container.getBoundingClientRect();
+
+        // Calcular % con mouse relativo
+        let x = ((e.clientX - rect.left) / rect.width) * 100;
+        let y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // Limites 0-100
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+
+        // Redondear
+        x = Math.round(x);
+        y = Math.round(y);
+
+        const idx = this.previewImage.hotspots.findIndex(h => h.item_id === this.dragId);
+        if (idx !== -1) {
+            this.previewImage.hotspots[idx].x = x;
+            this.previewImage.hotspots[idx].y = y;
+        }
+    },
+
+    copyToClipboard() {
+        if (!this.previewImage) return;
+        let text = `'${this.previewImage.combo_slug}' => [\n`;
+        this.previewImage.hotspots.forEach(h => {
+            text += `    ['slug' => '${h.slug}', 'x' => ${h.x}, 'y' => ${h.y}],\n`;
+        });
+        text += `],`;
+
+        navigator.clipboard.writeText(text).then(() => {
+            alert('¡Código PHP copiado al portapapeles!');
+        });
+    },
+
     openModal(id) {
+        if (this.debugMode) return; // Disable clicks in debug mode
         if (this.items[id]) {
             this.selectedItem = this.items[id];
             this.showSpecs = false;
@@ -18,11 +68,12 @@
         setTimeout(() => { this.selectedItem = null; }, 300);
     },
     openPreview(image) {
-        this.previewImage = image;
+        this.previewImage = JSON.parse(JSON.stringify(image)); // Clone to avoid ref issues
         this.showPreview = true;
     },
     closePreview() {
         this.showPreview = false;
+        this.dragId = null;
         setTimeout(() => { this.previewImage = null; }, 300);
     }
 }" @keydown.escape.window="closeModal(); closePreview()">
@@ -126,9 +177,9 @@
                         {{-- 2. Track --}}
                         <div class="flex"
                             :style="`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `"
                             @transitionend="handleTransitionEnd()">
                             {{-- 3. Slides reales --}}
                             @foreach ($category['images'] as $image)
@@ -398,7 +449,36 @@
     --}}
     <div x-show="showPreview" style="display: none;"
         class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60]" x-transition.opacity
-        @click="closePreview()">
+        @click="closePreview()" @keydown.window.alt.d.prevent="toggleDebug()" {{-- Atajo Alt + D --}}
+        @mousemove.window="handleDrag($event)" @mouseup.window="dragId = null">
+
+        {{-- DEBUG PANEL --}}
+        <div x-show="debugMode"
+            class="fixed top-4 left-4 bg-black/80 text-white p-4 rounded-lg z-[100] w-64 text-xs font-mono"
+            @click.stop>
+            <h3 class="font-bold border-b border-gray-600 mb-2 pb-1">MODO DEBUG (Alt+D)</h3>
+            <p class="mb-2 text-gray-400">Arrastra los puntos y copia:</p>
+
+            <template x-if="previewImage">
+                <div class="space-y-1 mb-3">
+                    <template x-for="hotspot in previewImage.hotspots" :key="hotspot.item_id">
+                        <div class="flex justify-between hover:bg-white/10 p-1 rounded">
+                            <span x-text="hotspot.slug.substring(0,10) + '...'"></span>
+                            <span>x:<span x-text="hotspot.x" class="text-green-400"></span> y:<span
+                                    x-text="hotspot.y" class="text-yellow-400"></span></span>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <button @click="copyToClipboard()"
+                class="w-full bg-purple-600 hover:bg-purple-700 py-2 rounded text-white font-bold transition">
+                COPIAR PHP ARRAY
+            </button>
+            <div class="mt-2 text-center text-gray-500 text-[10px]">
+                Recargar página pierdes cambios.
+            </div>
+        </div>
 
         <div class="relative w-full h-full flex items-center justify-center p-4">
             {{-- Botón Cerrar --}}
@@ -411,32 +491,44 @@
             </button>
 
             <template x-if="previewImage">
-                <div class="relative inline-block max-w-full max-h-screen" @click.stop>
+                <div id="preview-container" class="relative inline-block max-w-full max-h-screen select-none"
+                    @click.stop>
                     <img :src="previewImage.image_url" :alt="previewImage.title"
-                        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+                        class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl pointer-events-none" />
 
                     {{-- Hotspots en Preview --}}
                     <template x-for="hotspot in previewImage.hotspots" :key="hotspot.item_id">
                         <button type="button" @click="openModal(hotspot.item_id)"
-                            class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot"
+                            @mousedown.prevent.stop="if(debugMode) { dragId = hotspot.item_id; }"
+                            class="absolute transform -translate-x-1/2 -translate-y-1/2 group/hotspot transition-none"
+                            :class="{ 'cursor-move z-50': debugMode, 'cursor-pointer': !debugMode }"
                             :style="`left: ${hotspot.x}%; top: ${hotspot.y}%;`">
-                            <div class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150">
+
+                            <div class="absolute inset-0 rounded-full animate-ping bg-purple-400/50 scale-150"
+                                x-show="!debugMode">
                             </div>
-                            <div
-                                class="relative w-10 h-10 md:w-14 md:h-14 bg-purple-600/30 backdrop-blur-sm rounded-full border-2 border-white/30
-                                        flex items-center justify-center text-white shadow-lg
-                                        hover:scale-110 transition-all duration-300">
+
+                            <div class="relative w-10 h-10 md:w-14 md:h-14 backdrop-blur-sm rounded-full border-2 
+                                        flex items-center justify-center text-white shadow-lg transition-all duration-300"
+                                :class="debugMode ? 'bg-red-600/50 border-red-400' :
+                                    'bg-purple-600/30 border-white/30 hover:scale-110'">
                                 <svg class="w-5 h-5 md:w-8 md:h-8" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                 </svg>
+
+                                {{-- Debug Coords --}}
+                                <div x-show="debugMode"
+                                    class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] bg-black text-white px-1 rounded whitespace-nowrap">
+                                    <span x-text="hotspot.x"></span>,<span x-text="hotspot.y"></span>
+                                </div>
                             </div>
-                            <div
-                                class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 
+                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 
                                         bg-black/80 backdrop-blur-sm text-white text-sm 
                                         rounded-lg opacity-0 group-hover/hotspot:opacity-100 
-                                        transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+                                        transition-opacity duration-300 whitespace-nowrap pointer-events-none"
+                                x-show="!debugMode">
                                 <span x-text="hotspot.name"></span>
                             </div>
                         </button>

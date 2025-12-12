@@ -45,51 +45,51 @@ class ItemList extends Component
         $hotspotsMap = [
             // Batch 1
             'combo-001' => [
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 30],
-                ['slug' => 'laser-verde-pro-3w', 'x' => 50, 'y' => 80],
-                ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 50],
-                ['slug' => 'pantalla-led-p3-indoor', 'x' => 80, 'y' => 50],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 51, 'y' => 26],
+                ['slug' => 'laser-verde-pro-3w', 'x' => 16, 'y' => 66],
+                ['slug' => 'cluster-esferas-de-espejos', 'x' => 38, 'y' => 20],
+                ['slug' => 'pantalla-led-p3-indoor', 'x' => 40, 'y' => 59],
             ],
             'combo-002' => [
-                ['slug' => 'laser-show-azul-3w', 'x' => 50, 'y' => 20],
-                ['slug' => 'circulo-led-neon-flex', 'x' => 50, 'y' => 90],
-                ['slug' => 'maquina-de-humo-haze', 'x' => 80, 'y' => 80],
+                ['slug' => 'laser-show-azul-3w', 'x' => 19, 'y' => 14],
+                ['slug' => 'circulo-led-neon-flex', 'x' => 51, 'y' => 78],
+                ['slug' => 'maquina-de-humo-haze', 'x' => 17, 'y' => 45],
             ],
             'combo-003' => [
-                ['slug' => 'tubos-led-pixel', 'x' => 50, 'y' => 50],
-                ['slug' => 'estructura-truss-negra', 'x' => 50, 'y' => 20],
+                ['slug' => 'tubos-led-pixel', 'x' => 48, 'y' => 24],
+                ['slug' => 'estructura-truss-negra', 'x' => 33, 'y' => 44],
             ],
             'combo-004' => [
-                ['slug' => 'maquina-fuego-frio', 'x' => 20, 'y' => 80],
-                ['slug' => 'pantalla-led-poster', 'x' => 80, 'y' => 50],
+                ['slug' => 'maquina-fuego-frio', 'x' => 8, 'y' => 71],
+                ['slug' => 'pantalla-led-poster', 'x' => 62, 'y' => 46],
             ],
             'combo-005' => [
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 30],
-                ['slug' => 'banadores-led', 'x' => 50, 'y' => 90],
-                ['slug' => 'pantalla-led-de-fondo', 'x' => 50, 'y' => 50],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 27, 'y' => 55],
+                ['slug' => 'banadores-led', 'x' => 77, 'y' => 50],
+                ['slug' => 'pantalla-led-de-fondo', 'x' => 47, 'y' => 50],
             ],
             // Batch 2
             'combo-006' => [
-                ['slug' => 'arana-cristal-estilo-imperio', 'x' => 50, 'y' => 30],
-                ['slug' => 'pantalla-led-totem-1x4', 'x' => 80, 'y' => 50],
-                ['slug' => 'techo-de-esferas-fondo', 'x' => 50, 'y' => 20],
+                ['slug' => 'aranas-de-cristal-estilo-imperio', 'x' => 57, 'y' => 31],
+                ['slug' => 'pantalla-led-totem-1x4', 'x' => 71, 'y' => 54],
+                ['slug' => 'techo-de-esferas-fondo', 'x' => 48, 'y' => 8],
             ],
             'combo-007' => [
-                ['slug' => 'sistema-laser-array-rojo', 'x' => 50, 'y' => 30],
-                ['slug' => 'pantalla-led-segmentada', 'x' => 50, 'y' => 50],
+                ['slug' => 'sistema-laser-array-rojo', 'x' => 24, 'y' => 44],
+                ['slug' => 'pantalla-led-segmentada', 'x' => 47, 'y' => 49],
             ],
             'combo-008' => [
-                ['slug' => 'matriz-de-esferas-de-espejos', 'x' => 50, 'y' => 20],
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 80, 'y' => 50],
+                ['slug' => 'matriz-de-esferas-de-espejos', 'x' => 46, 'y' => 48],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 52, 'y' => 26],
             ],
             'combo-009' => [
-                ['slug' => 'truss-circular-ring', 'x' => 50, 'y' => 30],
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 40],
-                ['slug' => 'consola-de-iluminacion', 'x' => 50, 'y' => 80],
+                ['slug' => 'truss-circular-ring', 'x' => 30, 'y' => 37],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 53, 'y' => 52],
+                ['slug' => 'consola-de-iluminacion', 'x' => 59, 'y' => 73],
             ],
             'combo-010' => [
-                ['slug' => 'pantalla-led-p3-split', 'x' => 30, 'y' => 50],
-                ['slug' => 'cabezal-movil-hibrido', 'x' => 70, 'y' => 50],
+                ['slug' => 'pantalla-led-p3-split', 'x' => 35, 'y' => 64],
+                ['slug' => 'cabezal-movil-hibrido', 'x' => 66, 'y' => 38],
             ],
             // Batch 3
             'combo-011' => [
@@ -302,6 +302,7 @@ class ItemList extends Component
                         $finalImage['hotspots'][] = [
                             'item_id' => $item->id,
                             'name' => $item->name,
+                            'slug' => $hotspot['slug'], // Agregamos Slug para modo debug
                             'x' => $hotspot['x'],
                             'y' => $hotspot['y'],
                         ];
