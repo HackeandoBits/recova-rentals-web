@@ -50,6 +50,151 @@ class ItemList extends Component
                 ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 50],
                 ['slug' => 'pantalla-led-p3-indoor', 'x' => 80, 'y' => 50],
             ],
+            'combo-002' => [
+                ['slug' => 'laser-show-azul-3w', 'x' => 50, 'y' => 20],
+                ['slug' => 'circulo-led-neon-flex', 'x' => 50, 'y' => 90],
+                ['slug' => 'maquina-de-humo-haze', 'x' => 80, 'y' => 80],
+            ],
+            'combo-003' => [
+                ['slug' => 'tubos-led-pixel', 'x' => 50, 'y' => 50],
+                ['slug' => 'estructura-truss-negra', 'x' => 50, 'y' => 20],
+            ],
+            'combo-004' => [
+                ['slug' => 'maquina-fuego-frio', 'x' => 20, 'y' => 80],
+                ['slug' => 'pantalla-led-poster', 'x' => 80, 'y' => 50],
+            ],
+            'combo-005' => [
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 30],
+                ['slug' => 'banadores-led', 'x' => 50, 'y' => 90],
+                ['slug' => 'pantalla-led-de-fondo', 'x' => 50, 'y' => 50],
+            ],
+            // Batch 2
+            'combo-006' => [
+                ['slug' => 'arana-cristal-estilo-imperio', 'x' => 50, 'y' => 30],
+                ['slug' => 'pantalla-led-totem-1x4', 'x' => 80, 'y' => 50],
+                ['slug' => 'techo-de-esferas-fondo', 'x' => 50, 'y' => 20],
+            ],
+            'combo-007' => [
+                ['slug' => 'sistema-laser-array-rojo', 'x' => 50, 'y' => 30],
+                ['slug' => 'pantalla-led-segmentada', 'x' => 50, 'y' => 50],
+            ],
+            'combo-008' => [
+                ['slug' => 'matriz-de-esferas-de-espejos', 'x' => 50, 'y' => 20],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 80, 'y' => 50],
+            ],
+            'combo-009' => [
+                ['slug' => 'truss-circular-ring', 'x' => 50, 'y' => 30],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 40],
+                ['slug' => 'consola-de-iluminacion', 'x' => 50, 'y' => 80],
+            ],
+            'combo-010' => [
+                ['slug' => 'pantalla-led-p3-split', 'x' => 30, 'y' => 50],
+                ['slug' => 'cabezal-movil-hibrido', 'x' => 70, 'y' => 50],
+            ],
+            // Batch 3
+            'combo-011' => [
+                ['slug' => 'esferas-de-espejos-mix', 'x' => 50, 'y' => 50],
+                ['slug' => 'pin-spot-led-beam', 'x' => 80, 'y' => 20],
+            ],
+            'combo-012' => [
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 20, 'y' => 30],
+                ['slug' => 'pantalla-led-escenario-completo', 'x' => 50, 'y' => 50],
+            ],
+            'combo-013' => [
+                ['slug' => 'banadores-led', 'x' => 50, 'y' => 80],
+                ['slug' => 'hileras-de-esferas', 'x' => 50, 'y' => 30],
+            ],
+            'combo-014' => [
+                ['slug' => 'estructura-rectangular-de-esferas', 'x' => 50, 'y' => 20],
+                ['slug' => 'aranas-colgantes-5-brazos', 'x' => 50, 'y' => 50],
+            ],
+            'combo-015' => [
+                ['slug' => 'pistola-de-co2', 'x' => 30, 'y' => 60],
+                ['slug' => 'cotillon-luminoso', 'x' => 70, 'y' => 60],
+            ],
+            // Batch 4
+            'combo-016' => [
+                ['slug' => 'paneles-led-techo', 'x' => 50, 'y' => 20],
+                ['slug' => 'cabezal-movil-beam-verde', 'x' => 50, 'y' => 50],
+            ],
+            'combo-017' => [
+                ['slug' => 'cabezal-movil-beam-gold', 'x' => 50, 'y' => 20],
+                ['slug' => 'pantallas-led-diseno', 'x' => 50, 'y' => 80],
+            ],
+            'combo-018' => [
+                ['slug' => 'grid-de-esferas', 'x' => 50, 'y' => 20],
+                ['slug' => 'banadores-led-high-power', 'x' => 50, 'y' => 80],
+            ],
+            'combo-019' => [
+                ['slug' => 'esferas-colgantes', 'x' => 50, 'y' => 30],
+                ['slug' => 'sistema-de-rigging', 'x' => 50, 'y' => 10],
+            ],
+            'combo-020' => [
+                ['slug' => 'cabezal-movil-beam-mix-colores', 'x' => 50, 'y' => 50],
+                ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 20],
+            ],
+            // Batch 5
+            'combo-021' => [
+                ['slug' => 'pantallas-led-totems-separadas', 'x' => 50, 'y' => 50],
+                ['slug' => 'iluminacion-wash-azul', 'x' => 50, 'y' => 80],
+            ],
+            'combo-022' => [
+                ['slug' => 'laser-grafico-verde', 'x' => 50, 'y' => 40],
+                ['slug' => 'iluminacion-perimetral', 'x' => 50, 'y' => 80],
+            ],
+            'combo-023' => [
+                ['slug' => 'techo-led-pixel', 'x' => 50, 'y' => 20],
+                ['slug' => 'cabezal-beam-ambar', 'x' => 50, 'y' => 80],
+            ],
+            'combo-024' => [
+                ['slug' => 'truss-circular-ring', 'x' => 50, 'y' => 30],
+                ['slug' => 'consola-de-iluminacion', 'x' => 30, 'y' => 80],
+                ['slug' => 'pista-ajedrezada', 'x' => 70, 'y' => 80],
+            ],
+            // Batch 6
+            'combo-025' => [
+                ['slug' => 'paneles-led-techo-diamante', 'x' => 50, 'y' => 20],
+                ['slug' => 'tubos-led-verticales', 'x' => 80, 'y' => 50],
+                ['slug' => 'cabezal-movil-beam-violeta', 'x' => 20, 'y' => 50],
+            ],
+            'combo-026' => [
+                ['slug' => 'letras-corporeas-led-love', 'x' => 50, 'y' => 50],
+                ['slug' => 'iluminacion-decorativa-guirnaldas', 'x' => 50, 'y' => 20],
+            ],
+            'combo-027' => [
+                ['slug' => 'pared-led-gran-formato', 'x' => 50, 'y' => 50],
+                ['slug' => 'pista-ajedrezada', 'x' => 50, 'y' => 90],
+            ],
+            'combo-028' => [
+                ['slug' => 'matriz-esferas-techo', 'x' => 50, 'y' => 20],
+                ['slug' => 'aranas-de-estilo-chandelier', 'x' => 50, 'y' => 40],
+            ],
+            'combo-029' => [
+                ['slug' => 'pantalla-led-dividida-stripes', 'x' => 50, 'y' => 50],
+                ['slug' => 'laser-verde-show', 'x' => 20, 'y' => 50],
+            ],
+            'combo-030' => [
+                ['slug' => 'pantalla-led-techo-inclinada', 'x' => 50, 'y' => 20],
+                ['slug' => 'tarimas-escenario-dj', 'x' => 50, 'y' => 80],
+            ],
+            // Batch 7
+            'combo-031' => [
+                ['slug' => 'sistema-laser-azul-tunel', 'x' => 50, 'y' => 50],
+                ['slug' => 'esferas-de-espejo-reflectoras', 'x' => 20, 'y' => 50],
+            ],
+            'combo-032' => [
+                ['slug' => 'estructura-escenario-layher', 'x' => 50, 'y' => 50],
+                ['slug' => 'mix-pantallas-custom', 'x' => 50, 'y' => 30],
+                ['slug' => 'array-iluminacion-beam-wash', 'x' => 50, 'y' => 10],
+            ],
+            'combo-033' => [
+                ['slug' => 'bastidor-estructura-movil', 'x' => 50, 'y' => 50],
+                ['slug' => 'cortina-de-esferas', 'x' => 50, 'y' => 50],
+            ],
+            'combo-034' => [
+                ['slug' => 'grid-esferas-masivo', 'x' => 50, 'y' => 20],
+                ['slug' => 'iluminacion-beam-cruzada', 'x' => 50, 'y' => 80],
+            ],
         ];
 
         // Configuración de las 3 Categorías
