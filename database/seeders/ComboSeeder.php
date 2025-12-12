@@ -10,7 +10,7 @@ class ComboSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Definition of Combos (34 Batches)
+        // 1. Definition of Combos (31 Batches)
         $combos = [
             ['slug' => 'combo-001', 'name' => 'Pack Pista Láser Infinity'],
             ['slug' => 'combo-002', 'name' => 'Pack Efecto Vortex Blue'],
@@ -20,32 +20,31 @@ class ComboSeeder extends Seeder
             ['slug' => 'combo-006', 'name' => 'Pack Gala Crystal Palace'],
             ['slug' => 'combo-007', 'name' => 'Pack Red Storm Laser'],
             ['slug' => 'combo-008', 'name' => 'Techo Matrix Disco Gold'],
-            ['slug' => 'combo-009', 'name' => 'Estructura Circular 360'],
+            ['slug' => 'combo-009', 'name' => 'Set Control & Truss Circular'],
             ['slug' => 'combo-010', 'name' => 'Escenario Wedding Amber'],
             ['slug' => 'combo-011', 'name' => 'Efecto Golden Starburst'],
             ['slug' => 'combo-012', 'name' => 'Show Blue Rain'],
             ['slug' => 'combo-013', 'name' => 'Ambientación Red Lounge'],
-            ['slug' => 'combo-014', 'name' => 'Techo Imperial Pink'],
+            // New 014 (Was 026)
+            ['slug' => 'combo-014', 'name' => 'Techo Espejos & Arañas (Cold)'],
             ['slug' => 'combo-015', 'name' => 'Kit Fiesta FX & CO2'],
             ['slug' => 'combo-016', 'name' => 'Techo Digital Sky Club'],
-            ['slug' => 'combo-017', 'name' => 'Escenario Gold Waves'],
-            ['slug' => 'combo-018', 'name' => 'Pista Red Galaxy'],
-            ['slug' => 'combo-019', 'name' => 'Estructura Matrix Wave'],
-            ['slug' => 'combo-020', 'name' => 'Show Beam Multicolor'],
-            ['slug' => 'combo-021', 'name' => 'Set Blue Winter'],
-            ['slug' => 'combo-022', 'name' => 'Pack Láser Show Vip'],
-            ['slug' => 'combo-023', 'name' => 'Techo Pixel Amber'],
-            ['slug' => 'combo-024', 'name' => 'Set Control & Truss Circular'],
-            ['slug' => 'combo-025', 'name' => 'Sky Diamond & Disco'],
-            ['slug' => 'combo-026', 'name' => 'Signo LOVE Video'],
-            ['slug' => 'combo-027', 'name' => 'Escenario Cinema Wall'],
-            ['slug' => 'combo-028', 'name' => 'Techo Espejos & Arañas (Cold)'],
-            ['slug' => 'combo-029', 'name' => 'Set Split Screen & Laser'],
-            ['slug' => 'combo-030', 'name' => 'Cabina DJ Overhead Screen'],
-            ['slug' => 'combo-031', 'name' => 'Túnel Láser Blue Vortex'],
-            ['slug' => 'combo-032', 'name' => 'Festival Main Stage'],
-            ['slug' => 'combo-033', 'name' => 'Cortina Esferas (Backdrop)'],
-            ['slug' => 'combo-034', 'name' => 'Techo Imperial Royal Blue'],
+            ['slug' => 'combo-017', 'name' => 'Pista Red Galaxy'],
+            ['slug' => 'combo-018', 'name' => 'Estructura Matrix Wave'],
+            ['slug' => 'combo-019', 'name' => 'Show Beam Multicolor'],
+            ['slug' => 'combo-020', 'name' => 'Set Blue Winter'],
+            ['slug' => 'combo-021', 'name' => 'Pack Láser Show Vip'],
+            ['slug' => 'combo-022', 'name' => 'Techo Pixel Amber'],
+            ['slug' => 'combo-023', 'name' => 'Sky Diamond & Disco'],
+            ['slug' => 'combo-024', 'name' => 'Signo LOVE Video'],
+            ['slug' => 'combo-025', 'name' => 'Escenario Cinema Wall'],
+            // Old 026 Removed/Moved to 014
+            ['slug' => 'combo-026', 'name' => 'Set Split Screen & Laser'], // Old 027
+            ['slug' => 'combo-027', 'name' => 'Cabina DJ Overhead Screen'], // Old 028
+            ['slug' => 'combo-028', 'name' => 'Túnel Láser Blue Vortex'], // Old 029
+            ['slug' => 'combo-029', 'name' => 'Festival Main Stage'], // Old 030
+            ['slug' => 'combo-030', 'name' => 'Cortina Esferas (Backdrop)'], // Old 031
+            ['slug' => 'combo-031', 'name' => 'Techo Imperial Royal Blue'], // Old 032
         ];
 
         foreach ($combos as $data) {
@@ -63,35 +62,34 @@ class ComboSeeder extends Seeder
             'combo-003' => ['tubos-led-pixel', 'estructura-truss-negra'],
             'combo-004' => ['maquina-fuego-frio', 'pantalla-led-poster'],
             'combo-005' => ['cabezal-movil-beam-7r', 'banadores-led', 'pantalla-led-de-fondo'],
-            'combo-006' => ['arana-cristal-estilo-imperio', 'pantalla-led-totem-1x4', 'techo-de-esferas-fondo'],
+            'combo-006' => ['aranas-de-cristal-estilo-imperio', 'pantalla-led-totem-1x4', 'techo-de-esferas-fondo'],
             'combo-007' => ['sistema-laser-array-rojo', 'pantalla-led-segmentada'],
             'combo-008' => ['matriz-de-esferas-de-espejos', 'cabezal-movil-beam-7r'],
-            'combo-009' => ['truss-circular-ring', 'cabezal-movil-beam-7r', 'consola-de-iluminacion'],
+            'combo-009' => ['truss-circular-ring', 'consola-de-iluminacion', 'cabezal-movil-beam-7r'],
             'combo-010' => ['pantalla-led-p3-split', 'cabezal-movil-hibrido'],
             'combo-011' => ['esferas-de-espejos-mix', 'pin-spot-led-beam'],
             'combo-012' => ['cabezal-movil-beam-7r', 'pantalla-led-escenario-completo'],
-            'combo-013' => ['banadores-led', 'hileras-de-esferas'],
-            'combo-014' => ['estructura-rectangular-de-esferas', 'aranas-colgantes-5-brazos'],
+            'combo-013' => ['cabezal-movil-wash', 'hileras-de-esferas'],
+            // New 014 (Old 026 Items)
+            'combo-014' => ['matriz-esferas-techo', 'aranas-de-estilo-chandelier'],
             'combo-015' => ['pistola-de-co2', 'cotillon-luminoso'],
             'combo-016' => ['paneles-led-techo', 'cabezal-movil-beam-verde'],
-            'combo-017' => ['cabezal-movil-beam-gold', 'pantallas-led-diseno'],
-            'combo-018' => ['grid-de-esferas', 'banadores-led-high-power'],
-            'combo-019' => ['esferas-colgantes', 'sistema-de-rigging'],
-            'combo-020' => ['cabezal-movil-beam-mix-colores', 'cluster-esferas-de-espejos'],
-            'combo-021' => ['pantallas-led-totems-separadas', 'iluminacion-wash-azul'],
-            'combo-022' => ['laser-grafico-verde', 'iluminacion-perimetral'],
-            'combo-023' => ['techo-led-pixel', 'cabezal-beam-ambar'],
-            'combo-024' => ['truss-circular-ring', 'consola-de-iluminacion', 'pista-ajedrezada'],
-            'combo-025' => ['paneles-led-techo-diamante', 'tubos-led-verticales', 'cabezal-movil-beam-violeta'],
-            'combo-026' => ['letras-corporeas-led-love', 'iluminacion-decorativa-guirnaldas'],
-            'combo-027' => ['pared-led-gran-formato', 'pista-ajedrezada'],
-            'combo-028' => ['matriz-esferas-techo', 'aranas-de-estilo-chandelier'],
-            'combo-029' => ['pantalla-led-dividida-stripes', 'laser-verde-show'],
-            'combo-030' => ['pantalla-led-techo-inclinada', 'tarimas-escenario-dj'],
-            'combo-031' => ['sistema-laser-azul-tunel', 'esferas-de-espejo-reflectoras'],
-            'combo-032' => ['estructura-escenario-layher', 'mix-pantallas-custom', 'array-iluminacion-beam-wash'],
-            'combo-033' => ['bastidor-estructura-movil', 'cortina-de-esferas'],
-            'combo-034' => ['grid-esferas-masivo', 'iluminacion-beam-cruzada'],
+            'combo-017' => ['grid-de-esferas', 'banadores-led-high-power'],
+            'combo-018' => ['esferas-colgantes', 'sistema-de-rigging'],
+            'combo-019' => ['cabezal-movil-beam-mix-colores', 'cluster-esferas-de-espejos'],
+            'combo-020' => ['pantallas-led-totems-separadas', 'iluminacion-wash-azul'],
+            'combo-021' => ['laser-grafico-verde', 'iluminacion-perimetral'],
+            'combo-022' => ['techo-led-pixel', 'cabezal-beam-ambar'],
+            'combo-023' => ['paneles-led-techo-diamante', 'tubos-led-verticales', 'cabezal-movil-beam-violeta'],
+            'combo-024' => ['letras-corporeas-led-love', 'iluminacion-decorativa-guirnaldas'],
+            'combo-025' => ['pared-led-gran-formato', 'cabezal-movil-beam-7r'],
+            // Old 026 REMOVED, shifting up
+            'combo-026' => ['pantalla-led-dividida-stripes', 'laser-verde-show'], // Old 027
+            'combo-027' => ['pantalla-led-techo-inclinada', 'tarimas-escenario-dj'], // Old 028
+            'combo-028' => ['sistema-laser-azul-tunel', 'esferas-de-espejo-reflectoras'], // Old 029
+            'combo-029' => ['estructura-escenario-layher', 'mix-pantallas-custom', 'array-iluminacion-beamwash'], // Old 030
+            'combo-030' => ['bastidor-estructura-movil', 'cortina-de-esferas'], // Old 031
+            'combo-031' => ['grid-esferas-masivo', 'iluminacion-beam-cruzada'], // Old 032
         ];
 
         // 3. Sync Logic

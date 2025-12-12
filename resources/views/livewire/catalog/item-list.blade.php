@@ -6,6 +6,10 @@
     showSpecs: false,
     showPreview: false,
     previewImage: null,
+    // Navigation Logic
+    previewCategoryImages: [],
+    previewIndex: 0,
+
     // Debug Mode Logic
     debugMode: false,
     dragId: null,
@@ -13,6 +17,24 @@
     toggleDebug() {
         this.debugMode = !this.debugMode;
         if (this.debugMode) alert('MODO DEBUG ACTIVADO: Arrastra los hotspots y copia el código.');
+    },
+
+    nextPreview() {
+        if (!this.showPreview || this.previewCategoryImages.length === 0) return;
+        this.previewIndex = (this.previewIndex + 1) % this.previewCategoryImages.length;
+        this.updatePreviewImage();
+    },
+
+    prevPreview() {
+        if (!this.showPreview || this.previewCategoryImages.length === 0) return;
+        this.previewIndex = (this.previewIndex - 1 + this.previewCategoryImages.length) % this.previewCategoryImages.length;
+        this.updatePreviewImage();
+    },
+
+    updatePreviewImage() {
+        const nextImg = this.previewCategoryImages[this.previewIndex];
+        this.previewImage = JSON.parse(JSON.stringify(nextImg));
+        this.dragId = null;
     },
 
     handleDrag(e) {
@@ -67,14 +89,21 @@
         this.showModal = false;
         setTimeout(() => { this.selectedItem = null; }, 300);
     },
-    openPreview(image) {
-        this.previewImage = JSON.parse(JSON.stringify(image)); // Clone to avoid ref issues
+    openPreview(image, allImages = []) {
+        this.previewCategoryImages = allImages;
+        this.previewIndex = allImages.findIndex(img => img.id === image.id);
+        if (this.previewIndex === -1) this.previewIndex = 0;
+
+        this.updatePreviewImage();
         this.showPreview = true;
     },
     closePreview() {
         this.showPreview = false;
         this.dragId = null;
-        setTimeout(() => { this.previewImage = null; }, 300);
+        setTimeout(() => {
+            this.previewImage = null;
+            this.previewCategoryImages = [];
+        }, 300);
     }
 }" @keydown.escape.window="closeModal(); closePreview()">
     {{-- Intro moderna con menos espaciado --}}
@@ -177,9 +206,9 @@
                         {{-- 2. Track --}}
                         <div class="flex"
                             :style="`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transform: translateX(-${currentSlide * (100 / itemsVisible)}%);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                transition: ${isTransitioning ? 'transform 500ms ease-in-out' : 'none'};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `"
                             @transitionend="handleTransitionEnd()">
                             {{-- 3. Slides reales --}}
                             @foreach ($category['images'] as $image)
@@ -191,7 +220,7 @@
                                         </h4>
 
                                         <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image overflow-hidden"
-                                            @click="openPreview(@js($image))">
+                                            @click="openPreview(@js($image), @js($category['images']))">
                                             <img src="{{ $image['image_url'] }}" alt="{{ $image['title'] }}"
                                                 class="w-full h-full object-cover transition duration-500 group-hover/image:scale-110" />
                                             <div
@@ -255,7 +284,7 @@
                                             </h4>
 
                                             <div class="relative w-full h-[60vh] md:h-[70vh] bg-gray-900 border border-gray-700 cursor-pointer group/image overflow-hidden"
-                                                @click="openPreview(@js($cloneImage))">
+                                                @click="openPreview(@js($cloneImage), @js($category['images']))">
                                                 <img src="{{ $cloneImage['image_url'] }}"
                                                     alt="{{ $cloneImage['title'] }}"
                                                     class="w-full h-full object-cover transition duration-500 group-hover/image:scale-105" />
@@ -449,7 +478,8 @@
     --}}
     <div x-show="showPreview" style="display: none;"
         class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60]" x-transition.opacity
-        @click="closePreview()" @keydown.window.alt.d.prevent="toggleDebug()" {{-- Atajo Alt + D --}}
+        @click="closePreview()" @keydown.window.alt.d.prevent="toggleDebug()"
+        @keydown.window.arrow-right.prevent="nextPreview()" @keydown.window.arrow-left.prevent="prevPreview()"
         @mousemove.window="handleDrag($event)" @mouseup.window="dragId = null">
 
         {{-- DEBUG PANEL --}}
@@ -490,11 +520,40 @@
                 </svg>
             </button>
 
+            <!-- Flecha Izquierda -->
+            <button type="button" @click.stop="prevPreview()"
+                class="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-black/50 text-white/70 rounded-full hover:bg-white/20 hover:text-white transition">
+                <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <!-- Flecha Derecha -->
+            <button type="button" @click.stop="nextPreview()"
+                class="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-black/50 text-white/70 rounded-full hover:bg-white/20 hover:text-white transition">
+                <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
+
             <template x-if="previewImage">
                 <div id="preview-container" class="relative inline-block max-w-full max-h-screen select-none"
                     @click.stop>
                     <img :src="previewImage.image_url" :alt="previewImage.title"
                         class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl pointer-events-none" />
+
+                    {{-- Botón Agregar Combo (En Preview) --}}
+                    <div class="absolute top-4 right-4 z-50">
+                        <button @click.stop="$store.cart.addCombo(previewImage.combo_items)"
+                            class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2 px-4 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+                            title="Agregar todos los items de este combo">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Agregar Combo
+                        </button>
+                    </div>
 
                     {{-- Hotspots en Preview --}}
                     <template x-for="hotspot in previewImage.hotspots" :key="hotspot.item_id">

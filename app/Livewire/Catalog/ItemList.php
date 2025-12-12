@@ -82,10 +82,11 @@ class ItemList extends Component
                 ['slug' => 'matriz-de-esferas-de-espejos', 'x' => 46, 'y' => 48],
                 ['slug' => 'cabezal-movil-beam-7r', 'x' => 52, 'y' => 26],
             ],
+            // New 009 (Copy of Old 023)
             'combo-009' => [
-                ['slug' => 'truss-circular-ring', 'x' => 30, 'y' => 37],
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 53, 'y' => 52],
-                ['slug' => 'consola-de-iluminacion', 'x' => 59, 'y' => 73],
+                ['slug' => 'truss-circular-ring', 'x' => 39, 'y' => 36],
+                ['slug' => 'consola-de-iluminacion', 'x' => 59, 'y' => 75],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 31, 'y' => 48],
             ],
             'combo-010' => [
                 ['slug' => 'pantalla-led-p3-split', 'x' => 35, 'y' => 64],
@@ -94,130 +95,118 @@ class ItemList extends Component
             // Batch 3
             'combo-011' => [
                 ['slug' => 'esferas-de-espejos-mix', 'x' => 50, 'y' => 50],
-                ['slug' => 'pin-spot-led-beam', 'x' => 80, 'y' => 20],
+                ['slug' => 'pin-spot-led-beam', 'x' => 90, 'y' => 23],
             ],
             'combo-012' => [
-                ['slug' => 'cabezal-movil-beam-7r', 'x' => 20, 'y' => 30],
-                ['slug' => 'pantalla-led-escenario-completo', 'x' => 50, 'y' => 50],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 29, 'y' => 48],
+                ['slug' => 'pantalla-led-escenario-completo', 'x' => 51, 'y' => 50],
             ],
             'combo-013' => [
-                ['slug' => 'banadores-led', 'x' => 50, 'y' => 80],
-                ['slug' => 'hileras-de-esferas', 'x' => 50, 'y' => 30],
+                ['slug' => 'cabezal-movil-wash', 'x' => 84, 'y' => 40],
+                ['slug' => 'hileras-de-esferas', 'x' => 45, 'y' => 29],
             ],
+            // New 014 (Old 026 Items, Old 014 Coords)
             'combo-014' => [
-                ['slug' => 'estructura-rectangular-de-esferas', 'x' => 50, 'y' => 20],
-                ['slug' => 'aranas-colgantes-5-brazos', 'x' => 50, 'y' => 50],
+                ['slug' => 'matriz-esferas-techo', 'x' => 46, 'y' => 36], // Was 'estructura-rectangular...'
+                ['slug' => 'aranas-de-estilo-chandelier', 'x' => 79, 'y' => 42], // Was 'aranas-colgantes...'
             ],
             'combo-015' => [
-                ['slug' => 'pistola-de-co2', 'x' => 30, 'y' => 60],
-                ['slug' => 'cotillon-luminoso', 'x' => 70, 'y' => 60],
+                ['slug' => 'pistola-de-co2', 'x' => 38, 'y' => 37],
+                ['slug' => 'cotillon-luminoso', 'x' => 71, 'y' => 31],
             ],
             // Batch 4
             'combo-016' => [
-                ['slug' => 'paneles-led-techo', 'x' => 50, 'y' => 20],
-                ['slug' => 'cabezal-movil-beam-verde', 'x' => 50, 'y' => 50],
+                ['slug' => 'paneles-led-techo', 'x' => 48, 'y' => 15],
+                ['slug' => 'cabezal-movil-beam-verde', 'x' => 37, 'y' => 16],
             ],
             'combo-017' => [
-                ['slug' => 'cabezal-movil-beam-gold', 'x' => 50, 'y' => 20],
-                ['slug' => 'pantallas-led-diseno', 'x' => 50, 'y' => 80],
+                ['slug' => 'grid-de-esferas', 'x' => 61, 'y' => 32],
+                ['slug' => 'banadores-led-high-power', 'x' => 66, 'y' => 50],
             ],
             'combo-018' => [
-                ['slug' => 'grid-de-esferas', 'x' => 50, 'y' => 20],
-                ['slug' => 'banadores-led-high-power', 'x' => 50, 'y' => 80],
+                ['slug' => 'esferas-colgantes', 'x' => 49, 'y' => 15],
+                ['slug' => 'sistema-de-rigging', 'x' => 12, 'y' => 15],
             ],
             'combo-019' => [
-                ['slug' => 'esferas-colgantes', 'x' => 50, 'y' => 30],
-                ['slug' => 'sistema-de-rigging', 'x' => 50, 'y' => 10],
-            ],
-            'combo-020' => [
-                ['slug' => 'cabezal-movil-beam-mix-colores', 'x' => 50, 'y' => 50],
-                ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 20],
+                ['slug' => 'cabezal-movil-beam-mix-colores', 'x' => 22, 'y' => 32],
+                ['slug' => 'cluster-esferas-de-espejos', 'x' => 53, 'y' => 10],
             ],
             // Batch 5
+            'combo-020' => [
+                ['slug' => 'pantallas-led-totems-separadas', 'x' => 37, 'y' => 58],
+                ['slug' => 'iluminacion-wash-azul', 'x' => 62, 'y' => 50],
+            ],
             'combo-021' => [
-                ['slug' => 'pantallas-led-totems-separadas', 'x' => 50, 'y' => 50],
-                ['slug' => 'iluminacion-wash-azul', 'x' => 50, 'y' => 80],
+                ['slug' => 'laser-grafico-verde', 'x' => 77, 'y' => 46],
+                ['slug' => 'iluminacion-perimetral', 'x' => 52, 'y' => 45],
             ],
             'combo-022' => [
-                ['slug' => 'laser-grafico-verde', 'x' => 50, 'y' => 40],
-                ['slug' => 'iluminacion-perimetral', 'x' => 50, 'y' => 80],
+                ['slug' => 'techo-led-pixel', 'x' => 44, 'y' => 30],
+                ['slug' => 'cabezal-beam-ambar', 'x' => 61, 'y' => 50],
             ],
             'combo-023' => [
-                ['slug' => 'techo-led-pixel', 'x' => 50, 'y' => 20],
-                ['slug' => 'cabezal-beam-ambar', 'x' => 50, 'y' => 80],
+                ['slug' => 'paneles-led-techo-diamante', 'x' => 54, 'y' => 32],
+                ['slug' => 'tubos-led-verticales', 'x' => 63, 'y' => 58],
+                ['slug' => 'cabezal-movil-beam-violeta', 'x' => 66, 'y' => 29],
             ],
             'combo-024' => [
-                ['slug' => 'truss-circular-ring', 'x' => 50, 'y' => 30],
-                ['slug' => 'consola-de-iluminacion', 'x' => 30, 'y' => 80],
-                ['slug' => 'pista-ajedrezada', 'x' => 70, 'y' => 80],
+                ['slug' => 'letras-corporeas-led-love', 'x' => 47, 'y' => 48],
+                ['slug' => 'iluminacion-decorativa-guirnaldas', 'x' => 24, 'y' => 35],
             ],
-            // Batch 6
             'combo-025' => [
-                ['slug' => 'paneles-led-techo-diamante', 'x' => 50, 'y' => 20],
-                ['slug' => 'tubos-led-verticales', 'x' => 80, 'y' => 50],
-                ['slug' => 'cabezal-movil-beam-violeta', 'x' => 20, 'y' => 50],
+                ['slug' => 'pared-led-gran-formato', 'x' => 58, 'y' => 31],
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 12, 'y' => 29],
             ],
+            // Old 026 REMOVED, shifted up
             'combo-026' => [
-                ['slug' => 'letras-corporeas-led-love', 'x' => 50, 'y' => 50],
-                ['slug' => 'iluminacion-decorativa-guirnaldas', 'x' => 50, 'y' => 20],
+                ['slug' => 'pantalla-led-dividida-stripes', 'x' => 79, 'y' => 58],
+                ['slug' => 'laser-verde-show', 'x' => 24, 'y' => 52],
             ],
             'combo-027' => [
-                ['slug' => 'pared-led-gran-formato', 'x' => 50, 'y' => 50],
-                ['slug' => 'pista-ajedrezada', 'x' => 50, 'y' => 90],
-            ],
-            'combo-028' => [
-                ['slug' => 'matriz-esferas-techo', 'x' => 50, 'y' => 20],
-                ['slug' => 'aranas-de-estilo-chandelier', 'x' => 50, 'y' => 40],
-            ],
-            'combo-029' => [
-                ['slug' => 'pantalla-led-dividida-stripes', 'x' => 50, 'y' => 50],
-                ['slug' => 'laser-verde-show', 'x' => 20, 'y' => 50],
-            ],
-            'combo-030' => [
-                ['slug' => 'pantalla-led-techo-inclinada', 'x' => 50, 'y' => 20],
-                ['slug' => 'tarimas-escenario-dj', 'x' => 50, 'y' => 80],
+                ['slug' => 'pantalla-led-techo-inclinada', 'x' => 49, 'y' => 38],
+                ['slug' => 'tarimas-escenario-dj', 'x' => 56, 'y' => 78],
             ],
             // Batch 7
+            'combo-028' => [
+                ['slug' => 'sistema-laser-azul-tunel', 'x' => 54, 'y' => 38],
+                ['slug' => 'esferas-de-espejo-reflectoras', 'x' => 55, 'y' => 14],
+            ],
+            'combo-029' => [
+                ['slug' => 'estructura-escenario-layher', 'x' => 48, 'y' => 81],
+                ['slug' => 'mix-pantallas-custom', 'x' => 54, 'y' => 62],
+                ['slug' => 'array-iluminacion-beamwash', 'x' => 76, 'y' => 20],
+            ],
+            'combo-030' => [
+                ['slug' => 'bastidor-estructura-movil', 'x' => 41, 'y' => 21],
+                ['slug' => 'cortina-de-esferas', 'x' => 47, 'y' => 47],
+            ],
             'combo-031' => [
-                ['slug' => 'sistema-laser-azul-tunel', 'x' => 50, 'y' => 50],
-                ['slug' => 'esferas-de-espejo-reflectoras', 'x' => 20, 'y' => 50],
-            ],
-            'combo-032' => [
-                ['slug' => 'estructura-escenario-layher', 'x' => 50, 'y' => 50],
-                ['slug' => 'mix-pantallas-custom', 'x' => 50, 'y' => 30],
-                ['slug' => 'array-iluminacion-beam-wash', 'x' => 50, 'y' => 10],
-            ],
-            'combo-033' => [
-                ['slug' => 'bastidor-estructura-movil', 'x' => 50, 'y' => 50],
-                ['slug' => 'cortina-de-esferas', 'x' => 50, 'y' => 50],
-            ],
-            'combo-034' => [
-                ['slug' => 'grid-esferas-masivo', 'x' => 50, 'y' => 20],
-                ['slug' => 'iluminacion-beam-cruzada', 'x' => 50, 'y' => 80],
+                ['slug' => 'grid-esferas-masivo', 'x' => 39, 'y' => 40],
+                ['slug' => 'iluminacion-beam-cruzada', 'x' => 13, 'y' => 27],
             ],
         ];
 
         // Configuración de las 3 Categorías
-        // Distribuimos las fotos 001-034 en 3 grupos balanceados.
+        // Distribuimos las fotos 001-031 en 3 grupos balanceados.
 
         $categories = [
             [
                 'id' => 'seleccion-1',
-                'title' => 'Nuevos Ingresos', // Título editable
+                'title' => 'Nuevos Ingresos',
                 'description' => 'Descubre lo último en equipamiento para eventos.',
-                'range' => [1, 12], // De la 001 a la 012
+                'range' => [1, 12], // 1-12
             ],
             [
                 'id' => 'seleccion-2',
-                'title' => 'Tendencias', // Título editable
+                'title' => 'Tendencias',
                 'description' => 'Los combos más populares de la temporada.',
-                'range' => [13, 24], // De la 013 a la 024
+                'range' => [13, 22], // 13-22 (10 items)
             ],
             [
                 'id' => 'seleccion-3',
-                'title' => 'Escenarios & Estructuras', // Título editable
+                'title' => 'Escenarios & Estructuras',
                 'description' => 'Montajes profesionales para grandes impactos.',
-                'range' => [25, 34], // De la 025 a la 034
+                'range' => [23, 31], // 23-31 (9 items)
             ],
         ];
 
@@ -269,7 +258,9 @@ class ItemList extends Component
         foreach ($sceneData as $category) {
             foreach ($category['images'] as $image) {
                 foreach ($image['hotspots'] as $hotspot) {
-                    $allSlugs[] = $hotspot['slug'];
+                    if (isset($hotspot['slug'])) {
+                        $allSlugs[] = $hotspot['slug'];
+                    }
                 }
             }
         }

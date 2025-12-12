@@ -74,6 +74,11 @@ class ItemSeeder extends Seeder
                     ['Haces de luz que atraviesan el salón', 'Genera atmósfera de gran evento', 'Royal Blue'],
                     'items/beam-light.jpg',
                 ],
+                ['Cabezal Móvil Wash', 8,
+                    ['Lámpara' => 'LED 36x10W / 19x15W', 'Mezcla' => 'RGBW (4 en 1)', 'Zoom' => 'Motorizado 15-60°', 'Modos' => 'DMX / Sound'],
+                    ['Baño de color uniforme y potente', 'Ideal para teñir salones completos', 'Movimiento suave y silencioso', 'Efecto Wash'],
+                    'items/wash-light.jpg',
+                ],
             ],
             'laseres-verde' => [
                 ['Láser Verde Pro 3W', 2,
