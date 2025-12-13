@@ -18,7 +18,7 @@ class ItemSeeder extends Seeder
 
         // Mapa de ítems limpios para Combo 001
         $plan = [
-            'luces-moving-head' => [
+            'luces-cabezales-moviles' => [ // Was luces-moving-head
                 ['Cabezal Móvil Beam 7R', 16,
                     ['Lámpara' => '7R 230W', 'Temperatura color' => '8000K', 'Alcance' => '100m', 'Peso' => '17kg'],
                     ['Haz de luz concentrado', 'Colores intensos', 'Movimiento rápido', 'Prisma 8 caras'],
@@ -29,11 +29,7 @@ class ItemSeeder extends Seeder
                     ['Baño de luz cálida (Ambar/Gold)', 'Proyección de texturas suaves', 'Versatilidad total'],
                     'items/spot-light.jpg',
                 ],
-                ['Pin Spot LED Beam', 12,
-                    ['Ángulo de apertura' => '2 a 4 grados', 'Color' => 'Ámbar / Blanco Cálido', 'Tecnología' => 'LED'],
-                    ['Genera el rebote de luz intenso', 'Haz muy cerrado para golpear esferas', 'Efecto Starburst'],
-                    'items/beam-light.jpg',
-                ],
+
                 ['Cabezal Móvil Beam (Verde)', 8,
                     ['Lámpara' => '7R 230W', 'Color' => 'Verde (Rueda)', 'Uso' => 'Club'],
                     ['Haz sólido de largo alcance', 'Movimientos rápidos para electrónica', 'Color verde intenso'],
@@ -49,11 +45,7 @@ class ItemSeeder extends Seeder
                     ['Barridos rápidos sobre la pista', 'Colores vibrantes mezclados', 'Efecto fiesta'],
                     'items/beam-light.jpg',
                 ],
-                ['Iluminación Wash Azul', 6,
-                    ['Color' => 'Azul Royal / UV', 'Zoom' => 'Motorizado', 'Uso' => 'Ambientación'],
-                    ['Clima frío/elegante', 'Luz suave que baña sin encandilar', 'Wash Spot'],
-                    'items/wash-light.jpg',
-                ],
+
                 ['Cabezal Beam (Ámbar)', 8,
                     ['Posición' => 'Piso o Tarimas', 'Enfoque' => 'Electrónico', 'Color' => 'Ámbar'],
                     ['Contraste de color cálido vs fondo frío', 'Efecto de rayos de sol', 'Beam de Piso'],
@@ -69,11 +61,7 @@ class ItemSeeder extends Seeder
                     ['Iluminación masiva para grandes escenarios', 'Beam y Wash combinados', 'Main Stage'],
                     'items/beam-light.jpg',
                 ],
-                ['Iluminación Beam Cruzada', 8,
-                    ['Posición' => 'Perimetral o desde escenario', 'Enfoque' => 'Aéreo', 'Efecto' => 'Cruce'],
-                    ['Haces de luz que atraviesan el salón', 'Genera atmósfera de gran evento', 'Royal Blue'],
-                    'items/beam-light.jpg',
-                ],
+
                 ['Cabezal Móvil Wash', 8,
                     ['Lámpara' => 'LED 36x10W / 19x15W', 'Mezcla' => 'RGBW (4 en 1)', 'Zoom' => 'Motorizado 15-60°', 'Modos' => 'DMX / Sound'],
                     ['Baño de color uniforme y potente', 'Ideal para teñir salones completos', 'Movimiento suave y silencioso', 'Efecto Wash'],
@@ -270,7 +258,7 @@ class ItemSeeder extends Seeder
                     'items/pantalla-led.jpg',
                 ],
             ],
-            'pantallas-led-indoor' => [
+            'pantallas-led-interior' => [ // Was pantallas-led-indoor
                 ['Pantalla LED P3 Indoor', 6,
                     ['Paso de pixel' => 'P3.9', 'Uso' => 'Indoor', 'Brillo (nits)' => '1000', 'Resolución' => 'Full HD'],
                     ['Módulos escalables', 'Incluye procesador', 'Instalación profesional', 'Ideal para eventos'],
@@ -377,6 +365,16 @@ class ItemSeeder extends Seeder
                     ['Colorea las paredes y mesas del salón', 'Crea la base de color del evento', 'Sin cables'],
                     'items/wash-light.jpg',
                 ],
+                ['Iluminación Wash Azul', 6,
+                    ['Color' => 'Azul Royal / UV', 'Zoom' => 'Motorizado', 'Uso' => 'Ambientación'],
+                    ['Clima frío/elegante', 'Luz suave que baña sin encandilar', 'Wash Spot'],
+                    'items/wash-light.jpg',
+                ],
+                ['Iluminación Beam Cruzada', 8,
+                    ['Posición' => 'Perimetral o desde escenario', 'Enfoque' => 'Aéreo', 'Efecto' => 'Cruce'],
+                    ['Haces de luz que atraviesan el salón', 'Genera atmósfera de gran evento', 'Royal Blue'],
+                    'items/beam-light.jpg',
+                ],
             ],
             'escenario-pisos' => [
                 ['Pista Ajedrezada', 1,
@@ -410,6 +408,11 @@ class ItemSeeder extends Seeder
                     ['Contraste clásico vs tecnológico', 'Aporta lujo y altura al diseño', 'Cold Chandelier'],
                     'items/bola-espejo.jpg',
                 ],
+                ['Pin Spot LED Beam', 12,
+                    ['Ángulo de apertura' => '2 a 4 grados', 'Color' => 'Ámbar / Blanco Cálido', 'Tecnología' => 'LED'],
+                    ['Genera el rebote de luz intenso', 'Haz muy cerrado para golpear esferas', 'Efecto Starburst'],
+                    'items/beam-light.jpg',
+                ],
             ],
         ];
 
@@ -435,7 +438,7 @@ class ItemSeeder extends Seeder
                         'category_id' => $category->id,
                         'name' => $name,
                         'description' => $name.' — equipo en excelente estado para eventos.',
-                        'image_url' => 'storage/'.$imageUrl,
+                        'image_url' => 'storage/items/'.$slug.'.jpg',
                         'stock' => $stock,
                         'active' => true,
                     ]
