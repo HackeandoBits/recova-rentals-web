@@ -52,7 +52,6 @@ class ItemList extends Component
             ],
             'combo-002' => [
                 ['slug' => 'laser-show-azul-3w', 'x' => 19, 'y' => 14],
-                ['slug' => 'circulo-led-neon-flex', 'x' => 51, 'y' => 78],
                 ['slug' => 'maquina-de-humo-haze', 'x' => 17, 'y' => 45],
             ],
             'combo-003' => [
