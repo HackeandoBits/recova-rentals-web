@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
         // Solo ejecutar el SET time_zone cuando el driver sea MySQL
         if (DB::getDriverName() === 'mysql') {
             DB::statement("SET time_zone = '-03:00'");
+        }
+        if ($this->app->environment('production') || env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
         }
     }
 }
