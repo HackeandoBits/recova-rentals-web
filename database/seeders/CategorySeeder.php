@@ -14,8 +14,9 @@ class CategorySeeder extends Seeder
             'Pantallas' => ['LED Indoor', 'LED Outdoor', 'Proyectores'],
             'Láseres' => ['Verde', 'RGB', 'Animación'],
             'Sonido' => ['Parlantes', 'Consolas', 'Micrófonos', 'Accesorios'],
-            'Escenario' => ['Estructuras', 'Tarimas', 'Truss'],
-            'Luces' => ['Moving Head', 'PAR LED', 'Strobes', 'Wash/Spot'],
+            'Escenario' => ['Estructuras', 'Tarimas', 'Truss', 'Pistas', 'Decoración'],
+            'Luces' => ['Moving Head', 'PAR LED', 'Strobes', 'Wash Spot'],
+            'Efectos' => ['Atmosféricos', 'Lanzadores', 'Clásicos'],
         ];
 
         foreach ($tree as $parentName => $children) {

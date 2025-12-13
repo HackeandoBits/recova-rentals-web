@@ -7,109 +7,143 @@ use Livewire\Component;
 
 class ItemList extends Component
 {
-    /**
-     * Esta es la "plantilla" de tu página de hotspots.
-     * Define las imágenes de fondo y las coordenadas [x, y] de cada hotspot.
-     * El 'slug' DEBE coincidir con un slug de tu ItemSeeder.php
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | 📖 GUÍA DE EDICIÓN DEL CATÁLOGO (Hotspots y Combos)
+    |--------------------------------------------------------------------------
+    |
+    | 1. ¿DÓNDE ESTÁN LAS FOTOS?
+    |    Las fotos de los combos (001.jpg, 002.jpg...) están en: storage/app/public/img/
+    |    Si quieres cambiar una foto de fondo, simplemente reemplaza el archivo .jpg allí.
+    |
+    | 2. ¿CÓMO CAMBIO LOS PUNTOS INTERACTIVOS (HOTSPOTS)?
+    |    Modifica el array $hotspotsMap aquí abajo.
+    |
+    |    Formato:
+    |    'combo-XXX' => [
+    |        ['slug' => 'item-slug', 'x' => 50, 'y' => 50],
+    |        ...
+    |    ]
+    |
+    |    - 'combo-XXX': Es el ID de la foto (ej: combo-001 corresponde a 001.jpg).
+    |    - 'slug': Es el identificador del producto individual (ej: 'pantalla-led', 'beam-light').
+    |              Estos slugs están definidos en la base de datos (tabla 'items').
+    |    - 'x' / 'y': Son las coordenadas en PORCENTAJE (%).
+    |              x=0 es izquierda, x=100 es derecha.
+    |              y=0 es arriba, y=100 es abajo.
+    |              Ej: x=50, y=50 es exactamente el centro.
+    |
+    | 3. ¿CÓMO AGREGO NUEVOS PRODUCTOS?
+    |    Si necesitas un nuevo producto para etiquetar (ej: 'Nuevas Luces'), debes agregarlo
+    |    primero en el archivo de migración: database/migrations/..._seed_essential_items_for_hotspots.php
+    |    y luego ejecutar 'php artisan migrate:refresh'.
+    |
+    */
     private function getSceneData(): array
     {
-        $baseData = [
+        // Mapa de Hotspots por Combo
+        $hotspotsMap = [
+            // Batch 1
+            'combo-001' => [
+                ['slug' => 'cabezal-movil-beam-7r', 'x' => 50, 'y' => 30],
+                ['slug' => 'laser-verde-pro-3w', 'x' => 50, 'y' => 80],
+                ['slug' => 'cluster-esferas-de-espejos', 'x' => 50, 'y' => 50],
+                ['slug' => 'pantalla-led-p3-indoor', 'x' => 80, 'y' => 50],
+            ],
+            'combo-002' => [['slug' => 'tarima-modular', 'x' => 50, 'y' => 90], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 40]],
+            'combo-003' => [['slug' => 'cabezal-movil-beam-230', 'x' => 50, 'y' => 20], ['slug' => 'estructura-truss-30x30', 'x' => 80, 'y' => 50]],
+            'combo-004' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 50], ['slug' => 'maquina-de-humo-baja', 'x' => 80, 'y' => 80]],
+            'combo-005' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 90], ['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 20]],
+            // Batch 2
+            'combo-006' => [['slug' => 'tarima-modular', 'x' => 50, 'y' => 80], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 30]],
+            'combo-007' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 80, 'y' => 60]],
+            'combo-008' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 90], ['slug' => 'laser-show-rgb-3w', 'x' => 30, 'y' => 30]],
+            'combo-009' => [['slug' => 'cabezal-movil-beam-230', 'x' => 50, 'y' => 40], ['slug' => 'maquina-de-humo-baja', 'x' => 80, 'y' => 80]],
+            'combo-010' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 50]],
+            // Batch 3
+            'combo-011' => [['slug' => 'bola-de-espejos-50cm', 'x' => 30, 'y' => 20], ['slug' => 'cabezal-movil-wash-led', 'x' => 70, 'y' => 80]],
+            'combo-012' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 50], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 30]],
+            'combo-013' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 30], ['slug' => 'cabezal-movil-wash-led', 'x' => 80, 'y' => 60]],
+            'combo-014' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'efecto-led', 'x' => 50, 'y' => 50]],
+            'combo-015' => [['slug' => 'pistola-co2', 'x' => 30, 'y' => 60], ['slug' => 'canon-de-confetti', 'x' => 70, 'y' => 60]],
+            // Batch 4
+            'combo-016' => [['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 30], ['slug' => 'pantalla-led-p3', 'x' => 60, 'y' => 50]],
+            'combo-017' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 20], ['slug' => 'cabezal-movil-wash-led', 'x' => 50, 'y' => 70]],
+            'combo-018' => [['slug' => 'bola-de-espejos-50cm', 'x' => 33, 'y' => 30], ['slug' => 'bola-de-espejos-50cm', 'x' => 66, 'y' => 30]],
+            'combo-019' => [['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 40], ['slug' => 'bola-de-espejos-50cm', 'x' => 60, 'y' => 30]],
+            'combo-020' => [['slug' => 'pista-led-infinity', 'x' => 50, 'y' => 85], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 30]],
+            // Batch 5
+            'combo-021' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 80, 'y' => 30]],
+            'combo-022' => [['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 50], ['slug' => 'cabezal-movil-wash-led', 'x' => 20, 'y' => 80]],
+            'combo-023' => [['slug' => 'bola-de-espejos-50cm', 'x' => 40, 'y' => 25], ['slug' => 'cabezal-movil-wash-led', 'x' => 70, 'y' => 60]],
+            'combo-024' => [['slug' => 'pantalla-led-p3', 'x' => 30, 'y' => 50], ['slug' => 'pista-led-infinity', 'x' => 70, 'y' => 90]],
+            'combo-025' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 40], ['slug' => 'cabezal-movil-beam-230', 'x' => 20, 'y' => 60]],
+            // Batch 6
+            'combo-026' => [['slug' => 'pantalla-led-curva', 'x' => 50, 'y' => 50]],
+            'combo-027' => [['slug' => 'bola-de-espejos-50cm', 'x' => 30, 'y' => 20], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 40]],
+            'combo-028' => [['slug' => 'pantalla-led-p3', 'x' => 30, 'y' => 40], ['slug' => 'laser-show-rgb-3w', 'x' => 70, 'y' => 40]],
+            'combo-029' => [['slug' => 'estructura-truss-30x30', 'x' => 50, 'y' => 30], ['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 60]],
+            'combo-030' => [['slug' => 'letras-gigantes-led', 'x' => 50, 'y' => 70]],
+            // Batch 7
+            'combo-031' => [['slug' => 'pantalla-led-p3', 'x' => 50, 'y' => 50], ['slug' => 'tarima-modular', 'x' => 50, 'y' => 80]],
+            'combo-032' => [['slug' => 'bola-de-espejos-50cm', 'x' => 50, 'y' => 30]],
+            'combo-033' => [['slug' => 'bola-de-espejos-50cm', 'x' => 40, 'y' => 30], ['slug' => 'cabezal-movil-beam-230', 'x' => 70, 'y' => 50]],
+            'combo-034' => [['slug' => 'laser-show-rgb-3w', 'x' => 50, 'y' => 50], ['slug' => 'maquina-de-humo-baja', 'x' => 50, 'y' => 80]],
+        ];
+
+        // Configuración de las 3 Categorías
+        // Distribuimos las fotos 001-034 en 3 grupos balanceados.
+
+        $categories = [
             [
-                'id' => 'pantallas-led',
-                'title' => 'Pantallas LED',
-                'description' => 'Sistemas de pantallas LED de alta definición.',
-                'images' => [
-                    [
-                        'id' => 'led-screens-setup',
-                        'combo_slug' => 'combo-pantallas-premium', // Nuevo slug
-                        'title' => 'Pantallas LED Premium en Acción',
-                        'image_url' => asset('storage/img/led-screens-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'pantalla-led-p2-9-indoor-3x2m', 'x' => 45, 'y' => 20],
-                            ['slug' => 'moving-head-200w-spot', 'x' => 75, 'y' => 35],
-                            ['slug' => 'consola-16ch-con-fx', 'x' => 20, 'y' => 80], // Nuevo
-                        ],
-                    ],
-                    [
-                        'id' => 'led-ceiling-setup',
-                        'combo_slug' => 'combo-techo-led', // Nuevo slug
-                        'title' => 'Instalación de Techo LED',
-                        'image_url' => asset('storage/img/led-ceiling-setup.jpg'),
-                        'hotspots' => [
-                            ['slug' => 'pantalla-led-p3-9-indoor-4x2m', 'x' => 50, 'y' => 30],
-                            ['slug' => 'moving-head-200w-spot', 'x' => 70, 'y' => 60],
-                            ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 20], // Nuevo
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-1',
+                'title' => 'Nuevos Ingresos', // Título editable
+                'description' => 'Descubre lo último en equipamiento para eventos.',
+                'range' => [1, 12], // De la 001 a la 012
             ],
             [
-                'id' => 'iluminacion',
-                'title' => 'Iluminación y Láseres',
-                'description' => 'Sistemas de iluminación profesional y láseres de alta potencia.',
-                'images' => [
-                    [
-                        'id' => 'laser-show',
-                        'combo_slug' => 'combo-laser-show', // Nuevo slug
-                        'title' => 'Show de Láser Profesional',
-                        'image_url' => asset('storage/img/laser-show-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'laser-rgb-2w-profesional', 'x' => 60, 'y' => 25],
-                            ['slug' => 'par-led-rgb-18x10w', 'x' => 30, 'y' => 15],
-                            ['slug' => 'consola-16ch-con-fx', 'x' => 80, 'y' => 80], // Nuevo
-                        ],
-                    ],
-                    [
-                        'id' => 'laseres-green',
-                        'combo_slug' => 'combo-laseres-verdes', // Nuevo slug
-                        'title' => 'Láseres Verdes de Concierto',
-                        'image_url' => asset('storage/img/lasers.jpg'),
-                        'hotspots' => [
-                            ['slug' => 'laser-verde-1w-animacion', 'x' => 50, 'y' => 40],
-                            ['slug' => 'parlante-activo-12-1000w', 'x' => 20, 'y' => 60], // Nuevo
-                            ['slug' => 'microfono-inalambrico-uhf', 'x' => 80, 'y' => 70], // Nuevo
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-2',
+                'title' => 'Tendencias', // Título editable
+                'description' => 'Los combos más populares de la temporada.',
+                'range' => [13, 24], // De la 013 a la 024
             ],
             [
-                'id' => 'escenarios',
-                'title' => 'Escenarios y Sonido',
-                'description' => 'Estructuras modulares y sonido de alta calidad.',
-                'images' => [
-                    [
-                        'id' => 'stage-production',
-                        'combo_slug' => 'combo-escenario-completo', // Nuevo slug
-                        'title' => 'Producción Completa de Escenario',
-                        'image_url' => asset('storage/img/stage-production-event.png'),
-                        'hotspots' => [
-                            ['slug' => 'estructura-6x4m', 'x' => 65, 'y' => 70],
-                            ['slug' => 'parlante-activo-12-1000w', 'x' => 80, 'y' => 55],
-                            ['slug' => 'subwoofer-18-1200w', 'x' => 20, 'y' => 60],
-                        ],
-                    ],
-                ],
+                'id' => 'seleccion-3',
+                'title' => 'Escenarios & Estructuras', // Título editable
+                'description' => 'Montajes profesionales para grandes impactos.',
+                'range' => [25, 34], // De la 025 a la 034
             ],
         ];
 
-        // DUPLICACIÓN DE IMÁGENES PARA EL CARRUSEL
-        // Queremos que cada categoría tenga al menos 6 imágenes para que el carrusel de 3 se vea bien y loopee.
-        foreach ($baseData as &$category) {
-            $originalImages = $category['images'];
-            // Repetimos las imágenes hasta tener al menos 6
-            while (count($category['images']) < 6) {
-                foreach ($originalImages as $img) {
-                    // Es importante generar un ID único para el key de React/Alpine si fuera necesario,
-                    // aunque aquí usamos índices mayormente.
-                    $newImg = $img;
-                    $newImg['id'] = $img['id'].'_'.uniqid();
-                    $category['images'][] = $newImg;
-                }
+        $finalData = [];
+
+        foreach ($categories as $cat) {
+            $catImages = [];
+            // Generamos las imágenes basándonos en el rango
+            for ($i = $cat['range'][0]; $i <= $cat['range'][1]; $i++) {
+                // Formato de número a 3 dígitos (ej: 001, 005, 012)
+                $num = str_pad($i, 3, '0', STR_PAD_LEFT);
+                $comboSlug = "combo-{$num}";
+
+                $catImages[] = [
+                    'id' => $comboSlug,
+                    'combo_slug' => $comboSlug, // Slug para BD
+                    'title' => "Combo {$num}",       // Título temporal del producto
+                    'image_url' => asset("storage/img/{$num}.jpg"),
+                    // Asignamos los hotspots del mapa
+                    'hotspots' => $hotspotsMap[$comboSlug] ?? [],
+                ];
             }
+
+            $finalData[] = [
+                'id' => $cat['id'],
+                'title' => $cat['title'],
+                'description' => $cat['description'],
+                'images' => $catImages,
+            ];
         }
 
-        return $baseData;
+        return $finalData;
     }
 
     // --- PROPIEDADES PÚBLICAS ---
@@ -187,7 +221,7 @@ class ItemList extends Component
             $finalCategories[] = $finalCategory;
         }
 
-        // 5. Obtener los conteos de items por combo para la actualización optimista
+        // 5. Obtener los combos con sus items para el botón "Agregar Combo"
         $comboSlugs = [];
         foreach ($sceneData as $category) {
             foreach ($category['images'] as $image) {
@@ -197,61 +231,37 @@ class ItemList extends Component
             }
         }
 
-        $combos = \App\Models\Combo::whereIn('slug', $comboSlugs)->withCount('items')->get()->keyBy('slug');
-
-        foreach ($finalCategories as &$category) {
-            foreach ($category['images'] as &$image) {
-                if (isset($image['combo_slug']) && $combos->has($image['combo_slug'])) {
-                    // Sumamos la cantidad total de items (considerando la cantidad pivot si fuera necesario,
-                    // pero withCount('items') da el número de filas. Si la cantidad importa, deberíamos sumar 'quantity'.
-                    // Por simplicidad y rendimiento, asumimos 1 item = 1 cantidad o usamos una query más compleja si es crítico.
-                    // Para ser más precisos, cargamos los items y sumamos quantities.
-                    $combo = $combos->get($image['combo_slug']);
-                    // Si necesitamos la suma de cantidades (pivot), withCount no basta.
-                    // Pero para el contador de "ítems únicos" o "bultos", withCount sirve.
-                    // Si el carrito suma cantidades totales, necesitamos eso.
-                    // Vamos a asumir que el contador del carrito muestra la suma de cantidades.
-                    // Haremos una carga ligera para esto o lo dejamos en withCount si es suficiente.
-                    // Revisando CartManager, usa array_sum(column(quantity)).
-                    // Entonces necesitamos la suma de cantidades.
-
-                    // Ajuste: Cargar combos con items para sumar cantidades correctamente.
-                    // Esto se hace mejor fuera del loop.
-                }
-            }
-        }
-        // Re-hacemos la query de combos para obtener los items con sus datos necesarios
-        $combosWithItems = \App\Models\Combo::whereIn('slug', $comboSlugs)
-            ->with(['items' => function ($query) {
-                $query->with('category')->select('items.id', 'items.name', 'items.category_id', 'items.image_url');
-            }])
+        $combos = \App\Models\Combo::whereIn('slug', $comboSlugs)
+            ->with(['items']) // Cargar items para obtener datos reales
             ->get()
             ->keyBy('slug');
 
         foreach ($finalCategories as &$category) {
             foreach ($category['images'] as &$image) {
-                $image['combo_count'] = 0; // Default
-                $image['combo_items'] = []; // Default for client-side cart
+                if (isset($image['combo_slug']) && $combos->has($image['combo_slug'])) {
+                    $combo = $combos->get($image['combo_slug']);
 
-                if (isset($image['combo_slug']) && $combosWithItems->has($image['combo_slug'])) {
-                    $combo = $combosWithItems->get($image['combo_slug']);
-                    $totalQty = 0;
-                    $comboItemsData = [];
+                    // Sobrescribimos el título con el nombre real de la BD
+                    $image['title'] = $combo->name;
 
+                    // Construimos la lista de items para el carrito
+                    $cartItems = [];
                     foreach ($combo->items as $cItem) {
-                        $qty = $cItem->pivot->quantity ?? 1;
-                        $totalQty += $qty;
-
-                        $comboItemsData[] = [
+                        $cartItems[] = [
                             'id' => $cItem->id,
                             'name' => $cItem->name,
-                            'category' => $cItem->category->name ?? 'General',
-                            'image_url' => $cItem->image_url ? asset($cItem->image_url) : null, // Ensure asset() helper is used if needed, or just path
-                            'quantity' => $qty,
+                            'image_url' => \Illuminate\Support\Str::startsWith($cItem->image_url, ['http', 'https'])
+                                ? $cItem->image_url
+                                : asset($cItem->image_url),
+                            'category' => $cItem->category->name ?? 'Combo',
+                            'quantity' => $cItem->pivot->quantity ?? 1,
                         ];
                     }
-                    $image['combo_count'] = $totalQty;
-                    $image['combo_items'] = $comboItemsData;
+
+                    $image['combo_items'] = $cartItems;
+                } else {
+                    // Fallback si no hay combo en BD
+                    $image['combo_items'] = [];
                 }
             }
         }

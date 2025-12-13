@@ -86,6 +86,11 @@
                                 :key="item.id ? item.id : 'item-' + index">
                                 <div
                                     class="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5">
+                                    <div class="mr-3 h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-800"
+                                        x-show="item.image_url">
+                                        <img :src="item.image_url" :alt="item.name"
+                                            class="h-full w-full object-cover">
+                                    </div>
                                     <div class="flex-1">
                                         <h4 class="text-white font-medium text-lg" x-text="item.name"></h4>
                                         <p class="text-sm text-gray-300" x-text="item.category"></p>
