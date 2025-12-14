@@ -8,6 +8,19 @@
         $wire.handleSubmit($store.cart.items)
             .then(() => console.log('Livewire request sent'))
             .catch(error => console.error('Livewire error:', error));
+    },
+    // Nuevas variables para el modal de detalles
+    detailsOpen: false,
+    selectedDetailItem: null,
+    showSpecs: false,
+    openDetail(item) {
+        this.selectedDetailItem = item;
+        this.showSpecs = false;
+        this.detailsOpen = true;
+    },
+    closeDetail() {
+        this.detailsOpen = false;
+        setTimeout(() => { this.selectedDetailItem = null; }, 300);
     }
 }" @open-cart-modal.window="open = true; $wire.prepareForOpen()"
     @budget-sent.window="requestType = ''; setTimeout(() => open = false, 6000)" x-init="$watch('open', value => console.log('Cart Modal Open State:', value))" x-cloak>
@@ -86,13 +99,14 @@
                                 :key="item.id ? item.id : 'item-' + index">
                                 <div
                                     class="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5">
-                                    <div class="mr-3 h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-800"
-                                        x-show="item.image_url">
+                                    <div class="mr-3 h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-800 cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all"
+                                        x-show="item.image_url" @click="openDetail(item)">
                                         <img :src="item.image_url" :alt="item.name"
                                             class="h-full w-full object-cover">
                                     </div>
-                                    <div class="flex-1">
-                                        <h4 class="text-white font-medium text-lg" x-text="item.name"></h4>
+                                    <div class="flex-1 cursor-pointer group/name" @click="openDetail(item)">
+                                        <h4 class="text-white font-medium text-lg group-hover/name:text-purple-400 transition-colors"
+                                            x-text="item.name"></h4>
                                         <p class="text-sm text-gray-300" x-text="item.category"></p>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -328,6 +342,104 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+
+    {{-- 
+    ================================================================
+    PANEL DE DETALLE DEL ITEM (Anidado)
+    ================================================================
+    --}}
+    <div x-show="detailsOpen" style="display: none;"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[70]"
+        x-transition.opacity @click="closeDetail()">
+
+        <div class="bg-white dark:bg-gray-800 border border-gray-700 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+            @click.stop x-show="detailsOpen" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95">
+
+            <template x-if="selectedDetailItem">
+                <div>
+                    <div class="relative p-6 border-b border-gray-200 dark:border-gray-700">
+                        <button type="button" @click="closeDetail()"
+                            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+
+                        <div>
+                            {{-- Categoría --}}
+                            <span class="text-sm font-medium text-purple-600 dark:text-purple-400"
+                                x-text="selectedDetailItem.category_name || selectedDetailItem.category"></span>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1"
+                                x-text="selectedDetailItem.name"></h3>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <div class="h-64 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+                            x-show="selectedDetailItem.image_url">
+                            <img :src="selectedDetailItem.image_url" :alt="selectedDetailItem.name"
+                                class="w-full h-full object-contain p-2" />
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-700 dark:text-gray-300 mb-2">Descripción</h4>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed"
+                                x-text="selectedDetailItem.description || 'Sin descripción disponible.'"></p>
+                        </div>
+
+                        <div x-show="selectedDetailItem.features && selectedDetailItem.features.length > 0">
+                            <h4 class="font-semibold text-gray-700 dark:text-gray-300 mb-3">Incluye:</h4>
+                            <ul class="space-y-2">
+                                <template x-for="feature in selectedDetailItem.features" :key="feature.id">
+                                    <li class="flex items-start text-sm text-gray-600 dark:text-gray-400">
+                                        <svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span x-text="feature.text"></span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+
+                        <div x-show="!showSpecs && selectedDetailItem.specs && selectedDetailItem.specs.length > 0"
+                            class="pt-2">
+                            <button type="button" @click="showSpecs = true"
+                                class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                                Ver especificaciones técnicas...
+                            </button>
+                        </div>
+
+                        <div x-show="showSpecs && selectedDetailItem.specs && selectedDetailItem.specs.length > 0"
+                            class="pt-2 animate-fade-in">
+                            <h4 class="font-semibold text-gray-700 dark:text-gray-300 mb-3">Especificaciones:</h4>
+                            <ul class="space-y-2 border rounded-lg p-4 dark:border-gray-600">
+                                <template x-for="spec in selectedDetailItem.specs" :key="spec.id">
+                                    <li class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                        <span class="font-medium text-gray-700 dark:text-gray-300"
+                                            x-text="spec.spec_key + ':'"></span>
+                                        <span x-text="spec.spec_value"></span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-6 border-t border-white/10 flex justify-end">
+                        <button type="button"
+                            class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
+                            @click="closeDetail()">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </div>

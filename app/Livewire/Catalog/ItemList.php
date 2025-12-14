@@ -351,6 +351,10 @@ class ItemList extends Component
                                 ? $cItem->image_url
                                 : asset($cItem->image_url),
                             'category' => $cItem->category->name ?? 'Combo',
+                            'description' => $cItem->description,
+                            'features' => $cItem->features->sortBy('sort_order')->values()->toArray(),
+                            'specs' => $cItem->specs->sortBy('sort_order')->values()->toArray(),
+                            'category_name' => $cItem->category->name ?? 'Producto',
                             'quantity' => (int) ($cItem->pivot->quantity ?? 1),
                         ];
                     }
