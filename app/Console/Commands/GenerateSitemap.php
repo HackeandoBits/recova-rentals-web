@@ -27,12 +27,14 @@ class GenerateSitemap extends Command
     {
         $path = public_path('sitemap.xml');
 
-        $sitemap = \Spatie\Sitemap\Sitemap::create()
-            ->add(\Spatie\Sitemap\Tags\Url::create('https://recovarentals.com.ar/'))
-            ->add(\Spatie\Sitemap\Tags\Url::create('https://recovarentals.com.ar/products'))
-            ->add(\Spatie\Sitemap\Tags\Url::create('https://recovarentals.com.ar/gallery'))
-            ->add(\Spatie\Sitemap\Tags\Url::create('https://recovarentals.com.ar/location'))
-            ->add(\Spatie\Sitemap\Tags\Url::create('https://recovarentals.com.ar/about'));
+        $baseUrl = config('app.url');
+
+        $sitemap = \Spatie\Sitemap\Tags\Url::create($baseUrl)
+            ->add(\Spatie\Sitemap\Tags\Url::create($baseUrl . '/'))
+            ->add(\Spatie\Sitemap\Tags\Url::create($baseUrl . '/products'))
+            ->add(\Spatie\Sitemap\Tags\Url::create($baseUrl . '/gallery'))
+            ->add(\Spatie\Sitemap\Tags\Url::create($baseUrl . '/location'))
+            ->add(\Spatie\Sitemap\Tags\Url::create($baseUrl . '/about'));
 
         $sitemap->writeToFile($path);
 

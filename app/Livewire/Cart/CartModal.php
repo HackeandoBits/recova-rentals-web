@@ -40,11 +40,7 @@ class CartModal extends Component
     public function getAvailableTimeSlots(): array
     {
         return [
-            'Tarde (16:00 - 21:00)' => [
-                '16:00' => '16:00',
-                '16:30' => '16:30',
-                '17:00' => '17:00',
-                '17:30' => '17:30',
+            'Tarde/Noche (18:00 - 21:00)' => [
                 '18:00' => '18:00',
                 '18:30' => '18:30',
                 '19:00' => '19:00',
