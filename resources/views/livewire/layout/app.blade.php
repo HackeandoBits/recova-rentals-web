@@ -8,6 +8,20 @@
 
     <title>{{ config('app.name', 'Recova Rentals') }}</title>
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ config('app.url') }}" />
+    <meta property="og:title" content="{{ config('app.name') }}" />
+    <meta property="og:description" content="Alquiler de mobiliario y técnica para eventos." />
+    <meta property="og:image" content="{{ asset('storage/img/001.jpg') }}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="{{ config('app.url') }}" />
+    <meta property="twitter:title" content="{{ config('app.name') }}" />
+    <meta property="twitter:description" content="Alquiler de mobiliario y técnica para eventos." />
+    <meta property="twitter:image" content="{{ asset('storage/img/001.jpg') }}" />
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
