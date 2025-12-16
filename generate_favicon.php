@@ -1,39 +1,65 @@
 <?php
 
-// Paths
-$sourcePath = 'c:\laragon\www\recova-rentals-cliente\public\images\branding\recova-edificio-logo-body.png';
-$destPath = 'c:\laragon\www\recova-rentals-cliente\public\images\branding\recova-favicon.png';
+function createFavicon($sourcePath, $outputPath, $bgColorHex)
+{
+    echo "Processing Favicon $outputPath...\n";
 
-// Dimensions
-$size = 1024; // Output size (square)
+    // Load source
+    if (! file_exists($sourcePath)) {
+        exit("Source not found: $sourcePath\n");
+    }
+    $source = imagecreatefrompng($sourcePath);
+    if (! $source) {
+        exit("Failed to load PNG.\n");
+    }
 
-// Load source
-$src = imagecreatefrompng($sourcePath);
-$srcW = imagesx($src);
-$srcH = imagesy($src);
+    // Get source dimensions
+    $srcW = imagesx($source);
+    $srcH = imagesy($source);
 
-// Calculate aspect ratio and new dimensions
-// Max width logic
-$newW = $size;
-$newH = ($srcH / $srcW) * $size;
+    // Target Canvas (Square)
+    $targetSize = 128; // Good for high-DPI and regular use
+    $canvas = imagecreatetruecolor($targetSize, $targetSize);
 
-// Create destination image (Square)
-$dest = imagecreatetruecolor($size, $size);
+    // Parse Hex Color
+    $bgColorHex = ltrim($bgColorHex, '#');
+    $r = hexdec(substr($bgColorHex, 0, 2));
+    $g = hexdec(substr($bgColorHex, 2, 2));
+    $b = hexdec(substr($bgColorHex, 4, 2));
 
-// Colors
-$black = imagecolorallocate($dest, 0, 0, 0); // Solid Black
-imagefill($dest, 0, 0, $black);
+    $bg = imagecolorallocate($canvas, $r, $g, $b);
+    imagefill($canvas, 0, 0, $bg);
 
-// Calc Center Y
-$destY = ($size - $newH) / 2;
+    // Calculate Aspect Ratio / Scaling with Padding
+    $padding = 0; // Zero padding to fill width/height
+    $maxW = $targetSize - ($padding * 2);
+    $maxH = $targetSize - ($padding * 2);
 
-// Resize and Copy
-// imagecopyresampled ( dst_image , src_image , dst_x , dst_y , src_x , src_y , dst_w , dst_h , src_w , src_h )
-imagecopyresampled($dest, $src, 0, $destY, 0, 0, $newW, $newH, $srcW, $srcH);
+    $scale = min($maxW / $srcW, $maxH / $srcH);
 
-// Save
-imagepng($dest, $destPath);
-imagedestroy($src);
-imagedestroy($dest);
+    $newW = (int) ($srcW * $scale);
+    $newH = (int) ($srcH * $scale);
 
-echo "Favicon generated successfully at $destPath";
+    // Center it
+    $dstX = (int) (($targetSize - $newW) / 2);
+    $dstY = (int) (($targetSize - $newH) / 2);
+
+    // Preserve alpha for source logo (if it has transparency)
+    imagealphablending($source, true);
+    // Composite
+    imagecopyresampled($canvas, $source, $dstX, $dstY, 0, 0, $newW, $newH, $srcW, $srcH);
+
+    // Save
+    imagepng($canvas, $outputPath);
+    echo "Saved to $outputPath\n";
+
+    imagedestroy($source);
+    imagedestroy($canvas);
+}
+
+// Config
+$source = 'public/images/branding/recova-edificio-logo-body.png';
+$dest = 'public/images/branding/recova-favicon.png';
+$black = '#000000';
+
+createFavicon($source, $dest, $black);

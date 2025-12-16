@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'admin' => [
+        'url' => env('ADMIN_API_URL'),
+        'token' => env('ADMIN_API_TOKEN'),
+    ],
+
 ];
