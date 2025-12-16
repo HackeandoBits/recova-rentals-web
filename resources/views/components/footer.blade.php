@@ -136,7 +136,7 @@
             <div class="text-center md:text-left">
                 <p class="text-gray-500 text-sm font-medium">© {{ date('Y') }} Recova Rentals. Todos los derechos
                     reservados.</p>
-                <p class="text-gray-600 text-xs mt-1">Formosa, Argentina</p>
+                <p class="text-gray-600 text-xs mt-1">Formosa Capital, Argentina</p>
             </div>
 
             <div class="flex flex-wrap justify-center gap-6 text-xs text-gray-500 font-medium">

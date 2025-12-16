@@ -6,8 +6,8 @@
 
     <ul class="list-disc list-inside text-sm text-muted-foreground space-y-2">
         <li><strong>Cobertura Principal:</strong></li>
-        <li>Formosa Capital y alrededores</li>
-        <li>Interior de la Provincia de Formosa</li>
+        <li>Formosa Capital Capital y alrededores</li>
+        <li>Interior de la Provincia de Formosa Capital</li>
         <li>Resistencia y Corrientes</li>
         <li>Consultar para otras ubicaciones</li>
     </ul>
