@@ -18,14 +18,14 @@
     <meta property="og:url" content="{{ config('app.url') }}" />
     <meta property="og:title" content="{{ config('app.name') }}" />
     <meta property="og:description" content="Alquiler de mobiliario y técnica para eventos." />
-    <meta property="og:image" content="{{ asset('images/branding/recova-edificio-logo-body.png') }}" />
+    <meta property="og:image" content="{{ asset('images/branding/recova-og-image.png') }}" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="{{ config('app.url') }}" />
     <meta property="twitter:title" content="{{ config('app.name') }}" />
     <meta property="twitter:description" content="Alquiler de mobiliario y técnica para eventos." />
-    <meta property="twitter:image" content="{{ asset('images/branding/recova-edificio-logo-body.png') }}" />
+    <meta property="twitter:image" content="{{ asset('images/branding/recova-og-image.png') }}" />
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

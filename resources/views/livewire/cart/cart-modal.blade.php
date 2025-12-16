@@ -194,7 +194,7 @@
                                 </label>
                                 <div x-data="{
                                     picker: null,
-                                    blockedDates: @js($fullyBlockedDates),
+                                    blockedDates: @entangle('fullyBlockedDates'),
                                     init() {
                                         this.picker = flatpickr(this.$refs.input, {
                                             locale: window.flatpickrSpanish,
@@ -208,18 +208,20 @@
                                             onDayCreate: (dObj, dStr, fp, dayElem) => {
                                                 // Format date to Y-m-d to compare
                                                 const dateStr = fp.formatDate(dayElem.dateObj, 'Y-m-d');
-                                                if (this.blockedDates.includes(dateStr)) {
+                                                // Check if blocked
+                                                if (this.blockedDates && this.blockedDates.includes(dateStr)) {
                                                     dayElem.classList.add('admin-blocked');
                                                 }
                                             }
                                         });
                                 
-                                        // Watch for updates from Livewire
-                                        $watch('$wire.fullyBlockedDates', (value) => {
-                                            this.blockedDates = Array.isArray(value) ? value : [];
+                                        // Watch for updates from Livewire via entangle
+                                        $watch('blockedDates', (value) => {
                                             if (this.picker) {
-                                                this.picker.set('disable', this.blockedDates);
-                                                this.picker.redraw(); // Force redraw to apply classes
+                                                // Ensure value is array
+                                                const dates = Array.isArray(value) ? value : [];
+                                                this.picker.set('disable', dates);
+                                                this.picker.redraw();
                                             }
                                         });
                                     }
