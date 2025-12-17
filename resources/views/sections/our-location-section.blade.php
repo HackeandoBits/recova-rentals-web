@@ -25,7 +25,7 @@
 </div>
 
     <p class="text-sm text-muted-foreground pb-8 px-5">
-        Azopardo 811, Complejo La Nueva Recova, Formosa Capital
+        Azopardo 811, Complejo La Nueva Recova, Formosa Capital Capital
     </p>
     
 <div class="flex items-center gap-2 px-1

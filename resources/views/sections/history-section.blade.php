@@ -5,7 +5,7 @@
     <h3 class="font-semibold tracking-tight text-2xl text-primary mb-4">Nuestra Historia</h3>
     
     <div class="text-sm text-muted-foreground space-y-4">
-        <p>Fundada en 2019 en el corazón de Formosa, <strong class="text-accent">Recova Rentals</strong> nació de la pasión por la tecnología audiovisual y el entretenimiento. Comenzamos como un pequeño emprendimiento familiar con la visión de democratizar el acceso a equipos profesionales de alta calidad en nuestra región.</p>
+        <p>Fundada en 2019 en el corazón de Formosa Capital, <strong class="text-accent">Recova Rentals</strong> nació de la pasión por la tecnología audiovisual y el entretenimiento. Comenzamos como un pequeño emprendimiento familiar con la visión de democratizar el acceso a equipos profesionales de alta calidad en nuestra región.</p>
 
         <p>Ubicados estratégicamente en el <strong class="text-accent">Complejo La Nueva Recova</strong>, hemos crecido hasta convertirnos en la empresa líder en alquiler de equipos para eventos en el noreste argentino, sirviendo desde íntimas celebraciones familiares hasta festivales masivos con miles de asistentes.</p>
 

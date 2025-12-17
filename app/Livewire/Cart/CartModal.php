@@ -40,11 +40,7 @@ class CartModal extends Component
     public function getAvailableTimeSlots(): array
     {
         return [
-            'Tarde (16:00 - 21:00)' => [
-                '16:00' => '16:00',
-                '16:30' => '16:30',
-                '17:00' => '17:00',
-                '17:30' => '17:30',
+            'Tarde/Noche (18:00 - 21:00)' => [
                 '18:00' => '18:00',
                 '18:30' => '18:30',
                 '19:00' => '19:00',
@@ -62,10 +58,10 @@ class CartModal extends Component
     public function fetchBlockedDates(): void
     {
         try {
-            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+            $response = Http::withToken(config('services.admin.token'))
                 ->acceptJson()
-                ->timeout(5)
-                ->get(env('ADMIN_API_URL').'/api/v1/bookings/blocked-dates');
+                ->timeout(30)
+                ->get(config('services.admin.url').'/api/v1/bookings/blocked-dates');
 
             if ($response->successful()) {
                 $this->fullyBlockedDates = $response->json('blocked_dates', []);
@@ -89,10 +85,10 @@ class CartModal extends Component
         $this->loadingSlots = true;
 
         try {
-            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+            $response = Http::withToken(config('services.admin.token'))
                 ->acceptJson()
                 ->timeout(10)
-                ->get(env('ADMIN_API_URL').'/api/v1/bookings/occupied-time-slots', [
+                ->get(config('services.admin.url').'/api/v1/bookings/occupied-time-slots', [
                     'date' => $date,
                 ]);
             if ($response->successful()) {
@@ -242,11 +238,11 @@ class CartModal extends Component
 
         try {
             // 2. LLAMAR A LA API DEL ADMIN
-            \Illuminate\Support\Facades\Log::info('CartModal: Sending request to Admin API', ['url' => env('ADMIN_API_URL').'/api/v1/bookings', 'data' => $data]);
-            $response = Http::withToken(env('ADMIN_API_TOKEN'))
+            \Illuminate\Support\Facades\Log::info('CartModal: Sending request to Admin API', ['url' => config('services.admin.url').'/api/v1/bookings', 'data' => $data]);
+            $response = Http::withToken(config('services.admin.token'))
                 ->acceptJson() // Forzar respuesta JSON
                 ->timeout(30) // Timeout de 30s (aumentado porque el servidor puede tardar)
-                ->post(env('ADMIN_API_URL').'/api/v1/bookings', $data);
+                ->post(config('services.admin.url').'/api/v1/bookings', $data);
 
             \Illuminate\Support\Facades\Log::info('CartModal: API Response', ['status' => $response->status(), 'body' => $response->body()]);
 

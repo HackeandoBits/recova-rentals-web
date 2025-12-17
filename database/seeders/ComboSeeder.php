@@ -58,7 +58,7 @@ class ComboSeeder extends Seeder
         // Mapea el Combo Slug -> Lista de Item Slugs (usando los nuevos slugs generados en ItemSeeder)
         $comboItemsMap = [
             'combo-001' => ['cabezal-movil-beam-7r', 'laser-verde-pro-3w', 'cluster-esferas-de-espejos', 'pantalla-led-p3-indoor'],
-            'combo-002' => ['laser-show-azul-3w', 'circulo-led-neon-flex', 'maquina-de-humo-haze'],
+            'combo-002' => ['laser-show-azul-3w', 'maquina-de-humo-haze'],
             'combo-003' => ['tubos-led-pixel', 'estructura-truss-negra'],
             'combo-004' => ['maquina-fuego-frio', 'pantalla-led-poster'],
             'combo-005' => ['cabezal-movil-beam-7r', 'banadores-led', 'pantalla-led-de-fondo'],

@@ -52,7 +52,6 @@ class ItemList extends Component
             ],
             'combo-002' => [
                 ['slug' => 'laser-show-azul-3w', 'x' => 19, 'y' => 14],
-                ['slug' => 'circulo-led-neon-flex', 'x' => 51, 'y' => 78],
                 ['slug' => 'maquina-de-humo-haze', 'x' => 17, 'y' => 45],
             ],
             'combo-003' => [
@@ -352,6 +351,10 @@ class ItemList extends Component
                                 ? $cItem->image_url
                                 : asset($cItem->image_url),
                             'category' => $cItem->category->name ?? 'Combo',
+                            'description' => $cItem->description,
+                            'features' => $cItem->features->sortBy('sort_order')->values()->toArray(),
+                            'specs' => $cItem->specs->sortBy('sort_order')->values()->toArray(),
+                            'category_name' => $cItem->category->name ?? 'Producto',
                             'quantity' => (int) ($cItem->pivot->quantity ?? 1),
                         ];
                     }
